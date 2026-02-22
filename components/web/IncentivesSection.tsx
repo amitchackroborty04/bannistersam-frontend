@@ -1,131 +1,191 @@
 'use client'
 
 import { Button } from '../ui/button'
-import { Gift, Star } from 'lucide-react'
-import Image from 'next/image'
+import { Check, Gift, X } from 'lucide-react'
+
+const earlyHowItWorks = [
+  'Complete your full public profile',
+  'Verify your BRN (Agent) or CRN (Brokerage)',
+  'Upload at least one property',
+  'Property must pass Verified Deal verification',
+]
+
+const earlyRewards = [
+  '1 complimentary credit per Verified Deal approved listing',
+  'Subject to a minimum cap per account',
+  'Credits are issued once qualification requirements are met',
+  'Credits are non-transferable and cannot be exchanged for cash',
+]
+
+const referralRequirements = [
+  'Registration is completed',
+  'Verification is approved',
+  'A paid subscription is activated',
+  'The account remains active beyond the minimum billing period',
+]
+
+const referralRewards = [
+  'Refer 1 successful paid account — 50% off your next billing cycle',
+  'Refer 2 successful paid accounts — 100% off your next billing cycle',
+]
 
 export function IncentivesSection() {
   return (
-    <section className="py-12 md:py-20 px-2 md:px-8 bg-white dark:bg-[#0B0F0E]">
-      <div className="container mx-auto">
-        {/* Header */}
-        <div className="text-center mb-10 md:mb-16">
+    <section className="py-14 sm:py-20 px-4 sm:px-6">
+      <div className="container mx-auto max-w-[1180px]">
+        <div className="text-center mb-10 sm:mb-12">
           <div
-            className="inline-block rounded-full p-[4px] mb-5 md:mb-6"
+            className="inline-block rounded-[999px] p-[3px] mb-5"
             style={{
               background: 'linear-gradient(180deg, #79FFD2 0%, #017850 100%)',
             }}
           >
             <Button
-              className="rounded-full px-5 md:px-8 h-[44px] md:h-[48px] text-sm md:text-base text-[#4B4B4B] "
+              className="h-[40px] rounded-[999px] px-5 text-sm text-[#F88379]"
               style={{
                 background:
                   'linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)',
               }}
             >
-              <span className="w-2 h-2 rounded-full bg-[#00C274]" />
+              <span className="h-2 w-2 rounded-full bg-[#00C274]" />
               Incentives
             </Button>
           </div>
 
-          {/* NOTE: lg device unchanged (kept md:text-[64px]) */}
-          <h2 className="text-3xl md:text-[64px] font-midium text-[#4B4B4B] dark:text-white mb-3 leading-tight">
-            Rewards for early <br />
-            <span className="text-[#F88379]">adopters</span>.
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-medium leading-tight text-[#4B4B4B] dark:text-white">
+            Rewards for early <span className="text-[#F88379]">adopters.</span>
           </h2>
 
-          <p className="text-[#686868] dark:text-white/80 text-sm md:text-lg leading-relaxed max-w-2xl mx-auto">
-            Be among the first to experience a verification-first property
-            platform in the UAE. Early access is invite-only and limited.
+          <p className="mt-4 text-base sm:text-lg leading-relaxed text-[#686868] dark:text-white/70 max-w-[760px] mx-auto">
+            Build your profile. Upload verified inventory. Invite quality professionals. Be part of the verified foundation of Deal360.
+          </p>
+          <p className="mt-2 text-sm sm:text-base text-[#8A8A8A] dark:text-white/50 max-w-[860px] mx-auto">
+            To support a strong, credible launch, Deal360 rewards agents and brokerages who help build high-quality, verified inventory.
           </p>
         </div>
 
-        {/* Incentive Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 max-w-6xl mx-auto">
-          {/* Early Inventory Incentive */}
-          <div className="bg-[#EEFFF9] dark:bg-white/5 rounded-2xl p-5 sm:p-6 md:p-8 border border-[#DBDBDB] dark:border-white/10 flex flex-col">
-            <div className="w-[72px] h-[72px] sm:w-[80px] sm:h-[80px] mb-6 mx-auto">
-              <Image
-                src="/icon1.png"
-                alt="Incentive 1"
-                width={1000}
-                height={100}
-                className="w-full h-full object-cover"
-              />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div className="rounded-[12px] border border-[#DBDBDB] dark:border-white/10 bg-[#F7FFFC] dark:bg-[#142720] p-5 sm:p-6 flex flex-col">
+            <div className="mb-4 flex items-center gap-3">
+              <span className="h-12 w-12 rounded-full bg-[#D8FFF2] dark:bg-[#204738] flex items-center justify-center">
+                <Gift className="h-5 w-5 text-[#45D3A7]" />
+              </span>
+              <h3 className="text-2xl sm:text-[32px] font-medium text-[#4B4B4B] dark:text-white">
+                Early Inventory Incentive
+              </h3>
             </div>
 
-            <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[#4B4B4B] dark:text-white text-center mb-3 md:mb-4">
-              Early Inventory Incentive
-            </h3>
-
-            <p className="text-[#4B4B4B] dark:text-white/85 text-sm md:text-sm text-center flex-grow leading-relaxed">
-              Upload your verified listings during early access and receive 1
-              complimentary month of your chosen plan after launch.
+            <p className="text-sm sm:text-base text-[#686868] dark:text-white/70">
+              Agents and brokerages who complete their setup and upload verified listings will receive complimentary Deal360 credits.
             </p>
 
-            <div className="flex justify-center mt-7 sm:mt-8 md:mt-10">
+            <p className="mt-4 text-base sm:text-lg font-medium text-[#4B4B4B] dark:text-white">
+              How It Works?
+            </p>
+            <ul className="mt-2 space-y-2">
+              {earlyHowItWorks.map((item) => (
+                <li key={item} className="flex items-start gap-2 text-sm sm:text-base text-[#4B4B4B] dark:text-white/80">
+                  <X className="h-4 w-4 mt-1 text-[#F88379] shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-4 text-base sm:text-lg font-medium text-[#4B4B4B] dark:text-white">
+              Rewards
+            </p>
+            <ul className="mt-2 space-y-2">
+              {earlyRewards.map((item) => (
+                <li key={item} className="flex items-start gap-2 text-sm sm:text-base text-[#4B4B4B] dark:text-white/80">
+                  <Check className="h-4 w-4 mt-1 text-[#45D3A7] shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-3 text-xs sm:text-sm text-[#8A8A8A] dark:text-white/55 pb-[40px]">
+              This ensures our launch inventory is verified and ready for real demand from day one.
+            </p>
+
               <div
-                className="inline-block rounded-full p-[4px]"
+              className="mt-6 rounded-full p-[4px] "
+              style={{
+                background:
+                  'linear-gradient(180deg, #79FFD2 0%, #017850 100%)',
+              }}
+            >
+              <div
+                className="rounded-full py-2 px-5 text-center text-base sm:text-lg text-[#4B4B4B]"
                 style={{
                   background:
-                    'linear-gradient(180deg, #79FFD2 0%, #017850 100%)',
+                    'linear-gradient(90deg, #FFEFEE 0%, #FFFFFF 50%, #EBFFF8 100%)',
                 }}
               >
-                <Button
-                  className="rounded-full px-4 sm:px-6 md:px-8 h-[44px] md:h-[48px] text-xs sm:text-sm md:text-base text-[#4B4B4B]  whitespace-normal"
-                  style={{
-                    background:
-                      'linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)',
-                  }}
-                >
-                  <Gift className="!w-5 !h-5 text-[#FFA11D]" />
-                  <span className="ml-2">1 month free for verified listings</span>
-                </Button>
+                1 month free referral program
               </div>
             </div>
           </div>
 
-          {/* Referral Program */}
-          <div className="bg-[#FFEFEE] dark:bg-white/5 rounded-2xl p-5 sm:p-6 md:p-8 border border-[#DBDBDB] dark:border-white/10 flex flex-col">
-            <div className="w-[72px] h-[72px] sm:w-[80px] sm:h-[80px] mb-6 mx-auto">
-              <Image
-                src="/icon2.png"
-                alt="Incentive 2"
-                width={1000}
-                height={100}
-                className="w-full h-full object-cover"
-              />
+          <div className="rounded-[12px] border border-[#DBDBDB] dark:border-white/10 bg-[#FFF6F5] dark:bg-[#2A1F1E] p-5 sm:p-6 flex flex-col">
+            <div className="mb-4 flex items-center gap-3">
+              <span className="h-12 w-12 rounded-full bg-[#FFE5E2] dark:bg-[#3D2724] flex items-center justify-center">
+                <Gift className="h-5 w-5 text-[#F88379]" />
+              </span>
+              <h3 className="text-2xl sm:text-[32px] font-medium text-[#4B4B4B] dark:text-white">
+                Referral Program
+              </h3>
             </div>
 
-            <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[#4B4B4B] dark:text-white text-center mb-3 md:mb-4">
-              Referral Program
-            </h3>
-
-            <p className="text-[#4B4B4B] dark:text-white/85 text-sm md:text-sm text-center flex-grow leading-relaxed">
-              Coming post-launch: Refer other professionals to Deal360 and earn
-              platform credits. Build your network, get rewarded.
+            <p className="text-sm sm:text-base text-[#686868] dark:text-white/70">
+              Help us grow a high-quality, verified network and get rewarded. If you refer another agent or brokerage and they activate a paid plan, you will receive a discount on your next billing cycle.
             </p>
 
-            <div className="flex justify-center mt-7 sm:mt-8 md:mt-10">
+            <p className="mt-4 text-base sm:text-lg font-medium text-[#4B4B4B] dark:text-white">
+              How It Works — a referral is successful when:
+            </p>
+            <ul className="mt-2 space-y-2">
+              {referralRequirements.map((item) => (
+                <li key={item} className="flex items-start gap-2 text-sm sm:text-base text-[#4B4B4B] dark:text-white/80">
+                  <Check className="h-4 w-4 mt-1 text-[#45D3A7] shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-4 text-base sm:text-lg font-medium text-[#4B4B4B] dark:text-white">
+              Rewards
+            </p>
+            <ul className="mt-2 space-y-2">
+              {referralRewards.map((item) => (
+                <li key={item} className="flex items-start gap-2 text-sm sm:text-base text-[#4B4B4B] dark:text-white/80">
+                  <Check className="h-4 w-4 mt-1 text-[#F88379] shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-4 text-base sm:text-lg font-medium text-[#4B4B4B] dark:text-white">
+              Terms & Conditions — Referral Rewards
+            </p>
+            <p className="mt-1 text-xs sm:text-sm text-[#8A8A8A] dark:text-white/55">
+              Referral rewards apply to the referrer&apos;s active paid plan only. Discounts are not stackable beyond one billing cycle. Self-referrals are not allowed.
+            </p>
+
+            <div
+              className="mt-6 rounded-full p-[4px]"
+              style={{
+                background:
+                  'linear-gradient(180deg, #79FFD2 0%, #017850 100%)',
+              }}
+            >
               <div
-                className="inline-block rounded-full p-[4px]"
+                className="rounded-full py-2 px-5 text-center text-base sm:text-lg text-[#4B4B4B]"
                 style={{
                   background:
-                    'linear-gradient(180deg, #79FFD2 0%, #017850 100%)',
+                    'linear-gradient(90deg, #FFEFEE 0%, #FFFFFF 50%, #EBFFF8 100%)',
                 }}
               >
-                <Button
-                  className="rounded-full px-4 sm:px-6 md:px-8 h-[44px] md:h-[48px] text-xs sm:text-sm md:text-base text-[#4B4B4B]  whitespace-normal"
-                  style={{
-                    background:
-                      'linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)',
-                  }}
-                >
-                  <Star className="!w-5 !h-5 text-[#FFA11D] fill-[#FFA11D]" />
-                  <span className="ml-2">
-                    Credit-based rewards • No cash payouts
-                  </span>
-                </Button>
+                1 month free referral program
               </div>
             </div>
           </div>

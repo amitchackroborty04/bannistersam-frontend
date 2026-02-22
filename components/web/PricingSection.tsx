@@ -1,483 +1,266 @@
-
-
-
-// 'use client'
-
-// import { Check } from 'lucide-react'
-// import { Badge } from '@/components/ui/badge'
-// import { Button } from '../ui/button'
-
-// interface PricingPlan {
-//   id: string
-//   name: string
-//   price: number
-//   period: string
-//   description: string
-//   isPopular?: boolean
-//   features: string[]
-//   disclaimer: string
-//   type: 'agent' | 'brokerage'
-// }
-
-// /* ---------------- AGENT PLANS ---------------- */
-
-// const agentPlans: PricingPlan[] = [
-//   {
-//     id: 'lite',
-//     name: 'Lite',
-//     price: 0,
-//     period: 'Free',
-//     description: 'Agent profile creation',
-//     features: [
-//       'Agent profile creation',
-//       'Limited listings',
-//       'No access to buyer or target requirements',
-//       'No verified status',
-//     ],
-//     disclaimer: 'No Payment Upfront',
-//     type: 'agent',
-//   },
-//   {
-//     id: 'basic',
-//     name: 'Basic',
-//     price: 149,
-//     period: '/mo',
-//     description: 'Active agents building pipeline',
-//     features: [
-//       'Verified agent status',
-//       'Increased listing visibility',
-//       'Access to buyer & target requirements',
-//       'Messaging and CRM tools',
-//     ],
-//     disclaimer: 'No Payment Upfront',
-//     type: 'agent',
-//   },
-//   {
-//     id: 'premium',
-//     name: 'Premium',
-//     price: 299,
-//     period: '/mo',
-//     description: 'Premium',
-//     isPopular: true,
-//     features: [
-//       'Priority listing placement',
-//       'Enhanced profile visibility',
-//       'Full demand access',
-//       'Priority support',
-//     ],
-//     disclaimer: 'No Payment Upfront',
-//     type: 'agent',
-//   },
-//   {
-//     id: 'elite',
-//     name: 'Elite',
-//     price: 499,
-//     period: '/mo',
-//     description: 'Add some lorem',
-//     features: [
-//       'Maximum visibility and prominence',
-//       'Maximum visibility and prominence',
-//       'Multi-level team visibility and management',
-//       'Priority feature rollouts',
-//     ],
-//     disclaimer: 'No Payment Upfront',
-//     type: 'agent',
-//   },
-// ]
-
-// /* ---------------- BROKERAGE PLANS ---------------- */
-
-// const brokeragePlans: PricingPlan[] = [
-//   {
-//     id: 'core',
-//     name: 'Core',
-//     price: 599,
-//     period: '/mo',
-//     description: 'Add some lorem',
-//     features: [
-//       'Brokerage profile and branding',
-//       'Agent management',
-//       'Inventory management',
-//       'Standard platform visibility',
-//     ],
-//     disclaimer: 'No Payment Upfront',
-//     type: 'brokerage',
-//   },
-//   {
-//     id: 'premium-broker',
-//     name: 'Premium',
-//     price: 1499,
-//     period: '/mo',
-//     description: 'Prioritized exposure',
-//     isPopular: true,
-//     features: [
-//       'Enhanced brokerage visibility',
-//       'Priority listings and agents',
-//       'Team performance tools (as released)',
-//       'Early access to new features',
-//     ],
-//     disclaimer: 'No Payment Upfront',
-//     type: 'brokerage',
-//   },
-//   {
-//     id: 'enterprise',
-//     name: 'Enterprise',
-//     price: 2999,
-//     period: '/mo',
-//     description: 'Complete enterprise',
-//     features: [
-//       'Multi-branch and enterprise management',
-//       'Enterprise-level visibility',
-//       'Custom onboarding pathways',
-//       'Strategic feature access',
-//     ],
-//     disclaimer: 'No Payment Upfront',
-//     type: 'brokerage',
-//   },
-// ]
-
-// /* ---------------- SECTION ---------------- */
-
-// export function PricingSection() {
-//   return (
-//     <section className="py-12 md:py-20 px-4 md:px-8">
-
-//       {/* Agent Plans */}
-//       <div className="container mx-auto bg-white rounded-3xl p-6 md:px-12 pt-12 pb-7 shadow-xl">
-//         <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-8">
-//           Agent Plans
-//         </h3>
-
-//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-//           {agentPlans.map((plan) => (
-//             <PricingCard key={plan.id} plan={plan} />
-//           ))}
-//         </div>
-//       </div>
-
-//       {/* Brokerage Plans */}
-//       <div className="container mx-auto bg-white rounded-3xl p-6 md:px-12 pt-12 pb-7 shadow-xl mt-10">
-//         <h3 className="text-xl md:text-2xl font-semibold text-[#4B4B4B] mb-8">
-//           Brokerage Plans
-//         </h3>
-
-//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-//           {brokeragePlans.map((plan) => (
-//             <PricingCard key={plan.id} plan={plan} />
-//           ))}
-//         </div>
-//       </div>
-
-//     </section>
-//   )
-// }
-
-// /* ---------------- CARD ---------------- */
-
-// function PricingCard({ plan }: { plan: PricingPlan }) {
-//   const isPopular = !!plan.isPopular
-
-//   const bgColor = isPopular
-//     ? 'bg-[linear-gradient(180deg,#E3FFF6_0%,#C8FFEC_100%)]'
-//     : 'bg-[linear-gradient(180deg,#FFE9E9_0%,#FFFDFD_100%)]'
-
-//   return (
-//     <div className={`relative p-6 md:p-8 rounded-2xl ${bgColor} border border-pink-100 flex flex-col h-full`}>
-
-//       {/* ✅ Gradient Border Badge */}
-//       {isPopular && (
-//         <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-//           <div
-//             className="rounded-full p-[4px]"
-//             style={{
-//               background:
-//                 "linear-gradient(180deg, #79FFD2 0%, #017850 100%)",
-//             }}
-//           >
-//             <Badge className="rounded-full px-4 py-2 text-xs md:text-sm font-medium text-[#4B4B4B] bg-[linear-gradient(90deg,#E2FFF5_0%,#FFE6E4_100%)] border-0">
-//               ◆ Most Popular
-//             </Badge>
-//           </div>
-//         </div>
-//       )}
-
-//       <div className="mt-4 md:mt-6">
-//         <h4 className="text-lg md:text-2xl font-semibold text-[#4B4B4B] mb-2">
-//           {plan.name}
-//         </h4>
-
-//         <p className="text-xs md:text-sm text-[#4B4B4B] mt-1">
-//           {plan.description}
-//         </p>
-
-//         <div className="mb-6 md:mb-8">
-//           <div className="flex mt-6 items-baseline gap-1">
-//             <span className="text-2xl md:text-3xl font-medium text-[#4B4B4B]">
-//               AED {plan.price}
-//             </span>
-//             <span className="text-gray-600 text-sm">{plan.period}</span>
-//           </div>
-//         </div>
-
-//         <div className="space-y-3 md:space-y-4 mb-6 md:mb-8 flex-grow">
-//           {plan.features.map((feature, idx) => (
-//             <div key={idx} className="flex items-start gap-3">
-//               <Check className="w-4 h-4 md:w-5 md:h-5 text-teal-600 mt-0.5" />
-//               <span className="text-xs md:text-base text-[#4B4B4B]">
-//                 {feature}
-//               </span>
-//             </div>
-//           ))}
-//         </div>
-
-//         <p className="text-[#4B4B4B] font-normal text-sm pb-6">
-//           Agent Lite is not eligible for early-access pricing, incentives, or referrals.
-//         </p>
-
-//         <Button className="bg-[linear-gradient(90deg,rgba(255,246,245,0.93)_0%,rgba(251,255,237,0.93)_50%,rgba(240,255,250,0.93)_100%)] hover:bg-[linear-gradient(90deg,rgba(255,246,245,0.93)_0%,rgba(251,255,237,0.93)_50%,rgba(240,255,250,0.93)_100%)] text-xl text-[#F88379] font-medium px-4 py-2 rounded-full">
-//           No Payment upfront
-//         </Button>
-//       </div>
-//     </div>
-//   )
-// }
-
 'use client'
 
 import { Check } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '../ui/button'
 
-interface PricingPlan {
-  id: string
+type PricingPlan = {
   name: string
-  price: number
-  period: string
-  description: string
+  earlyRate: string
+  standardRate: string
+  monthlyCredits: string
+  includes: string[]
+  priceNote: string
   isPopular?: boolean
-  features: string[]
-  disclaimer: string
-  type: 'agent' | 'brokerage'
 }
-
-/* ---------------- AGENT PLANS ---------------- */
 
 const agentPlans: PricingPlan[] = [
   {
-    id: 'lite',
-    name: 'Lite',
-    price: 0,
-    period: 'Free',
-    description: 'Agent profile creation',
-    features: [
-      'Agent profile creation',
-      'Limited listings',
-      'No access to buyer or target requirements',
-      'No verified status',
+    name: 'Agent Lite',
+    earlyRate: 'Free',
+    standardRate: 'AED 299/mo',
+    monthlyCredits: '0',
+    includes: [
+      'Basic agent profile',
+      'Low search visibility',
+      'Unlimited standard listings',
+      'SmartLink & QR referrals',
+      'Requirement leads access',
+      'Listing intent leads access',
     ],
-    disclaimer: 'No Payment Upfront',
-    type: 'agent',
+    priceNote: 'Free Limited Access',
   },
   {
-    id: 'basic',
-    name: 'Basic',
-    price: 149,
-    period: '/mo',
-    description: 'Active agents building pipeline',
-    features: [
+    name: 'Agent Basic',
+    earlyRate: 'AED 149/mo',
+    standardRate: 'AED 699/mo',
+    monthlyCredits: '20',
+    includes: [
+      'Enhanced agent profile',
+      'Medium search visibility',
+      'Unlimited standard listings',
+      'Priority in target areas',
+      'Proposal tools',
       'Verified agent status',
-      'Increased listing visibility',
-      'Access to buyer & target requirements',
-      'Messaging and CRM tools',
+      'Access to buyer & tenant requirements',
     ],
-    disclaimer: 'No Payment Upfront',
-    type: 'agent',
+    priceNote: 'No Payment Upfront',
   },
   {
-    id: 'premium',
-    name: 'Premium',
-    price: 299,
-    period: '/mo',
-    description: 'Premium',
+    name: 'Agent Plus',
+    earlyRate: 'AED 299/mo',
+    standardRate: 'AED 699/mo',
+    monthlyCredits: '50',
+    includes: [
+      'Verified Agent badge (approval required)',
+      'High search visibility',
+      'Priority profile placement',
+      'Unlimited standard listings',
+      'Smart Link & QR referrals',
+      'A2A access',
+      'Property Manager',
+    ],
+    priceNote: 'No Payment Upfront',
     isPopular: true,
-    features: [
-      'Priority listing placement',
-      'Enhanced profile visibility',
-      'Full demand access',
-      'Priority support',
-    ],
-    disclaimer: 'No Payment Upfront',
-    type: 'agent',
   },
   {
-    id: 'elite',
-    name: 'Elite',
-    price: 499,
-    period: '/mo',
-    description: 'Add some lorem',
-    features: [
-      'Maximum visibility and prominence',
-      'Maximum visibility and prominence',
-      'Multi-level team visibility and management',
-      'Priority feature rollouts',
+    name: 'Agent Elite',
+    earlyRate: 'AED 499/mo',
+    standardRate: 'AED 999/mo',
+    monthlyCredits: '100',
+    includes: [
+      'Elite profile marker',
+      'Top search visibility',
+      'Priority ranking in selected areas',
+      'Unlimited standard listings',
+      'Proposal tools',
+      'A2A access',
+      'Property Manager',
     ],
-    disclaimer: 'No Payment Upfront',
-    type: 'agent',
+    priceNote: 'No Payment Upfront',
   },
 ]
-
-/* ---------------- BROKERAGE PLANS ---------------- */
 
 const brokeragePlans: PricingPlan[] = [
   {
-    id: 'core',
-    name: 'Core',
-    price: 599,
-    period: '/mo',
-    description: 'Add some lorem',
-    features: [
-      'Brokerage profile and branding',
+    name: 'Brokerage Lite',
+    earlyRate: 'Free',
+    standardRate: 'AED 0/mo',
+    monthlyCredits: '0',
+    includes: [
+      'Brokerage profile',
+      'Office branding on agent profiles',
+      'Link agents to brokerage',
+      'View list of linked agents',
+    ],
+    priceNote: 'Free Limited Access',
+  },
+  {
+    name: 'Brokerage Core',
+    earlyRate: 'AED 599/mo',
+    standardRate: 'AED 999/mo',
+    monthlyCredits: '70',
+    includes: [
+      'Brokerage profile & branding',
       'Agent management',
       'Inventory management',
-      'Standard platform visibility',
+      'Shared credit pool',
+      'Assign credits to agents',
+      'View credit usage',
+      'Property Manager',
     ],
-    disclaimer: 'No Payment Upfront',
-    type: 'brokerage',
+    priceNote: 'No Payment Upfront',
   },
   {
-    id: 'premium-broker',
-    name: 'Premium',
-    price: 1499,
-    period: '/mo',
-    description: 'Prioritized exposure',
+    name: 'Brokerage Pro',
+    earlyRate: 'AED 1,499/mo',
+    standardRate: 'AED 2,499/mo',
+    monthlyCredits: '210',
+    includes: [
+      'Brokerage profile & branding',
+      'Agent management',
+      'Inventory management',
+      'Shared credit pool',
+      'Assign credits to agents',
+      'Team activity overview',
+      'Property Manager',
+    ],
+    priceNote: 'No Payment Upfront',
     isPopular: true,
-    features: [
-      'Enhanced brokerage visibility',
-      'Priority listings and agents',
-      'Team performance tools (as released)',
-      'Early access to new features',
-    ],
-    disclaimer: 'No Payment Upfront',
-    type: 'brokerage',
   },
   {
-    id: 'enterprise',
     name: 'Enterprise',
-    price: 2999,
-    period: '/mo',
-    description: 'Complete enterprise',
-    features: [
-      'Multi-branch and enterprise management',
-      'Enterprise-level visibility',
-      'Custom onboarding pathways',
-      'Strategic feature access',
+    earlyRate: 'AED 2,999/mo',
+    standardRate: 'AED 4,999/mo',
+    monthlyCredits: '420',
+    includes: [
+      'Brokerage profile & branding',
+      'Multi-office & enterprise management',
+      'Agent management at scale',
+      'Large shared credit pool',
+      'Office-level activity overview',
+      'Property Manager',
+      'Custom integrations',
     ],
-    disclaimer: 'No Payment Upfront',
-    type: 'brokerage',
+    priceNote: 'No Payment Upfront',
   },
 ]
 
-/* ---------------- SECTION ---------------- */
-
 export function PricingSection() {
   return (
-    <section className="py-12 md:py-20 px-2 md:px-8 ">
+    <section className="relative overflow-hidden  py-14 sm:py-20 px-3 sm:px-6">
+      <div className="absolute top-[560px] left-[10%] h-[260px] w-[260px] bg-[#74F9D3] opacity-60 blur-[90px] rounded-full" />
 
-      {/* Agent Plans */}
-      <div className="container mx-auto bg-white dark:bg-white/5 rounded-3xl p-6 md:px-12 pt-12 pb-7 shadow-xl dark:shadow-none border border-transparent dark:border-white/10">
-        <h3 className="text-xl md:text-2xl font-semibold text-[#4B4B4B] dark:text-[#4B4B4B] mb-8">
-          Agent Plans
-        </h3>
+      <div className="relative container mx-auto">
+        <div className="text-center">
+          <div
+            className="inline-block rounded-[999px] p-[3px] mb-6"
+            style={{
+              background: 'linear-gradient(180deg, #79FFD2 0%, #017850 100%)',
+            }}
+          >
+            <Button
+              className="h-[40px] rounded-[999px] px-5 text-sm text-[#F88379]"
+              style={{
+                background:
+                  'linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)',
+              }}
+            >
+              <span className="h-2 w-2 rounded-full bg-[#00C274]" />
+              Pricing
+            </Button>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {agentPlans.map((plan) => (
-            <PricingCard key={plan.id} plan={plan} />
-          ))}
+          <h2 className="text-[38px] sm:text-[52px] lg:text-[64px] leading-tight font-medium text-[#4B4B4B] max-w-[924px] mx-auto dark:text-white">
+            Plans built for <span className="text-[#F88379]">UAE property</span>{' '}
+            professionals.
+          </h2>
+        </div>
+
+        <div className="mt-10 space-y-6">
+          <PricingGroup title="Agent Plans - Early Registration" plans={agentPlans} />
+          <PricingGroup title="Brokerage Plans - Early Registration" plans={brokeragePlans} />
         </div>
       </div>
-
-      {/* Brokerage Plans */}
-      <div className="container mx-auto bg-white dark:bg-white/5 rounded-3xl p-6 md:px-12 pt-12 pb-7 shadow-xl dark:shadow-none border border-transparent dark:border-white/10 mt-10">
-        <h3 className="text-xl md:text-2xl font-semibold text-[#4B4B4B] dark:text-[#4B4B4B] mb-8">
-          Brokerage Plans
-        </h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {brokeragePlans.map((plan) => (
-            <PricingCard key={plan.id} plan={plan} />
-          ))}
-        </div>
-      </div>
-
     </section>
   )
 }
 
-/* ---------------- CARD ---------------- */
+function PricingGroup({ title, plans }: { title: string; plans: PricingPlan[] }) {
+  return (
+    <div className="rounded-[16px] border border-[#D9D9DD] bg-white dark:bg-[#111316] dark:border-[#2A2D31] p-3 sm:p-5 lg:p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <h3 className="text-[26px] sm:text-[36px] font-medium text-[#4B4B4B] dark:text-white mb-4">
+        {title}
+      </h3>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
+        {plans.map((plan) => (
+          <PricingCard key={plan.name} plan={plan} />
+        ))}
+      </div>
+    </div>
+  )
+}
 
 function PricingCard({ plan }: { plan: PricingPlan }) {
-  const isPopular = !!plan.isPopular
-
-  const bgColor = isPopular
-    ? 'bg-[linear-gradient(180deg,#E3FFF6_0%,#C8FFEC_100%)]'
-    : 'bg-[linear-gradient(180deg,#FFE9E9_0%,#FFFDFD_100%)]'
+  const cardClass = plan.isPopular
+    ? 'bg-[#D6F8EC] dark:bg-[#14382F] border-[#7FE0BF]'
+    : 'bg-[#FFFFFF] dark:bg-[#16191D] border-[#E8E8EC] dark:border-[#2C3137]'
 
   return (
-    <div className={`relative p-6 md:p-8 rounded-2xl ${bgColor} border border-pink-100 flex flex-col h-full`}>
-
-      {/* Gradient Border Badge */}
-      {isPopular && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <div
-            className="rounded-full p-[4px]"
-            style={{
-              background: "linear-gradient(180deg, #79FFD2 0%, #017850 100%)",
-            }}
-          >
-            <Badge className="rounded-full px-4 py-2 text-xs md:text-sm font-medium text-[#4B4B4B] bg-[linear-gradient(90deg,#E2FFF5_0%,#FFE6E4_100%)] border-0">
-              ◆ Most Popular
-            </Badge>
-          </div>
+    <div className={`relative rounded-[14px] border p-4 sm:p-5 flex flex-col min-h-[620px] ${cardClass}`}>
+      {plan.isPopular && (
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#6DE6BE] px-3 py-1 text-xs font-medium text-[#114336]">
+          Most Popular
         </div>
       )}
 
-      <div className="mt-4 md:mt-6">
-        <h4 className="text-lg md:text-2xl font-semibold text-[#4B4B4B] dark:text-[#4B4B4B] mb-2">
-          {plan.name}
-        </h4>
+      <h4 className="text-[20px] font-medium text-[#2E2E32] dark:text-white">
+        {plan.name}
+      </h4>
 
-        <p className="text-xs md:text-sm text-[#4B4B4B] dark:text-[#4B4B4B] mt-1">
-          {plan.description}
-        </p>
+      <p className="mt-2 text-xs text-[#828289] dark:text-white/60">Early-registration rate:</p>
+      <p className="text-[34px] leading-none font-semibold text-[#1E1E22] dark:text-white mt-1">
+        {plan.earlyRate}
+      </p>
+      <p className="mt-1 text-sm text-[#6F6F75] dark:text-white/60">Standard Rate : {plan.standardRate}</p>
 
-        <div className="mb-6 md:mb-8">
-          <div className="flex mt-6 items-baseline gap-1">
-            <span className="text-2xl md:text-3xl font-medium text-[#4B4B4B] dark:text-[#4B4B4B]">
-              AED {plan.price}
-            </span>
-            <span className="text-[#4B4B4B] dark:text-[#4B4B4B] text-sm">
-              {plan.period}
-            </span>
-          </div>
+      <div className="mt-4 rounded-[10px] bg-[#FFEFEE] dark:bg-[#2D2324] px-3 py-2 text-sm text-[#5A5A60] dark:text-white/80 flex items-center justify-between">
+        <span>Monthly Credits Included</span>
+        <span className="font-semibold">{plan.monthlyCredits}</span>
+      </div>
+
+      <p className="mt-4 text-sm text-[#8A8A90] dark:text-white/60">Includes</p>
+      <ul className="mt-2 space-y-2 flex-1">
+        {plan.includes.map((item) => (
+          <li key={item} className="flex items-start gap-2 text-sm text-[#56565D] dark:text-white/75">
+            <Check className="h-4 w-4 text-[#49CFA2] mt-0.5 shrink-0" />
+            {item}
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-4">
+        <div
+          className="w-full rounded-full py-2 text-center text-[20px] text-[#F88379] font-medium bg-[#F5F5F6] dark:bg-[#1F2328]"
+          style={{
+            background:
+              plan.priceNote === 'No Payment Upfront' || plan.priceNote === 'Free Limited Access'
+                ? 'linear-gradient(90deg, rgba(255, 246, 245, 0.93) 0%, rgba(251, 255, 237, 0.93) 50%, rgba(240, 255, 250, 0.93) 100%)'
+                : undefined,
+          }}
+        >
+          {plan.priceNote}
         </div>
-
-        <div className="space-y-3 md:space-y-4 mb-6 md:mb-8 flex-grow">
-          {plan.features.map((feature, idx) => (
-            <div key={idx} className="flex items-start gap-3">
-              <Check className="w-4 h-4 md:w-5 md:h-5 text-teal-600 mt-0.5" />
-              <span className="text-xs md:text-base text-[#4B4B4B] dark:text-[#4B4B4B]">
-                {feature}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        <p className="text-[#4B4B4B] dark:text-[#4B4B4B] font-normal text-sm pb-6">
-          Agent Lite is not eligible for early-access pricing, incentives, or referrals.
-        </p>
-
-        <Button className="w-full sm:w-auto bg-[linear-gradient(90deg,rgba(255,246,245,0.93)_0%,rgba(251,255,237,0.93)_50%,rgba(240,255,250,0.93)_100%)] hover:bg-[linear-gradient(90deg,rgba(255,246,245,0.93)_0%,rgba(251,255,237,0.93)_50%,rgba(240,255,250,0.93)_100%)] text-xl text-[#F88379] font-medium px-4 py-2 rounded-full">
-          No Payment upfront
+        <p className="mt-3 text-xs text-[#8F8F95] dark:text-white/50">Annual options available</p>
+        <Button
+          variant="outline"
+          className={`mt-2 h-[44px] w-full rounded-[8px] text-[20px] border-[#F5A59D] ${
+            plan.isPopular
+              ? 'bg-[#75E8C3] hover:bg-[#64ddb6] text-[#1F5A47] border-[#75E8C3]'
+              : 'bg-transparent text-[#F88379] hover:bg-[#FFF5F4] dark:hover:bg-[#2A1F1E]'
+          }`}
+        >
+          Register Early
         </Button>
       </div>
     </div>

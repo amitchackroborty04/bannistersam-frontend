@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, AlertCircle, Home, Building2, House, Landmark } from 'lucide-react';
+import {AlertCircle, Home, Building2, House, Landmark } from 'lucide-react';
 
 const PropertyListingForm = () => {
   const [formData, setFormData] = useState({

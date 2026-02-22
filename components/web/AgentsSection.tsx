@@ -1,145 +1,173 @@
 'use client'
 
-import { Zap, TrendingUp, BadgeCheck } from 'lucide-react'
 import Image from 'next/image'
 import { Button } from '../ui/button'
+import {
+  BadgeCheck,
+  Bolt,
+  ClipboardList,
+  FolderKanban,
+  Lock,
+  Target,
+  Check,
+} from 'lucide-react'
+
+const leadFlowPoints = [
+  {
+    icon: Target,
+    title: 'Intent-Matched Requirements',
+    desc:
+      'Engage with buyers and tenants who have clearly defined what they need, aligned to your areas and inventory.',
+  },
+  {
+    icon: ClipboardList,
+    title: 'Early Access to Listing Intent',
+    desc:
+      'Engage with owners planning to sell or rent by securing interest before properties formally go live.',
+  },
+  {
+    icon: Bolt,
+    title: 'Structured Lead Engagement',
+    desc:
+      'No bulk exposure game. Clear visibility on demand, activity, and engagement.',
+  },
+  {
+    icon: BadgeCheck,
+    title: 'Real-Time Demand Signals',
+    desc:
+      'Receive notifications when new buyer and tenant requirements enter the system.',
+  },
+  {
+    icon: FolderKanban,
+    title: 'Professional Tools Included',
+    desc: 'Structured lead management, pipeline control, and performance visibility.',
+  },
+]
+
+const whyDifferent = [
+  'No recycled databases.',
+  'No paying just to be seen.',
+  'No competing for cold, duplicated enquiries.',
+  'Deal360 aligns expertise with genuine demand.',
+]
 
 export function AgentsSection() {
   return (
     <section className="px-4 sm:px-6 lg:px-2 py-16 sm:py-20">
-      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-        {/* Left - Dashboard Card */}
-        <div className="flex justify-center relative">
-          {/* overlay (ONLY LG) */}
-          <div
-            className="hidden lg:block dark:hidden h-[950px] w-[730px] absolute top-[50%] left-[50%] -z-30 
-    translate-x-[-50%] translate-y-[-50%] 
-    bg-center bg-no-repeat bg-cover rounded-[12px]"
-            style={{ backgroundImage: "url('/overly.png')" }}
-          />
-
-          <div className="w-full bg-[#FBFFFE] dark:bg-[#0b0f14] rounded-[12px] shadow-lg dark:shadow-none border border-transparent dark:border-white/10 overflow-hidden">
-            {/* Window Controls */}
-            <div className="flex gap-2 px-6 py-4 border-b border-gray-100 dark:border-white/10">
-              <div className="w-3 h-3 rounded-full bg-yellow-400" />
-              <div className="w-3 h-3 rounded-full bg-green-400" />
-              <div className="w-3 h-3 rounded-full bg-red-400" />
-            </div>
-
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6 border-b border-[#e5e5e5] dark:border-white/10 pb-2 gap-3">
-                <h3 className="text-2xl font-normal text-[#4B4B4B] dark:text-white">
-                  Live Requirements
-                </h3>
-                <span className="text-xs bg-[#E2FFF5] text-[#006946] px-3 py-1 rounded whitespace-nowrap">
-                  12 Now
-                </span>
-              </div>
-
-              {/* Agent List */}
-              <div className="space-y-3">
-                {[
-                  { name: 'Ahmed K.', action: 'Buy', match: '95%', location: 'Downtown Dubai' },
-                  { name: 'Wade Warren', action: 'Buy', match: '80%', location: 'Downtown Dubai' },
-                  { name: 'Cameron Williamson', action: 'Rent', match: '80%', location: 'Downtown Dubai' },
-                  { name: 'Jerome Bell', action: 'Buy', match: '85%', location: 'Downtown Dubai' },
-                ].map((agent, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center justify-between bg-[#FFFFFF] dark:bg-white/5 shadow-md dark:shadow-none px-4 py-3 rounded-[12px] border border-transparent dark:border-white/10"
-                  >
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className="w-[48px] h-[48px] shrink-0">
-                        <Image
-                          src="/profile.png"
-                          width={1000}
-                          height={1000}
-                          alt="Avatar"
-                          className="w-full h-full rounded-full object-cover"
-                        />
-                      </div>
-
-                      <div className="min-w-0 flex-1">
-                        <p className="text-base font-medium text-[#4B4B4B] dark:text-white truncate">
-                          {agent.name}
-                        </p>
-                        <p className="text-xs text-[#868686] dark:text-white/60 truncate">
-                          AED 2.3M • {agent.location}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col items-center gap-2 ml-3 shrink-0">
-                      <span className="text-base font-semibold text-[#0DAE78] min-w-fit">
-                        {agent.match}
-                      </span>
-                      <span className="text-xs text-[#868686] dark:text-white/60">
-                        Match
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 ">
+        <div className="flex justify-center lg:justify-start">
+          <div className="relative w-full max-w-[540px]">
+            <Image
+              src="/roundphone.png"
+              alt="Agent requirements preview"
+              width={900}
+              height={900}
+              className="w-full h-auto object-contain drop-shadow-[0_0_85px_#B9FFE8] dark:drop-shadow-none"
+              priority
+            />
           </div>
         </div>
 
-        {/* Right Content */}
-        <div className="space-y-8">
-          {/* Badge */}
-           <div
-              className="inline-block rounded-full p-[4px]"
+        <div className="flex flex-col gap-5 sm:gap-6 text-center lg:text-left">
+          <div>
+            <div
+              className="inline-block rounded-[999px] p-[3px]"
               style={{
-                background:
-                  "linear-gradient(180deg, #79FFD2 0%, #017850 100%)",
+                background: 'linear-gradient(180deg, #79FFD2 0%, #017850 100%)',
               }}
             >
               <Button
-                className="rounded-full px-6 md:px-8 h-[48px] text-sm md:text-base text-[#4B4B4B]"
+                className="h-[40px] rounded-[999px] px-5 text-sm text-[#F88379]"
                 style={{
                   background:
-                    "linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)",
+                    'linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)',
                 }}
               >
-                <span className='w-2 h-2 rounded-full bg-[#00C274]'></span>
-                For Agents 
+                <span className="h-2 w-2 rounded-full bg-[#00C274]" />
+                For Agents
               </Button>
             </div>
+          </div>
 
-          {/* Main Heading */}
-          <div className="space-y-4">
-            <h1 className="text-4xl sm:text-5xl lg:text-[64px] font-medium text-[#4B4B4B] dark:text-white leading-tight">
-              No more cold <span className="text-[#F88379]">leads.</span>
-            </h1>
+          <h2 className="text-[38px] sm:text-[48px] lg:text-[64px] leading-[1.05] font-medium text-[#4B4B4B] dark:text-white">
+            No more cold <span className="text-[#F88379]">leads.</span>
+          </h2>
 
-            <p className="text-base sm:text-xl text-[#686868] dark:text-white/70 leading-relaxed">
-              Stop chasing unqualified inquiries. Deal360 connects you with buyers and renters who
-              have verified intent and real budgets. See live requirements matched to your listings.
+          <div className="space-y-3">
+            <p className="text-lg sm:text-xl font-medium text-[#4B4B4B] dark:text-white">
+              Built for Agents Who Want Real Deal Flow.
+            </p>
+            <p className="text-base sm:text-lg leading-relaxed text-[#686868] dark:text-white/70">
+              Deal360 connects agents with live buyer and tenant requirements aligned to their expertise and inventory.
+            </p>
+            <p className="text-base sm:text-lg leading-relaxed text-[#686868] dark:text-white/70">
+              Designed for commission-based professionals who want structure, speed, and serious engagement.
             </p>
           </div>
 
-          {/* Features List */}
-          <div className="space-y-4">
-            {[
-              { icon: Zap, label: 'Intent-matched leads', desc: 'Only serious buyers' },
-              { icon: TrendingUp, label: 'Real-time updates', desc: 'New requirements instantly' },
-              { icon: BadgeCheck, label: 'Verified clients', desc: 'No time wasters' },
-            ].map((feature, idx) => (
-              <div key={idx} className="flex gap-4">
-                <div className="w-[48px] h-[48px] bg-[#FFEFEE] dark:bg-white/10 rounded-full flex items-center justify-center shrink-0">
-                  <feature.icon className="w-6 h-6 text-[#4B4B4B] dark:text-white flex-shrink-0 mt-1" />
-                </div>
-
-                <div className="min-w-0">
-                  <p className="font-midium text-xl text-[#4B4B4B] dark:text-white">
-                    {feature.label}
+          <div className="space-y-4 pt-1">
+            {leadFlowPoints.map((item) => (
+              <div
+                key={item.title}
+                className="flex gap-3 sm:gap-4 items-start justify-center lg:justify-start text-left"
+              >
+                <span className="mt-1 h-8 w-8 rounded-full bg-[#FFEAE6] dark:bg-[#2D2421] flex items-center justify-center shrink-0">
+                  <item.icon className="h-4 w-4 text-[#F88379]" />
+                </span>
+                <div>
+                  <p className="text-[22px] leading-tight font-medium text-[#4B4B4B] dark:text-white">
+                    {item.title}
                   </p>
-                  <p className="text-sm text-[#565656] dark:text-white/60">
-                    {feature.desc}
+                  <p className="text-sm sm:text-base leading-relaxed text-[#686868] dark:text-white/70">
+                    {item.desc}
                   </p>
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className="space-y-4 pt-2">
+            <h3 className="text-2xl sm:text-[32px] font-medium text-[#4B4B4B] dark:text-white">
+              Why It&apos;s Different?
+            </h3>
+
+            <ul className="space-y-2">
+              {whyDifferent.map((point) => (
+                <li
+                  key={point}
+                  className="flex items-center justify-center lg:justify-start gap-3 text-sm sm:text-base text-[#686868] dark:text-white/70"
+                >
+                  <span className="h-6 w-6 rounded-full bg-[#FFEAE6] dark:bg-[#2D2421] flex items-center justify-center shrink-0">
+                    <Check className="h-3.5 w-3.5 text-[#F88379]" />
+                  </span>
+                  {point}
+                </li>
+              ))}
+            </ul>
+
+            <div>
+              <div
+                className="inline-block rounded-[10px] p-[2px]"
+                style={{
+                  background: 'linear-gradient(180deg, #79FFD2 0%, #017850 100%)',
+                }}
+              >
+                <Button
+                  className="rounded-[8px] h-[48px] px-6 text-base text-[#4B4B4B]"
+                  style={{
+                    background:
+                      'linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)',
+                  }}
+                >
+                  Early Agent Registration
+                </Button>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center lg:justify-start gap-2 text-xs sm:text-sm text-[#686868] dark:text-white/70">
+              <Lock className="h-3.5 w-3.5 text-[#F88379] shrink-0" />
+              Private &amp; off-market opportunities, some inventory will never be public.
+            </div>
           </div>
         </div>
       </div>

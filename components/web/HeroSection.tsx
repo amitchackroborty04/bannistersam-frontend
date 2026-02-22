@@ -4,81 +4,161 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { CircleArrowOutUpRight } from 'lucide-react'
-import { CountdownTimer } from './CountdownTimer'
+import { Check } from 'lucide-react'
 import Image from 'next/image'
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden px-2 sm:px-6 lg:px-8 py-7  lg:py-20">
+    <section className="py-1 lg:py-0  ">
       <div className="container mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-8 items-center">
           {/* Left Content */}
-          <div className="flex flex-col gap-6 sm:gap-8 text-center lg:text-left">
-            {/* Badge */}
-             <div>
-                 <div
-              className="inline-block rounded-full p-[4px]"
-              style={{
-                background:
-                  "linear-gradient(180deg, #79FFD2 0%, #017850 100%)",
-              }}
-            >
-              <Button
-                className="rounded-full px-6 md:px-8 h-[48px] text-sm md:text-base text-[#4B4B4B]"
-                style={{
-                  background:
-                    "linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)",
-                }}
-              >
-                <span className='w-2 h-2 rounded-full bg-[#00C274]'></span>
-               Launching in Dubai, UAE
-              </Button>
-            </div>
-            </div>
+          <div className="flex flex-col gap-2 sm:gap-4 text-center lg:text-left">
+          
 
             {/* Heading */}
             <div className="flex flex-col gap-4">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-medium dark:text-white leading-tight text-[#4B4B4B]">
-                A better way to navigate{' '}
-                <span className="text-[#F88379]">property</span> in the UAE.
+                Dubai real estate is about to {""}
+                <span className="text-[#F88379]">change</span>
               </h1>
             </div>
 
             {/* Description */}
             <p className="text-base sm:text-lg text-[#686868] leading-relaxed max-w-5xl mx-auto lg:mx-0">
-              Deal360 brings verification-first property matching to Dubai connect with Verified
-              agents, find real listings, and make smarter property decisions—whether you&apos;re
-              buying, selling, renting, or investing.
+              A new platform built around verified agents, real demand, and private opportunities.
             </p>
+            <h4 className='text-lg text-[#4B4B4B] font-semibold'>Launching soon.</h4>
+            <h5 className='text-2xl text-[#F88379] font-semibold'>Founding Registration</h5>
+            <p className='text-xl text-[#4B4B4B] font-normal'>Not everyone will get the same access.</p>
+            <p className="text-base sm:text-lg text-[#686868] leading-relaxed max-w-5xl mx-auto lg:mx-0">
+              Wer&apos;e opening early registration to a select group of agents and brokerages before official launch.
+            </p>
+            <ol className=' space-y-3 pl-2'>
+              <li className='flex items-center gap-2 text-[#4B4B4B] text-xl font-normal'>
+                <div className='w-[32px] h-[32px] rounded-full bg-[#F883791A] flex items-center justify-center mb-1'>
+                  <Check className="h-4 w-4 text-[#F88379]" />
+                </div>
+                Priority visibility
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-4 justify-center lg:justify-start">
-              <Button className="bg-[#7FFFD4] rounded-[8px] hover:bg-accent-alt/90 text-[#4B4B4B] text-base h-12 px-6 flex items-center gap-2 w-full sm:w-auto">
-                <span>Find a Property</span>
-                <CircleArrowOutUpRight className="h-4 w-4" />
-              </Button>
+              </li>
+              <li className='flex items-center gap-2 text-[#4B4B4B] text-xl font-normal'>
+                <div className='w-[32px] h-[32px] rounded-full bg-[#F883791A] flex items-center justify-center mb-1'>
+                  <Check className="h-4 w-4 text-[#F88379]" />
+                </div>
+                Early feature access
 
-              <Button
-                variant="outline"
-                className="border-2 rounded-[8px] border-[#F88379] text-[#4B4B4B] hover:bg-accent/10 text-base h-12 px-6 flex items-center gap-2 w-full sm:w-auto bg-transparent"
-              >
-                <span>List a Property</span>
-                <CircleArrowOutUpRight className="h-4 w-4" />
-              </Button>
+              </li>
+              <li className='flex items-center gap-2 text-[#4B4B4B] text-xl font-normal'>
+                <div className='w-[32px] h-[32px] rounded-full bg-[#F883791A] flex items-center justify-center mb-1'>
+                  <Check className="h-4 w-4 text-[#F88379]" />
+                </div>
+                Founding-only benefits
+
+              </li>
+            </ol>
+            <div className="flex flex-wrap gap-4 w-full max-w-[743px] mt-12 justify-center lg:justify-start">
+              <div className="w-full sm:w-auto">
+                <div
+                  className="inline-block w-full sm:w-auto rounded-[8px] p-[4px] !text-base"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, #79FFD2 0%, #017850 100%)",
+                  }}
+                >
+                  <Button
+                    className="w-full sm:w-auto justify-center rounded-[8px] px-6 md:px-8 h-[48px] text-sm md:text-base text-[#4B4B4B]"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)",
+                    }}
+                  >
+               
+                   Submit Requirement
+                  </Button>
+                </div>
+              </div>
+                <div className="w-full sm:w-auto">
+                <div
+                  className="inline-block w-full sm:w-auto rounded-[8px] p-[4px] !text-base"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, #79FFD2 0%, #017850 100%)",
+                  }}
+                >
+                  <Button
+                    className="w-full sm:w-auto justify-center rounded-[8px] px-6 md:px-8 h-[48px] text-sm md:text-base text-[#4B4B4B]"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)",
+                    }}
+                  >
+                    Submit Listing Intent
+                  </Button>
+                </div>
+              </div>
+                 <div className="w-full sm:w-auto">
+                <div
+                  className="inline-block w-full sm:w-auto rounded-[8px] p-[4px] !text-base"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, #79FFD2 0%, #017850 100%)",
+                  }}
+                >
+                  <Button
+                    className="w-full sm:w-auto justify-center rounded-[8px] px-6 md:px-8 h-[48px] text-sm md:text-base text-[#4B4B4B]"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)",
+                    }}
+                  >
+                  User Registration
+                  </Button>
+                </div>
+              </div>
+                  <div className="w-full sm:w-auto">
+                <div
+                  className="inline-block w-full sm:w-auto rounded-[8px] p-[4px] !text-base"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, #79FFD2 0%, #017850 100%)",
+                  }}
+                >
+                  <Button
+                    className="w-full sm:w-auto justify-center rounded-[8px] px-6 md:px-8 h-[48px] text-sm md:text-base text-[#4B4B4B]"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)",
+                    }}
+                  >
+                  Professional Registration
+                  </Button>
+                </div>
+              </div>
+                    <div className="w-full sm:w-auto">
+                <div
+                  className="inline-block w-full sm:w-auto rounded-[8px] p-[4px] !text-base"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, #79FFD2 0%, #017850 100%)",
+                  }}
+                >
+                  <Button
+                    className="w-full sm:w-auto justify-center rounded-[8px] px-6 md:px-8 h-[48px] text-sm md:text-base text-[#4B4B4B]"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)",
+                    }}
+                  >
+                  Partner Registration
+                  </Button>
+                </div>
+              </div>
             </div>
 
-            {/* Mobile Coming Soon Text */}
-            <div className="pt-4 sm:pt-8">
-              <p className="text-sm sm:text-[24px] font-midium text-[#4B4B4B] mb-4">
-                Mobile Application Coming Soon
-              </p>
-
-              <CountdownTimer />
-            </div>
 
             {/* Store buttons */}
-            <div className="flex gap-4 sm:gap-7 justify-center lg:justify-start flex-wrap">
+            <div className="flex mt-6 gap-4 sm:gap-7 justify-center lg:justify-start flex-wrap">
               <Image
                 src="/hero1.png"
                 alt="Store 1"
@@ -97,14 +177,14 @@ export function HeroSection() {
           </div>
 
           {/* Right - Image */}
-          {/* ✅ Mobile/Tablet এ দেখাবে, LG unchanged */}
-          <div className="relative flex h-[320px] sm:h-[420px] md:h-[520px] lg:h-full lg:min-h-[740px] items-center justify-center">
+          {/* ✅ Mobile/Tablet  LG unchanged */}
+          <div className="relative flex h-[320px] sm:h-[420px] md:h-[520px] lg:h-full lg:min-h-[940px] items-center justify-center">
             <Image
-              src="/banner2.png"
+              src="/letest1.png"
               alt="Hero"
               width={1000}
               height={100}
-              className="w-full h-full object-contain  drop-shadow-[0_0_85px_#B9FFE8] "
+              className="w-full h-full object-cover  drop-shadow-[0_0_85px_#B9FFE8] "
               priority
             />
           </div>

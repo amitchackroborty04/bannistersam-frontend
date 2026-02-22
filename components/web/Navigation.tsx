@@ -213,7 +213,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Moon, Sun, Menu } from 'lucide-react'
+import { Moon, Sun, Menu, LogOut } from 'lucide-react'
 import {
   Sheet,
   SheetClose,
@@ -292,7 +292,7 @@ export function Navigation() {
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-[#C9FFED66] shadow-md backdrop-blur">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-0">
         <div className="flex py-[20px] items-center justify-between">
           {/* Logo */}
           <a
@@ -368,14 +368,10 @@ export function Navigation() {
 
             {/* Buttons (Desktop only, LG unchanged) */}
             <div className="hidden sm:flex gap-2">
-              <Button
-                variant="ghost"
-                className="text-[#F88379] border border-[#F88379] h-[50px] px-[32px] rounded-[8px] hover:text-[#F88379]"
-              >
-                Login
-              </Button>
+           
               <Button className="bg-[#7FFFD4] hover:bg-[#7FFFD4]/90 text-[#4B4B4B] h-[50px] rounded-[8px]">
-                Registration
+              <span><LogOut className="h-4 w-4" /></span>
+                Pre - Registration
               </Button>
             </div>
 
@@ -464,12 +460,7 @@ export function Navigation() {
 
                   {/* Mobile Buttons */}
                   <div className="mt-6 grid grid-cols-1 gap-3">
-                    <Button
-                      variant="ghost"
-                      className="text-[#F88379] border border-[#F88379] h-[50px] rounded-[8px] hover:text-[#F88379]"
-                    >
-                      Login
-                    </Button>
+                 
                     <Button className="bg-[#7FFFD4] hover:bg-[#7FFFD4]/90 text-[#4B4B4B] h-[50px] rounded-[8px]">
                       Registration
                     </Button>

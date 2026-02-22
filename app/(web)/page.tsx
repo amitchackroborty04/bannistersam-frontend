@@ -1,39 +1,4 @@
-// 'use client'
 
-// import { AgentsSection } from "@/components/web/AgentsSection"
-// import Brokerage from "@/components/web/Brokerage"
-// import Footer from "@/components/web/Footer"
-// import { HeroSection } from "@/components/web/HeroSection"
-// import { IncentivesSection } from "@/components/web/IncentivesSection"
-// import PropertyIntent from "@/components/web/IntentSection"
-// import Joindeal from "@/components/web/Joindeal"
-// import { Navigation } from "@/components/web/Navigation"
-// import { PortalSection } from "@/components/web/PortalSection"
-// import { PortfolioSection } from "@/components/web/Portfolio"
-// import { PricingSection } from "@/components/web/PricingSection"
-// import { VerificationSection } from "@/components/web/VerificationSection"
-
-
-
-// export default function Home() {
-//   return (
-//     <div className="">
-//       <Navigation />
-//       <HeroSection/>
-//       <PortalSection/>
-//       <PropertyIntent/>
-//       <VerificationSection/>
-//       <AgentsSection/>
-//       <Brokerage/>
-//       <PortfolioSection/>
-//       <Joindeal/>
-//       <PricingSection/>
-//       <IncentivesSection/>
-//       <Footer/>
-//     </div>
-//   )
-// }
- 
 
 
 
@@ -47,10 +12,15 @@ import { IncentivesSection } from '@/components/web/IncentivesSection'
 import PropertyIntent from '@/components/web/IntentSection'
 import Joindeal from '@/components/web/Joindeal'
 import { Navigation } from '@/components/web/Navigation'
+import OwnersInControl from '@/components/web/OwnersInControl'
+import NotAPortalSection from '@/components/web/NotAPortalSection'
 import { PortalSection } from '@/components/web/PortalSection'
-import { PortfolioSection } from '@/components/web/Portfolio'
 import { PricingSection } from '@/components/web/PricingSection'
+import PropertyManager from '@/components/web/PropertyManager'
+import SmarterFilters from '@/components/web/SmarterFilters'
+import SubHeroSection from '@/components/web/SuBHeroSection'
 import { VerificationSection } from '@/components/web/VerificationSection'
+import WhatsComing from '@/components/web/WhatsComing'
 
 export default function Home() {
   return (
@@ -62,7 +32,13 @@ export default function Home() {
         <HeroSection />
       </section>
 
+      <WhatsComing/>
+
+      <SubHeroSection/>
+
       <PortalSection />
+
+      <NotAPortalSection />
 
       {/* Buying Intent */}
       <section id="buying-intent">
@@ -80,11 +56,14 @@ export default function Home() {
       <section id="brokerages">
         <Brokerage />
       </section>
-
+      <SmarterFilters/>
+      <OwnersInControl/>
+      <PropertyManager/>
+      <NotAPortalSection/>
       {/* Investor */}
-      <section id="investor">
+      {/* <section id="investor">
         <PortfolioSection />
-      </section>
+      </section> */}
 
       <Joindeal />
       <PricingSection />
