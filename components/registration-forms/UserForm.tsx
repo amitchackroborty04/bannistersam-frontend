@@ -138,7 +138,7 @@ export function UserForm() {
 
       <Button
         type="submit"
-        className="w-full bg-[#7FFFD4] hover:bg-[#7FFFD4]/90 text-[#0A0A0A]  h-[48px] rounded-[8px] text-xl"
+        className="w-full bg-[#7FFFD4] h-[48px] rounded-[4px] hover:bg-[#7FFFD4]/90 text- font-medium  "
       >
         Sign Up as a User
       </Button>

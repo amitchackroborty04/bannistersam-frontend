@@ -181,7 +181,7 @@ export function ProfessionalForm() {
 
       <Button
         type="submit"
-        className="w-full bg-[#7FFFD4] h-[48px] rounded-[4px] hover:bg-[#7FFFD4]/90 text-white font-medium "
+        className="w-full bg-[#7FFFD4] h-[48px] rounded-[4px] hover:bg-[#7FFFD4]/90 text- font-medium "
       >
         Partner With Us Request
       </Button>

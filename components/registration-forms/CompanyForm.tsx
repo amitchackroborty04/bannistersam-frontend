@@ -166,7 +166,7 @@ export function CompanyForm() {
 
       <Button
         type="submit"
-        className="w-full bg-[#7FFFD4] hover:bg-[#7FFFD4]/90 text-[#0A0A0A] font-medium h-[48px] rounded-[4px] text-xl"
+        className="w-full bg-[#7FFFD4] h-[48px] rounded-[4px] hover:bg-[#7FFFD4]/90 text- font-medium"
       >
         Register as a Professional
       </Button>

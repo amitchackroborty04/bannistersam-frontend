@@ -1,9 +1,4 @@
 
-
-
-
-
-
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
@@ -267,7 +262,7 @@ export function Navigation() {
                       onClick={() => setRegistrationOpen(true)}
                       className="bg-[#7FFFD4] hover:bg-[#7FFFD4]/90 text-[#4B4B4B] h-[50px] rounded-[8px]"
                     >
-                      Registration
+                      Pre - Registration
                     </Button>
                   </div>
                 </SheetContent>
