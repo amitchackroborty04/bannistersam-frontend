@@ -4,29 +4,11 @@
 'use client'
 
 import Image from 'next/image'
-import { useTheme } from 'next-themes'
-import { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 
 export function PortalSection() {
-  const { theme, systemTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) return null
-
-  const currentTheme = theme === 'system' ? systemTheme : theme
-
-  const imageSrc =
-    currentTheme === 'dark'
-      ? '/new.png'   
-      : '/potal.png'  
-
   return (
-    <section className="flex items-center px-2 sm:px-8">
+    <section className="flex items-center px-2 sm:px-8 py-[100px]">
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-x-8 items-center">
         
         {/* Left Content */}
@@ -61,13 +43,13 @@ export function PortalSection() {
         </div>
 
         {/* Right Image */}
-        <div className="order-2 lg:order-2 h-auto flex items-center justify-center">
+        <div className="order-2 lg:order-2 h-[516px] flex items-center justify-center">
           <Image
-            src={imageSrc}
+            src="/newbb.png"
             alt="Portal Preview"
             width={1000}
             height={1000}
-            className="w-full h-full object-contain"
+            className="w-full h-full object-cover rounded-[16px]"
             priority
           />
         </div>
