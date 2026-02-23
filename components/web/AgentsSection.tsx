@@ -63,7 +63,7 @@ export function AgentsSection() {
           <div className="flex justify-center lg:justify-start">
             <div className="relative w-full max-w-[540px]">
               <Image
-                src="/roundphone.png"
+                src="/2xcold.png"
                 alt="Agent requirements preview"
                 width={900}
                 height={900}

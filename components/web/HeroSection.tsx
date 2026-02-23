@@ -180,10 +180,10 @@ export function HeroSection() {
           {/* ✅ Mobile/Tablet  LG unchanged */}
           <div className="relative flex h-[320px] sm:h-[420px] md:h-[520px] lg:h-full lg:min-h-[940px] items-center justify-center">
             <Image
-              src="/letest1.png"
+              src="/new2x.png"
               alt="Hero"
               width={1000}
-              height={100}
+              height={1000}
               className="w-full h-full object-cover  drop-shadow-[0_0_85px_#B9FFE8] "
               priority
             />
