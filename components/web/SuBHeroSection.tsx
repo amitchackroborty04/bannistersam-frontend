@@ -34,13 +34,13 @@ export default function SubHeroSection() {
             </div>
           </div>
 
-          <h1 className="text-[34px] sm:text-[44px] lg:text-6xl font-medium leading-tight text-[#4B4B4B]">
+          <h1 className="text-[34px] sm:text-[44px] lg:text-6xl font-medium leading-tight text-[#4B4B4B] dark:text-white">
             A better way to <br />
             navigate <span className="text-[#F88379]">property</span> in <br />
             the <span className="text-[#F88379]">UAE</span>.
           </h1>
 
-          <p className="text-base sm:text-lg text-[#686868] leading-relaxed max-w-5xl mx-auto lg:mx-0">
+          <p className="text-base sm:text-lg text-[#686868] dark:text-white leading-relaxed max-w-5xl mx-auto lg:mx-0">
             We help buyers, sellers, agents, brokerages, and investors make
             clearer property decisions by aligning real demand with verified
             supply launching in Dubai and expanding across the UAE.

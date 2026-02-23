@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -21,13 +21,21 @@ import Image from 'next/image'
 interface RegistrationModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
+  initialTab?: 'professional' | 'user' | 'company'
 }
 
 export function RegistrationModal({
   open,
   onOpenChange,
+  initialTab = 'professional',
 }: RegistrationModalProps) {
-  const [activeTab, setActiveTab] = useState('professional')
+  const [activeTab, setActiveTab] = useState(initialTab)
+
+  useEffect(() => {
+    if (open) {
+      setActiveTab(initialTab)
+    }
+  }, [open, initialTab])
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -52,7 +60,7 @@ export function RegistrationModal({
         {/* TABS */}
         <Tabs
           value={activeTab}
-          onValueChange={setActiveTab}
+          onValueChange={(value) => setActiveTab(value as 'professional' | 'user' | 'company')}
           className="w-full"
         >
           <TabsList className="grid w-full grid-cols-3 gap-1 sm:gap-2 bg-[#0000000D] p-1 sm:p-2 h-[48px] sm:h-[56px] rounded-[8px] mb-4 sm:mb-6">
@@ -110,7 +118,7 @@ export function RegistrationModal({
                 data-[state=active]:text-sm sm:data-[state=active]:text-base
               "
             >
-              Company
+              Partner
             </TabsTrigger>
           </TabsList>
 

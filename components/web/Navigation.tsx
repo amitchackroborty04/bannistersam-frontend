@@ -22,7 +22,7 @@ export function Navigation() {
   const navItems = useMemo(
     () => [
       { label: 'Requirements', id: 'requirements' },
-      { label: 'Buying Intent', id: 'buying-intent' },
+      { label: 'Listing Intent', id: 'buying-intent' },
       { label: 'Agent', id: 'agent' },
       { label: 'Brokerages', id: 'brokerages' },
       { label: 'Investor', id: 'investor' },

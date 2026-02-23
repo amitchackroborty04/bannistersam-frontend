@@ -31,7 +31,7 @@ export default function WhatsComing() {
             </div>
 
         {/* Heading */}
-        <h2 className="text-[34px] sm:text-[44px] lg:text-[64px] font-medium text-[#4B4B4B] mb-14">
+        <h2 className="text-[34px] sm:text-[44px] lg:text-[64px] font-medium text-[#4B4B4B] dark:text-white mb-14">
           More than a <span className="text-[#F88379]">portal</span>. Here&apos;s <span className="text-[#F88379]">why.</span>
         </h2>
 
