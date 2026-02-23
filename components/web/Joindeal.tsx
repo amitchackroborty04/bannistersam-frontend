@@ -1,12 +1,18 @@
+'use client'
+
+import { useState } from 'react'
 import { Check, CheckCircle, Clock, Shield } from 'lucide-react'
 import { Button } from '../ui/button'
+import { RegistrationModal } from '../registration-forms/RegistrationModal'
 
-const registrationTypes = [
-  'Submit Requirement',
-  'Submit Listing Intent',
-  'Professional Registration',
-  'User Registration',
-  'Partner Registration',
+type RegistrationTab = 'professional' | 'user' | 'company'
+
+const registrationTypes: Array<{ label: string; tab?: RegistrationTab }> = [
+  { label: 'Submit Requirement' },
+  { label: 'Submit Listing Intent' },
+  { label: 'Professional Registration', tab: 'professional' },
+  { label: 'User Registration', tab: 'user' },
+  { label: 'Partner Registration', tab: 'company' },
 ]
 
 const topHighlights = [
@@ -34,9 +40,19 @@ const topHighlights = [
 ]
 
 const Joindeal = () => {
+  const [registrationOpen, setRegistrationOpen] = useState(false)
+  const [registrationTab, setRegistrationTab] =
+    useState<RegistrationTab>('professional')
+
+  const openRegistration = (tab: RegistrationTab) => {
+    setRegistrationTab(tab)
+    setRegistrationOpen(true)
+  }
+
   return (
-    <section className="w-full px-4 sm:px-6 py-12 md:py-20 lg:py-24">
-      <div className="container mx-auto max-w-[1180px]">
+    <>
+      <section className="w-full px-4 sm:px-6 py-12 md:py-20 lg:py-24">
+        <div className="container mx-auto max-w-[1180px]">
         <div className="text-center">
           <div
             className="inline-block rounded-[999px] p-[3px] mb-5"
@@ -73,7 +89,7 @@ const Joindeal = () => {
           <div className="flex flex-wrap gap-3 max-w-[620px] mx-auto justify-center">
             {registrationTypes.map((type) => (
               <div
-                key={type}
+                key={type.label}
                 className="inline-block rounded-[10px] p-[2px]"
                 style={{
                   background:
@@ -81,13 +97,18 @@ const Joindeal = () => {
                 }}
               >
                 <Button
+                  onClick={
+                    typeof type.tab === 'string'
+                      ? () => openRegistration(type.tab as RegistrationTab)
+                      : undefined
+                  }
                   className="h-[38px] rounded-[8px] px-4 text-xs sm:text-sm text-[#4B4B4B]"
                   style={{
                     background:
                       'linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)',
                   }}
                 >
-                  {type}
+                  {type.label}
                 </Button>
               </div>
             ))}
@@ -161,8 +182,15 @@ const Joindeal = () => {
             </ul>
           </div>
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
+
+      <RegistrationModal
+        open={registrationOpen}
+        onOpenChange={setRegistrationOpen}
+        initialTab={registrationTab}
+      />
+    </>
   )
 }
 

@@ -3,15 +3,28 @@
 
 'use client'
 
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Check } from 'lucide-react'
 import Image from 'next/image'
+import { RegistrationModal } from '../registration-forms/RegistrationModal'
 
 export function HeroSection() {
+  const [registrationOpen, setRegistrationOpen] = useState(false)
+  const [registrationTab, setRegistrationTab] = useState<
+    'professional' | 'user' | 'company'
+  >('professional')
+
+  const openRegistration = (tab: 'professional' | 'user' | 'company') => {
+    setRegistrationTab(tab)
+    setRegistrationOpen(true)
+  }
+
   return (
-    <section className="py-1 lg:py-0  ">
-      <div className="container mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-8 items-center">
+    <>
+      <section className="py-1 lg:py-0  ">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-8 items-center">
           {/* Left Content */}
           <div className="flex flex-col gap-2 sm:gap-4 text-center lg:text-left">
           
@@ -25,31 +38,31 @@ export function HeroSection() {
             </div>
 
             {/* Description */}
-            <p className="text-base sm:text-lg text-[#686868] leading-relaxed max-w-5xl mx-auto lg:mx-0">
+            <p className="text-base sm:text-lg text-[#686868] dark:text-white leading-relaxed max-w-5xl mx-auto lg:mx-0">
               A new platform built around verified agents, real demand, and private opportunities.
             </p>
-            <h4 className='text-xl sm:text-2xl text-[#4B4B4B] font-semibold'>Launching soon.</h4>
+            <h4 className='text-xl sm:text-2xl text-[#4B4B4B] dark:text-white font-semibold'>Launching soon.</h4>
             <h5 className='text-2xl sm:text-3xl text-[#F88379] font-semibold'>Founding Registration</h5>
-            <p className='text-base sm:text-lg text-[#4B4B4B] font-normal'>Not everyone will get the same access.</p>
-            <p className="text-base sm:text-lg text-[#686868] leading-relaxed max-w-5xl mx-auto lg:mx-0">
+            <p className='text-base sm:text-lg text-[#4B4B4B] dark:text-white font-normal'>Not everyone will get the same access.</p>
+            <p className="text-base sm:text-lg text-[#686868] dark:text-white leading-relaxed max-w-5xl mx-auto lg:mx-0">
               Wer&apos;e opening early registration to a select group of agents and brokerages before official launch.
             </p>
             <ol className=' space-y-3 pl-2'>
-              <li className='flex items-center gap-2 text-[#4B4B4B] text-base sm:text-lg font-normal'>
+              <li className='flex items-center gap-2 text-[#4B4B4B] dark:text-white text-base sm:text-lg font-normal'>
                 <div className='w-[32px] h-[32px] rounded-full bg-[#F883791A] flex items-center justify-center mb-1'>
                   <Check className="h-4 w-4 text-[#F88379]" />
                 </div>
                 Priority visibility
 
               </li>
-              <li className='flex items-center gap-2 text-[#4B4B4B] text-base sm:text-lg font-normal'>
+              <li className='flex items-center gap-2 text-[#4B4B4B] dark:text-white text-base sm:text-lg font-normal'>
                 <div className='w-[32px] h-[32px] rounded-full bg-[#F883791A] flex items-center justify-center mb-1'>
                   <Check className="h-4 w-4 text-[#F88379]" />
                 </div>
                 Early feature access
 
               </li>
-              <li className='flex items-center gap-2 text-[#4B4B4B] text-base sm:text-lg font-normal'>
+              <li className='flex items-center gap-2 text-[#4B4B4B] dark:text-white text-base sm:text-lg font-normal'>
                 <div className='w-[32px] h-[32px] rounded-full bg-[#F883791A] flex items-center justify-center mb-1'>
                   <Check className="h-4 w-4 text-[#F88379]" />
                 </div>
@@ -106,6 +119,7 @@ export function HeroSection() {
                   }}
                 >
                   <Button
+                    onClick={() => openRegistration('user')}
                     className="w-full sm:w-auto justify-center rounded-[8px] px-6 md:px-8 h-[48px] text-sm md:text-base text-[#4B4B4B]"
                     style={{
                       background:
@@ -125,6 +139,7 @@ export function HeroSection() {
                   }}
                 >
                   <Button
+                    onClick={() => openRegistration('professional')}
                     className="w-full sm:w-auto justify-center rounded-[8px] px-6 md:px-8 h-[48px] text-sm md:text-base text-[#4B4B4B]"
                     style={{
                       background:
@@ -144,6 +159,7 @@ export function HeroSection() {
                   }}
                 >
                   <Button
+                    onClick={() => openRegistration('company')}
                     className="w-full sm:w-auto justify-center rounded-[8px] px-6 md:px-8 h-[48px] text-sm md:text-base text-[#4B4B4B]"
                     style={{
                       background:
@@ -188,8 +204,15 @@ export function HeroSection() {
               priority
             />
           </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <RegistrationModal
+        open={registrationOpen}
+        onOpenChange={setRegistrationOpen}
+        initialTab={registrationTab}
+      />
+    </>
   )
 }
