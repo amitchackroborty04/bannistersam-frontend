@@ -60,11 +60,11 @@ export default function OwnersInControl() {
         <div className="flex justify-center lg:justify-end">
           <div className="relative w-full max-w-[560px]">
             <Image
-              src="/redlaptop.png"
+              src="/2xbanister.png"
               alt="Owners dashboard preview"
               width={1000}
               height={1000}
-              className="w-full h-auto object-contain drop-shadow-[0_0_85px_#FFADA6] dark:drop-shadow-none"
+              className="w-full h-auto object-contain "
               priority
             />
           </div>
