@@ -34,7 +34,7 @@ export default function SubHeroSection() {
             </div>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-medium leading-tight text-[#4B4B4B]">
+          <h1 className="text-[34px] sm:text-[44px] lg:text-6xl font-medium leading-tight text-[#4B4B4B]">
             A better way to <br />
             navigate <span className="text-[#F88379]">property</span> in <br />
             the <span className="text-[#F88379]">UAE</span>.

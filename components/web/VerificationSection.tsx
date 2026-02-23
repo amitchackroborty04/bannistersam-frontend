@@ -35,12 +35,12 @@ export function VerificationSection() {
 
           {/* Main Heading */}
           <div className="space-y-4">
-            <h1 className="text-4xl sm:text-5xl lg:text-[64px] font-medium text-[#4B4B4B] dark:text-white leading-tight">
+            <h1 className="text-[34px] sm:text-[44px] lg:text-[64px] font-medium text-[#4B4B4B] dark:text-white leading-tight">
               Verification <span className="text-[#F88379]">filters</span> out the{' '}
               <span className="text-[#F88379]">noise.</span>
             </h1>
 
-            <p className="text-base sm:text-xl text-[#686868] dark:text-white/70 leading-relaxed">
+            <p className="text-base sm:text-lg text-[#686868] dark:text-white/70 leading-relaxed">
               Every agent on Deal360 is verified. Every listing is checked. No more fake
               listings, no more unresponsive agents. Just genuine opportunities with verified
               professionals.
@@ -58,7 +58,7 @@ export function VerificationSection() {
                 <div className="bg-[#FFEFEE] dark:bg-white/10 w-10 h-10 rounded-full flex items-center justify-center">
                   <feature.icon className="w-5 h-5 text-[#4B4B4B] dark:text-white flex-shrink-0" />
                 </div>
-                <span className="text-[#F88379] font-medium text-xl">{feature.label}</span>
+                <span className="text-[#F88379] font-medium text-lg sm:text-xl">{feature.label}</span>
               </div>
             ))}
           </div>

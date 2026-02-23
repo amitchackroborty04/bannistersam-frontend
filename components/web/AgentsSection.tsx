@@ -1,7 +1,9 @@
 'use client'
 
+import { useState } from 'react'
 import Image from 'next/image'
 import { Button } from '../ui/button'
+import { RegistrationModal } from '../registration-forms/RegistrationModal'
 import {
   BadgeCheck,
   Bolt,
@@ -52,44 +54,48 @@ const whyDifferent = [
 ]
 
 export function AgentsSection() {
-  return (
-    <section className="px-4 sm:px-6 lg:px-2 py-16 sm:py-20">
-      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 ">
-        <div className="flex justify-center lg:justify-start">
-          <div className="relative w-full max-w-[540px]">
-            <Image
-              src="/roundphone.png"
-              alt="Agent requirements preview"
-              width={900}
-              height={900}
-              className="w-full h-auto object-contain drop-shadow-[0_0_85px_#B9FFE8] dark:drop-shadow-none"
-              priority
-            />
-          </div>
-        </div>
+  const [registrationOpen, setRegistrationOpen] = useState(false)
 
-        <div className="flex flex-col gap-5 sm:gap-6 text-center lg:text-left">
-          <div>
-            <div
-              className="inline-block rounded-[999px] p-[3px]"
-              style={{
-                background: 'linear-gradient(180deg, #79FFD2 0%, #017850 100%)',
-              }}
-            >
-              <Button
-                className="h-[40px] rounded-[999px] px-5 text-sm text-[#F88379]"
-                style={{
-                  background:
-                    'linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)',
-                }}
-              >
-                <span className="h-2 w-2 rounded-full bg-[#00C274]" />
-                For Agents
-              </Button>
+  return (
+    <>
+      <section className="px-4 sm:px-6 lg:px-2 py-16 sm:py-20">
+        <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 ">
+          <div className="flex justify-center lg:justify-start">
+            <div className="relative w-full max-w-[540px]">
+              <Image
+                src="/roundphone.png"
+                alt="Agent requirements preview"
+                width={900}
+                height={900}
+                className="w-full h-auto object-contain drop-shadow-[0_0_85px_#B9FFE8] dark:drop-shadow-none"
+                priority
+              />
             </div>
           </div>
 
-          <h2 className="text-[38px] sm:text-[48px] lg:text-[64px] leading-[1.05] font-medium text-[#4B4B4B] dark:text-white">
+          <div className="flex flex-col gap-5 sm:gap-6 text-center lg:text-left">
+            <div>
+              <div
+                className="inline-block rounded-[999px] p-[3px]"
+                style={{
+                  background:
+                    'linear-gradient(180deg, #79FFD2 0%, #017850 100%)',
+                }}
+              >
+                <Button
+                  className="h-[40px] rounded-[999px] px-5 text-sm text-[#F88379]"
+                  style={{
+                    background:
+                      'linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)',
+                  }}
+                >
+                  <span className="h-2 w-2 rounded-full bg-[#00C274]" />
+                  For Agents
+                </Button>
+              </div>
+            </div>
+
+          <h2 className="text-[34px] sm:text-[44px] lg:text-[64px] leading-[1.05] font-medium text-[#4B4B4B] dark:text-white">
             No more cold <span className="text-[#F88379]">leads.</span>
           </h2>
 
@@ -109,7 +115,7 @@ export function AgentsSection() {
             {leadFlowPoints.map((item) => (
               <div
                 key={item.title}
-                className="flex gap-3 sm:gap-4 items-start justify-center lg:justify-start text-left"
+                className="flex gap-3 sm:gap-4 items-start justify-start text-left"
               >
                 <span className="mt-1 h-8 w-8 rounded-full bg-[#FFEAE6] dark:bg-[#2D2421] flex items-center justify-center shrink-0">
                   <item.icon className="h-4 w-4 text-[#F88379]" />
@@ -131,11 +137,11 @@ export function AgentsSection() {
               Why It&apos;s Different?
             </h3>
 
-            <ul className="space-y-2">
+            <ul className="space-y-2 text-left">
               {whyDifferent.map((point) => (
                 <li
                   key={point}
-                  className="flex items-center justify-center lg:justify-start gap-3 text-sm sm:text-base text-[#686868] dark:text-white/70"
+                  className="flex items-center justify-start gap-3 text-sm sm:text-base text-[#686868] dark:text-white/70"
                 >
                   <span className="h-6 w-6 rounded-full bg-[#FFEAE6] dark:bg-[#2D2421] flex items-center justify-center shrink-0">
                     <Check className="h-3.5 w-3.5 text-[#F88379]" />
@@ -153,6 +159,7 @@ export function AgentsSection() {
                 }}
               >
                 <Button
+                  onClick={() => setRegistrationOpen(true)}
                   className="rounded-[8px] h-[48px] px-6 text-base text-[#4B4B4B]"
                   style={{
                     background:
@@ -170,7 +177,13 @@ export function AgentsSection() {
             </div>
           </div>
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
+
+      <RegistrationModal
+        open={registrationOpen}
+        onOpenChange={setRegistrationOpen}
+      />
+    </>
   )
 }

@@ -93,15 +93,27 @@ export function ProfessionalForm() {
             <SelectTrigger className="text-xs mt-2 border border-[#C0C3C1] h-[48px] rounded-[4px] placeholder:text-[#6C757D]">
               <SelectValue placeholder="Select Category" />
             </SelectTrigger>
-            <SelectContent className='bg-white rounded-[4px]'>
-              <SelectItem value="developers">Real Estate Developers</SelectItem>
-              <SelectItem value="rentals">Short-term & Holiday Rentals</SelectItem>
-              <SelectItem value="furniture">Furniture & Interior Solutions</SelectItem>
-              <SelectItem value="mortgage">Mortgage & Financing Providers</SelectItem>
-              <SelectItem value="legal">Conveyancing & Legal Services</SelectItem>
-              <SelectItem value="management">Property Management & Maintenance</SelectItem>
-              <SelectItem value="other">Other</SelectItem>
-            </SelectContent>
+        <SelectContent className="bg-white rounded-[4px]">
+  <SelectItem value="retails">
+    Short-term & Holiday Retails
+  </SelectItem>
+
+  <SelectItem value="furniture">
+    Furniture & Interior Solutions
+  </SelectItem>
+
+  <SelectItem value="mortgage">
+    Mortgage & Financing Providers
+  </SelectItem>
+
+  <SelectItem value="legal">
+    Conveyancing & Legal Services
+  </SelectItem>
+
+  <SelectItem value="management">
+    Property Management & Maintenance
+  </SelectItem>
+</SelectContent>
           </Select>
         </div>
       </div>

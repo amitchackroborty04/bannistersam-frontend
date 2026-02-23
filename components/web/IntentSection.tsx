@@ -50,7 +50,7 @@ export default function PropertyIntent() {
             </div>
           </div>
 
-          <h2 className="text-[38px] sm:text-[48px] lg:text-[64px] leading-[1.05] font-medium text-[#4B4B4B] dark:text-white">
+          <h2 className="text-[34px] sm:text-[44px] lg:text-[64px] leading-[1.05] font-medium text-[#4B4B4B] dark:text-white">
             Start with{" "}
             <span className="text-[#F88379]">Requirements.</span> Not Endless
             Searching.
@@ -67,11 +67,11 @@ export default function PropertyIntent() {
             </p>
           </div>
 
-          <ul className="space-y-5 pt-1">
+          <ul className="space-y-5 pt-1 text-left">
             {intentPoints.map((point) => (
               <li
                 key={point}
-                className="flex items-center justify-center lg:justify-start gap-3 text-[#4B4B4B] dark:text-white text-base sm:text-xl font-medium"
+                className="flex items-center justify-start gap-3 text-[#4B4B4B] dark:text-white text-base sm:text-xl font-medium"
               >
                 <span className="h-9 w-9 rounded-full bg-[#FFEAE6] dark:bg-[#2D2421] flex items-center justify-center shrink-0">
                   <Check className="h-4 w-4 text-[#F88379]" />

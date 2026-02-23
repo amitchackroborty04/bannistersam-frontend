@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { Button } from '../ui/button'
 import { Check, Gift, X } from 'lucide-react'
 
@@ -52,7 +53,7 @@ export function IncentivesSection() {
             </Button>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-medium leading-tight text-[#4B4B4B] dark:text-white">
+          <h2 className="text-[34px] sm:text-[44px] lg:text-6xl font-medium leading-tight text-[#4B4B4B] dark:text-white">
             Rewards for early <span className="text-[#F88379]">adopters.</span>
           </h2>
 
@@ -91,9 +92,14 @@ export function IncentivesSection() {
               ))}
             </ul>
 
+            <div className='flex items-center gap-2'>
+             <div >
+              <Image src="/icon11.png" alt="referral" width={1000} height={1000} className="mt-4 h-6 w-6" />
+             </div>
             <p className="mt-4 text-base sm:text-lg font-medium text-[#4B4B4B] dark:text-white">
               Rewards
             </p>
+              </div>
             <ul className="mt-2 space-y-2">
               {earlyRewards.map((item) => (
                 <li key={item} className="flex items-start gap-2 text-sm sm:text-base text-[#4B4B4B] dark:text-white/80">
@@ -115,18 +121,19 @@ export function IncentivesSection() {
               }}
             >
               <div
-                className="rounded-full py-2 px-5 text-center text-base sm:text-lg text-[#4B4B4B]"
+                className="rounded-full py-2 px-5 text-base sm:text-lg text-[#4B4B4B] flex items-center justify-center gap-3 cursor-pointer"
                 style={{
                   background:
                     'linear-gradient(90deg, #FFEFEE 0%, #FFFFFF 50%, #EBFFF8 100%)',
                 }}
               >
+                <Image src="/icon13.png" alt="referral" width={1000} height={1000} className="h-10 w-10" />
                 1 month free referral program
               </div>
             </div>
           </div>
 
-          <div className="rounded-[12px] border border-[#DBDBDB] dark:border-white/10 bg-[#FFF6F5] dark:bg-[#2A1F1E] p-5 sm:p-6 flex flex-col">
+          <div className="rounded-[12px] border border-[#DBDBDB] dark:border-white/10  dark:bg-[#2A1F1E] p-5 sm:p-6 flex flex-col">
             <div className="mb-4 flex items-center gap-3">
               <span className="h-12 w-12 rounded-full bg-[#FFE5E2] dark:bg-[#3D2724] flex items-center justify-center">
                 <Gift className="h-5 w-5 text-[#F88379]" />
@@ -151,10 +158,14 @@ export function IncentivesSection() {
                 </li>
               ))}
             </ul>
-
+              <div className='flex items-center gap-2'>
+             <div >
+              <Image src="/icon12.png" alt="referral" width={1000} height={1000} className="mt-4 h-6 w-6" />
+             </div>
             <p className="mt-4 text-base sm:text-lg font-medium text-[#4B4B4B] dark:text-white">
               Rewards
             </p>
+              </div>
             <ul className="mt-2 space-y-2">
               {referralRewards.map((item) => (
                 <li key={item} className="flex items-start gap-2 text-sm sm:text-base text-[#4B4B4B] dark:text-white/80">
@@ -179,12 +190,13 @@ export function IncentivesSection() {
               }}
             >
               <div
-                className="rounded-full py-2 px-5 text-center text-base sm:text-lg text-[#4B4B4B]"
+                className="rounded-full py-2 px-5 text-base sm:text-lg text-[#4B4B4B] flex items-center justify-center gap-3 cursor-pointer"
                 style={{
                   background:
                     'linear-gradient(90deg, #FFEFEE 0%, #FFFFFF 50%, #EBFFF8 100%)',
                 }}
               >
+                <Image src="/icon14.png" alt="referral" width={1000} height={1000} className="h-10 w-10" />
                 1 month free referral program
               </div>
             </div>

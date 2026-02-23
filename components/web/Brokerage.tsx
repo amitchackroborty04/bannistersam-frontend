@@ -1,6 +1,10 @@
+'use client'
+
+import { useState } from 'react'
 import { Button } from '../ui/button'
 import Image from 'next/image'
 import { Check, ChartNoAxesColumn, ClipboardList, Users } from 'lucide-react'
+import { RegistrationModal } from '../registration-forms/RegistrationModal'
 
 const coreCapabilities = [
   {
@@ -26,10 +30,13 @@ const coreCapabilities = [
 ]
 
 const Brokerage = () => {
+  const [registrationOpen, setRegistrationOpen] = useState(false)
+
   return (
-    <section className="w-full py-12 md:py-20 lg:py-24 px-4 sm:px-6">
-      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-        <div className="text-center lg:text-left">
+    <>
+      <section className="w-full py-12 md:py-20 lg:py-24 px-4 sm:px-6">
+        <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+          <div className="text-center lg:text-left">
           <div
             className="inline-block rounded-[999px] p-[3px] mb-6"
             style={{
@@ -48,7 +55,7 @@ const Brokerage = () => {
             </Button>
           </div>
 
-          <h2 className="text-[38px] sm:text-[48px] lg:text-[64px] leading-[1.05] font-medium text-[#4B4B4B] dark:text-white">
+          <h2 className="text-[34px] sm:text-[44px] lg:text-[64px] leading-[1.05] font-medium text-[#4B4B4B] dark:text-white">
             Run your <span className="text-[#F88379]">brokerage</span>, not just{' '}
             <span className="text-[#F88379]">ads.</span>
           </h2>
@@ -116,6 +123,7 @@ const Brokerage = () => {
               }}
             >
               <Button
+                onClick={() => setRegistrationOpen(true)}
                 className="rounded-[8px] h-[48px] px-6 text-base text-[#4B4B4B]"
                 style={{
                   background:
@@ -126,22 +134,28 @@ const Brokerage = () => {
               </Button>
             </div>
           </div>
-        </div>
+          </div>
 
-        <div className="flex justify-center lg:justify-end">
-          <div className="relative w-full max-w-[620px]">
-            <Image
-              src="/dabolLapton.png"
-              alt="Brokerage dashboards"
-              width={1200}
-              height={1200}
-              className="w-full h-auto object-contain drop-shadow-[0_0_85px_#FFADA6] dark:drop-shadow-none"
-              priority
-            />
+          <div className="flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-[620px]">
+              <Image
+                src="/dabolLapton.png"
+                alt="Brokerage dashboards"
+                width={1200}
+                height={1200}
+                className="w-full h-auto object-contain drop-shadow-[0_0_85px_#FFADA6] dark:drop-shadow-none"
+                priority
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <RegistrationModal
+        open={registrationOpen}
+        onOpenChange={setRegistrationOpen}
+      />
+    </>
   )
 }
 

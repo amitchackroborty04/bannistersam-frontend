@@ -18,7 +18,7 @@ export function HeroSection() {
 
             {/* Heading */}
             <div className="flex flex-col gap-4">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-medium dark:text-white leading-tight text-[#4B4B4B]">
+              <h1 className="text-[34px] sm:text-[44px] lg:text-6xl font-medium dark:text-white leading-tight text-[#4B4B4B]">
                 Dubai real estate is about to {""}
                 <span className="text-[#F88379]">change</span>
               </h1>
@@ -28,28 +28,28 @@ export function HeroSection() {
             <p className="text-base sm:text-lg text-[#686868] leading-relaxed max-w-5xl mx-auto lg:mx-0">
               A new platform built around verified agents, real demand, and private opportunities.
             </p>
-            <h4 className='text-lg text-[#4B4B4B] font-semibold'>Launching soon.</h4>
-            <h5 className='text-2xl text-[#F88379] font-semibold'>Founding Registration</h5>
-            <p className='text-xl text-[#4B4B4B] font-normal'>Not everyone will get the same access.</p>
+            <h4 className='text-xl sm:text-2xl text-[#4B4B4B] font-semibold'>Launching soon.</h4>
+            <h5 className='text-2xl sm:text-3xl text-[#F88379] font-semibold'>Founding Registration</h5>
+            <p className='text-base sm:text-lg text-[#4B4B4B] font-normal'>Not everyone will get the same access.</p>
             <p className="text-base sm:text-lg text-[#686868] leading-relaxed max-w-5xl mx-auto lg:mx-0">
               Wer&apos;e opening early registration to a select group of agents and brokerages before official launch.
             </p>
             <ol className=' space-y-3 pl-2'>
-              <li className='flex items-center gap-2 text-[#4B4B4B] text-xl font-normal'>
+              <li className='flex items-center gap-2 text-[#4B4B4B] text-base sm:text-lg font-normal'>
                 <div className='w-[32px] h-[32px] rounded-full bg-[#F883791A] flex items-center justify-center mb-1'>
                   <Check className="h-4 w-4 text-[#F88379]" />
                 </div>
                 Priority visibility
 
               </li>
-              <li className='flex items-center gap-2 text-[#4B4B4B] text-xl font-normal'>
+              <li className='flex items-center gap-2 text-[#4B4B4B] text-base sm:text-lg font-normal'>
                 <div className='w-[32px] h-[32px] rounded-full bg-[#F883791A] flex items-center justify-center mb-1'>
                   <Check className="h-4 w-4 text-[#F88379]" />
                 </div>
                 Early feature access
 
               </li>
-              <li className='flex items-center gap-2 text-[#4B4B4B] text-xl font-normal'>
+              <li className='flex items-center gap-2 text-[#4B4B4B] text-base sm:text-lg font-normal'>
                 <div className='w-[32px] h-[32px] rounded-full bg-[#F883791A] flex items-center justify-center mb-1'>
                   <Check className="h-4 w-4 text-[#F88379]" />
                 </div>

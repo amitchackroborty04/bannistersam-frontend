@@ -1,10 +1,17 @@
+'use client'
+
+import { useState } from "react";
 import { Building2, Lock, Shield, Target } from "lucide-react";
 import { Button } from "../ui/button";
+import { RegistrationModal } from "../registration-forms/RegistrationModal";
 
 export default function WhatsComing() {
+  const [registrationOpen, setRegistrationOpen] = useState(false);
+
   return (
-    <section className="w-full pt-20 px-4">
-      <div className="container mx-auto text-center">
+    <>
+      <section className="w-full pt-20 px-4">
+        <div className="container mx-auto text-center">
         <div
               className="inline-block rounded-full p-[4px] mb-[48px] !text-base"
               style={{
@@ -24,7 +31,7 @@ export default function WhatsComing() {
             </div>
 
         {/* Heading */}
-        <h2 className="text-3xl md:text-[64px] font-medium text-[#4B4B4B] mb-14">
+        <h2 className="text-[34px] sm:text-[44px] lg:text-[64px] font-medium text-[#4B4B4B] mb-14">
           More than a <span className="text-[#F88379]">portal</span>. Here&apos;s <span className="text-[#F88379]">why.</span>
         </h2>
 
@@ -91,6 +98,7 @@ export default function WhatsComing() {
               }}
             >
               <Button
+                onClick={() => setRegistrationOpen(true)}
                 className="rounded-[8px] px-6 md:px-8 h-[48px] text-sm md:text-base text-[#4B4B4B] 5555bg-transparent"
                 style={{
                   background:
@@ -100,7 +108,13 @@ export default function WhatsComing() {
                Register Early
               </Button>
             </div>
-      </div>
-    </section>
+        </div>
+      </section>
+
+      <RegistrationModal
+        open={registrationOpen}
+        onOpenChange={setRegistrationOpen}
+      />
+    </>
   );
 }
