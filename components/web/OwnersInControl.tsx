@@ -32,7 +32,7 @@ export default function OwnersInControl() {
             </Button>
           </div>
 
-          <h2 className="text-[38px] sm:text-[48px] lg:text-[64px] leading-[1.05] font-medium text-[#4B4B4B] dark:text-white">
+          <h2 className="text-[34px] sm:text-[44px] lg:text-[64px] leading-[1.05] font-medium text-[#4B4B4B] dark:text-white">
             Sell or Rent <span className="text-[#F88379]">with Control.</span>
           </h2>
 
@@ -42,11 +42,11 @@ export default function OwnersInControl() {
             property everywhere.
           </p>
 
-          <ul className="mt-7 space-y-5">
+          <ul className="mt-7 space-y-5 text-left">
             {controlPoints.map((item) => (
               <li
                 key={item}
-                className="flex items-center gap-3 justify-center lg:justify-start text-[#4B4B4B] dark:text-white text-base sm:text-xl font-medium"
+                className="flex items-center gap-3 justify-start text-[#4B4B4B] dark:text-white text-base sm:text-xl font-medium"
               >
                 <span className="h-9 w-9 rounded-full bg-[#E6FFF7] dark:bg-[#17312A] flex items-center justify-center shrink-0">
                   <Check className="h-4 w-4 text-[#37D9A6]" />

@@ -170,7 +170,7 @@ export function PricingSection() {
             </Button>
           </div>
 
-          <h2 className="text-[38px] sm:text-[52px] lg:text-[64px] leading-tight font-medium text-[#4B4B4B] max-w-[924px] mx-auto dark:text-white">
+          <h2 className="text-[34px] sm:text-[44px] lg:text-[64px] leading-tight font-medium text-[#4B4B4B] max-w-[924px] mx-auto dark:text-white">
             Plans built for <span className="text-[#F88379]">UAE property</span>{' '}
             professionals.
           </h2>

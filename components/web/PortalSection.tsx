@@ -31,25 +31,25 @@ export function PortalSection() {
                 Not just a portal
               </Button>
             </div>
-          <h1 className="text-3xl sm:text-3xl lg:text-[64px] !leading-tight font-medium text-[#4B4B4B] dark:text-white">
+          <h1 className="text-[34px] sm:text-[44px] lg:text-[64px] !leading-tight font-medium text-[#4B4B4B] dark:text-white">
             Clearer intent. <span className="text-[#F88379]">Better</span>
             <br />
             <span className="text-[#FF6B5B]">property</span> decisions.
           </h1>
 
-          <p className="mt-4 text-[#686868] dark:text-white/70 max-w-[740px]">
+          <p className="mt-4 text-base sm:text-lg leading-relaxed text-[#686868] dark:text-white/70 max-w-[740px]">
            Deal360 isn&lsquo;t another property portal. It&lsquo;`s a verification-first platform that connects you with verified agents, real listings, and genuine intent—so you can make smarter property decisions in the UAE.
           </p>
         </div>
 
         {/* Right Image */}
-        <div className="order-2 lg:order-2 h-[516px] flex items-center justify-center">
+        <div className="order-2 lg:order-2 h-[260px] sm:h-[360px] lg:h-[516px] flex items-center justify-center mt-8 lg:mt-0">
           <Image
             src="/newbb.png"
             alt="Portal Preview"
             width={1000}
             height={1000}
-            className="w-full h-full object-cover rounded-[16px]"
+            className="w-full h-full object-contain lg:object-cover rounded-[16px]"
             priority
           />
         </div>

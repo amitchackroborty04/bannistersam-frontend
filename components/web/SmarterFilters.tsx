@@ -39,7 +39,7 @@ export default function SmarterFilters() {
             </div>
           </div>
 
-          <h2 className="text-[38px] sm:text-[48px] lg:text-[64px] leading-[1.05] font-medium text-[#4B4B4B] dark:text-white">
+          <h2 className="text-[34px] sm:text-[44px] lg:text-[64px] leading-[1.05] font-medium text-[#4B4B4B] dark:text-white">
             Better filters. <span className="text-[#F88379]">Less friction.</span>
           </h2>
 

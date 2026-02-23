@@ -90,9 +90,6 @@ export function CompanyForm() {
             <SelectContent className='bg-white rounded-[4px]'>
               <SelectItem value="broker">Broker</SelectItem>
               <SelectItem value="agent">Agent</SelectItem>
-              <SelectItem value="brokerage">Brokerage</SelectItem>
-              <SelectItem value="owner">Owner</SelectItem>
-              <SelectItem value="investor">Investor</SelectItem>
             </SelectContent>
           </Select>
         </div>

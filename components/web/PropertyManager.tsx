@@ -47,7 +47,7 @@ export default function PropertyManager() {
             </div>
           </div>
 
-          <h2 className="text-[38px] sm:text-[48px] lg:text-[64px] leading-[1.05] font-medium text-[#4B4B4B] dark:text-white">
+          <h2 className="text-[34px] sm:text-[44px] lg:text-[64px] leading-[1.05] font-medium text-[#4B4B4B] dark:text-white">
             <span className="text-[#7FFFD4]">Property</span>{' '}
             <span className="text-[#F88379]">Manager</span>
           </h2>
@@ -66,11 +66,11 @@ export default function PropertyManager() {
             <p className="text-xl sm:text-2xl font-medium text-[#4B4B4B] dark:text-white mb-4">
               With Property Manager you can:
             </p>
-            <ul className="space-y-4">
+            <ul className="space-y-4 text-left">
               {managerPoints.map((item) => (
                 <li
                   key={item}
-                  className="flex items-center gap-3 justify-center lg:justify-start text-[#4B4B4B] dark:text-white text-base sm:text-xl font-medium"
+                  className="flex items-center gap-3 justify-start text-[#4B4B4B] dark:text-white text-base sm:text-xl font-medium"
                 >
                   <span className="h-8 w-8 rounded-full bg-[#FFEAE6] dark:bg-[#2D2421] flex items-center justify-center shrink-0">
                     <Check className="h-4 w-4 text-[#F88379]" />

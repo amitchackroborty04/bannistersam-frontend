@@ -5,7 +5,7 @@ export default function NotAPortalSection() {
   return (
     <section className="w-full py-14 sm:py-14 px-4 sm:px-6">
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-        <div className="text-center lg:text-left order-2 lg:order-1">
+        <div className="text-center lg:text-left order-1 lg:order-1">
           <div
             className="inline-block rounded-[999px] p-[3px] mb-6"
             style={{
@@ -24,7 +24,7 @@ export default function NotAPortalSection() {
             </Button>
           </div>
 
-          <h2 className="text-[38px] sm:text-[48px] lg:text-[64px] leading-[1.05] font-medium text-[#4B4B4B] dark:text-white max-w-[700px] mx-auto lg:mx-0">
+          <h2 className="text-[34px] sm:text-[44px] lg:text-[64px] leading-[1.05] font-medium text-[#4B4B4B] dark:text-white max-w-[700px] mx-auto lg:mx-0">
             Not another <span className="text-[#F88379]">property portal.</span>
           </h2>
 
@@ -34,7 +34,7 @@ export default function NotAPortalSection() {
           </p>
         </div>
 
-        <div className="flex justify-center lg:justify-end order-1 lg:order-2">
+        <div className="flex justify-center lg:justify-end order-2 lg:order-2">
           <div className="relative w-full  ">
             <Image
               src="/ZenBook Duo 15.png"

@@ -94,8 +94,6 @@ export function UserForm() {
               <SelectItem value="tenant">Tenant</SelectItem>
               <SelectItem value="owner">Owner</SelectItem>
               <SelectItem value="investor">Investor</SelectItem>
-              <SelectItem value="agent">Agent</SelectItem>
-              <SelectItem value="broker">Broker</SelectItem>
             </SelectContent>
           </Select>
         </div>
