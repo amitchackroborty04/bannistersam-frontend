@@ -66,7 +66,7 @@ export function IncentivesSection() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <div className="rounded-[12px] border border-[#DBDBDB] dark:border-white/10 bg-[#F7FFFC] dark:bg-[#142720] p-5 sm:p-6 flex flex-col">
+          <div className="rounded-[12px] border border-[#DBDBDB] dark:border-white/10  dark:bg-[#142720] p-5 sm:p-6 flex flex-col">
               <span className="h-[80px] pt-5 mb-10 w-[80px] r">
                 <Image src="/icon15.png" alt="referral" width={1000} height={1000} className="h-[80px] w-[80px]" />
               </span>
