@@ -47,6 +47,10 @@ export function Navigation() {
     if (!mounted) return
 
     const setActiveByPath = () => {
+      if (pathname === '/') {
+        setActiveSection('')
+        return false
+      }
       if (pathname === '/requirement') {
         setActiveSection('requirements')
         return true
@@ -66,9 +70,10 @@ export function Navigation() {
       const offset = 120 // sticky nav offset
       const scrollPos = window.scrollY + offset
 
-      let current = navItems[0]?.id ?? ''
+      let current = ''
 
       for (const item of navItems) {
+        if (item.id === 'requirements') continue
         if (!item.homeId) continue
         const el = document.getElementById(item.homeId)
         if (!el) continue
@@ -111,7 +116,17 @@ export function Navigation() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-0">
         <div className="flex py-[20px] items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
+          <Link
+            href="/"
+            onClick={(event) => {
+              if (pathname === '/') {
+                event.preventDefault()
+                setActiveSection('')
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }
+            }}
+            className="flex items-center gap-2"
+          >
             <Image
               src="/logo.png"
               alt="Logo"

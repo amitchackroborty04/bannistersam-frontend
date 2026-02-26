@@ -23,6 +23,8 @@ type PropertyStatus = {
 
 type FormData = {
   location: string;
+  budgetMin: string;
+  budgetMax: string;
 
   expectedPrice: string;
   negotiable: boolean;
@@ -156,6 +158,8 @@ export default function RequirementListingForm() {
 
   const [formData, setFormData] = useState<FormData>({
     location: '',
+    budgetMin: '',
+    budgetMax: '',
 
     expectedPrice: '',
     negotiable: true,
@@ -432,9 +436,9 @@ export default function RequirementListingForm() {
               <Label className={labelClass}>Budget (AED) *</Label>
 
               <div className="grid grid-cols-2 gap-3">
-                <Select value={'min'} onValueChange={() => {}}>
+                <Select value={formData.budgetMin} onValueChange={(v) => setField('budgetMin', v)}>
                   <SelectTrigger className={controlClass}>
-                    <SelectValue placeholder="min" />
+                    <SelectValue placeholder="Min" />
                   </SelectTrigger>
                   <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
                     <SelectItem value="200000">200000</SelectItem>
@@ -446,7 +450,7 @@ export default function RequirementListingForm() {
                   </SelectContent>
                 </Select>
 
-                <Select value={'max'} onValueChange={() => {}}>
+                <Select value={formData.budgetMax} onValueChange={(v) => setField('budgetMax', v)}>
                   <SelectTrigger className={controlClass}>
                     <SelectValue placeholder="Max" />
                   </SelectTrigger>
