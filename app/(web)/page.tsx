@@ -1,17 +1,12 @@
 
-
-
-
 'use client'
 
 import { AgentsSection } from '@/components/web/AgentsSection'
 import Brokerage from '@/components/web/Brokerage'
-import Footer from '@/components/web/Footer'
 import { HeroSection } from '@/components/web/HeroSection'
 import { IncentivesSection } from '@/components/web/IncentivesSection'
 import PropertyIntent from '@/components/web/IntentSection'
 import Joindeal from '@/components/web/Joindeal'
-import { Navigation } from '@/components/web/Navigation'
 import OwnersInControl from '@/components/web/OwnersInControl'
 import NotAPortalSection from '@/components/web/NotAPortalSection'
 import { PortalSection } from '@/components/web/PortalSection'
@@ -25,7 +20,7 @@ import WhatsComing from '@/components/web/WhatsComing'
 export default function Home() {
   return (
     <div className="">
-      <Navigation />
+     
 
       {/* Requirements */}
       <section id="requirements">
@@ -68,7 +63,7 @@ export default function Home() {
       <Joindeal />
       <PricingSection />
       <IncentivesSection />
-      <Footer />
+  
     </div>
   )
 }

@@ -1,6 +1,8 @@
 
 'use client'
 
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
@@ -18,21 +20,22 @@ import { RegistrationModal } from '../registration-forms/RegistrationModal'
 
 export function Navigation() {
   const { theme, setTheme, systemTheme } = useTheme()
+  const pathname = usePathname()
 
   const navItems = useMemo(
     () => [
-      { label: 'Requirements', id: 'requirements' },
-      { label: 'Listing Intent', id: 'buying-intent' },
-      { label: 'Agent', id: 'agent' },
-      { label: 'Brokerages', id: 'brokerages' },
-      { label: 'Investor', id: 'investor' },
+      { label: 'Requirements', id: 'requirements', href: '/requirement', homeId: 'requirements' },
+      { label: 'Listing Intent', id: 'buying-intent', href: '/listing-intent', homeId: 'buying-intent' },
+      { label: 'Agent', id: 'agent', href: '/#agent', homeId: 'agent' },
+      { label: 'Brokerages', id: 'brokerages', href: '/#brokerages', homeId: 'brokerages' },
+      { label: 'Investor', id: 'investor', href: '/#investor', homeId: 'investor' },
     ],
     []
   )
 
   const [mounted, setMounted] = useState(false)
-  const [activeSection, setActiveSection] = useState(() => navItems[0].id)
-   const [registrationOpen, setRegistrationOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState(() => navItems[0]?.id ?? '')
+  const [registrationOpen, setRegistrationOpen] = useState(false)
 
   // mount detect
   useEffect(() => {
@@ -43,14 +46,31 @@ export function Navigation() {
   useEffect(() => {
     if (!mounted) return
 
-    const getActive = () => {
+    const setActiveByPath = () => {
+      if (pathname === '/requirement') {
+        setActiveSection('requirements')
+        return true
+      }
+      if (pathname === '/listing-intent') {
+        setActiveSection('buying-intent')
+        return true
+      }
+      if (pathname !== '/') {
+        setActiveSection('')
+        return true
+      }
+      return false
+    }
+
+    const getActiveFromScroll = () => {
       const offset = 120 // sticky nav offset
       const scrollPos = window.scrollY + offset
 
-      let current = navItems[0].id
+      let current = navItems[0]?.id ?? ''
 
       for (const item of navItems) {
-        const el = document.getElementById(item.id)
+        if (!item.homeId) continue
+        const el = document.getElementById(item.homeId)
         if (!el) continue
 
         const top = el.offsetTop
@@ -65,35 +85,33 @@ export function Navigation() {
       setActiveSection(current)
     }
 
-    getActive()
-    window.addEventListener('scroll', getActive, { passive: true })
-    window.addEventListener('resize', getActive)
+    if (setActiveByPath()) {
+      return
+    }
+
+    getActiveFromScroll()
+    window.addEventListener('scroll', getActiveFromScroll, { passive: true })
+    window.addEventListener('resize', getActiveFromScroll)
+    window.addEventListener('hashchange', getActiveFromScroll)
 
     return () => {
-      window.removeEventListener('scroll', getActive)
-      window.removeEventListener('resize', getActive)
+      window.removeEventListener('scroll', getActiveFromScroll)
+      window.removeEventListener('resize', getActiveFromScroll)
+      window.removeEventListener('hashchange', getActiveFromScroll)
     }
-  }, [mounted, navItems])
+  }, [mounted, navItems, pathname])
 
   const resolvedTheme = theme === 'system' ? systemTheme : theme
-
-  const handleNavClick = (id: string) => {
-    setActiveSection(id)
-  }
 
   // ✅ IMPORTANT: return null AFTER all hooks
   if (!mounted) return null
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-[#C9FFED66] shadow-md backdrop-blur">
+    <nav className="sticky top-0 z-50 w-full bg-[#C9FFED66] shadow-md backdrop-blur dark:bg-[#0F1412]/80">
       <div className="container mx-auto px-4 sm:px-6 lg:px-0">
         <div className="flex py-[20px] items-center justify-between">
           {/* Logo */}
-          <a
-            href="#requirements"
-            onClick={() => handleNavClick('requirements')}
-            className="flex items-center gap-2"
-          >
+          <Link href="/" className="flex items-center gap-2">
             <Image
               src="/logo.png"
               alt="Logo"
@@ -102,15 +120,15 @@ export function Navigation() {
               className="w-[148px] h-[48px]"
               priority
             />
-          </a>
+          </Link>
 
           {/* Menu Items (LG unchanged) */}
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.id}
-                href={`#${item.id}`}
-                onClick={() => handleNavClick(item.id)}
+                href={item.href}
+                aria-current={activeSection === item.id ? 'page' : undefined}
                 className={`text-base font-medium transition-colors ${
                   activeSection === item.id
                     ? 'text-[#F88379]'
@@ -118,7 +136,7 @@ export function Navigation() {
                 }`}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -205,9 +223,9 @@ export function Navigation() {
                   <div className="mt-8 flex flex-col gap-3">
                     {navItems.map((item) => (
                       <SheetClose asChild key={item.id}>
-                        <a
-                          href={`#${item.id}`}
-                          onClick={() => handleNavClick(item.id)}
+                        <Link
+                          href={item.href}
+                          aria-current={activeSection === item.id ? 'page' : undefined}
                           className={`rounded-[10px] px-4 py-3 text-base font-medium transition-colors ${
                             activeSection === item.id
                               ? 'text-[#F88379] bg-black/5 dark:bg-white/10'
@@ -215,7 +233,7 @@ export function Navigation() {
                           }`}
                         >
                           {item.label}
-                        </a>
+                        </Link>
                       </SheetClose>
                     ))}
                   </div>

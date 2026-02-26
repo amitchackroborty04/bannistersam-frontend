@@ -1,5 +1,7 @@
 
+import Footer from "@/components/web/Footer";
 import "../globals.css";
+import { Navigation } from "@/components/web/Navigation";
 
 export default function RootLayout({
   children,
@@ -8,9 +10,11 @@ export default function RootLayout({
 }) {
   return (
     <div>
+         <Navigation />
       <div>
         {children}
       </div>
+            <Footer />
     </div>
   );
 }
