@@ -196,7 +196,7 @@ export function HeroSection() {
           {/* ✅ Mobile/Tablet  LG unchanged */}
           <div className="relative flex h-[320px] sm:h-[420px] md:h-[520px] lg:h-full lg:min-h-[940px] items-center justify-center">
             <Image
-              src="/new2x.png"
+              src="/new2xhero.png"
               alt="Hero"
               width={1000}
               height={1000}

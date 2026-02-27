@@ -16,7 +16,7 @@ export default function PropertyManager() {
         <div className="flex justify-center lg:justify-start order-2 lg:order-1">
           <div className="relative w-full max-w-[560px]">
             <Image
-              src="/greenphon.png"
+              src="/blue2x.png"
               alt="Property manager preview"
               width={1000}
               height={1000}

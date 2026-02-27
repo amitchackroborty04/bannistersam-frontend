@@ -8,7 +8,7 @@ export default function SmarterFilters() {
         <div className="flex justify-center lg:justify-start">
           <div className="relative w-full max-w-[560px]">
             <Image
-              src="/redphon.png"
+              src="/smarter2x.png"
               alt="Smarter filters preview"
               width={1000}
               height={1000}

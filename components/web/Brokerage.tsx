@@ -139,7 +139,7 @@ const Brokerage = () => {
           <div className="flex justify-center lg:justify-end">
             <div className="relative w-full max-w-[620px]">
               <Image
-                src="/dabolLapton.png"
+                src="/dabol2x.png"
                 alt="Brokerage dashboards"
                 width={1200}
                 height={1200}

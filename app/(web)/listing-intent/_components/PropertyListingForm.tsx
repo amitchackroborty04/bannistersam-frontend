@@ -2,9 +2,11 @@
 
 
 import { useMemo, useState } from 'react';
-import { BadgeInfo, ChevronLeft, Info,  MapPin, Send } from 'lucide-react';
+import { ChevronDown, ChevronLeft, Info, MapPin, Send } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
+import { InfoBadgeButton } from '@/components/ui/info-badge-button';
+import { InfoModal } from '@/components/ui/info-modal';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
@@ -61,7 +63,7 @@ type FormData = {
   plotSize: string;
   parkingSpaces: string;
   parkingType: string;
-  features: string;
+  features: string[];
   propertyCondition: string;
   furnishing: string;
   chequePreference: string; // rent only
@@ -149,6 +151,37 @@ const COM_CONFIG_FALLBACK: Record<string, string> = {
   'commercial-land': '',
 };
 
+const FEATURE_OPTIONS = [
+  { id: 'bathtub', label: 'Bathtub' },
+  { id: 'balcony', label: 'Balcony' },
+  { id: 'pet-allowed', label: 'Pet allowed' },
+  { id: 'chiller-free', label: 'Chiller Free' },
+  {
+    id: 'maids-room',
+    label: "Maid's Room",
+    info: {
+      title: "Maid's room",
+      text: 'Separate room intended for live-in staff. Not counted as a bedroom.',
+    },
+  },
+  {
+    id: 'study',
+    label: 'Study',
+    info: {
+      title: 'Study',
+      text: 'Separate room used as a home office or study. Not counted as a bedroom.',
+    },
+  },
+  {
+    id: 'vastu-compliant',
+    label: 'Vastu Compliant',
+    info: {
+      title: 'Vastu Compliant',
+      text: 'Indicates that the seller or agent considers the property to be Vastu compliant. Buyers are advised to verify this independently.',
+    },
+  },
+];
+
 const getPositionTypeOptions = (property: PropertyType, subType: string) => {
   return property === 'residential' ? RES_POSITION_TYPES[subType] ?? [] : COM_POSITION_TYPES[subType] ?? [];
 };
@@ -161,6 +194,10 @@ const getDefaultPositionType = (property: PropertyType, subType: string) => {
 export default function PropertyListingForm() {
   const [propertyType, setPropertyType] = useState<PropertyType>('residential');
   const [transactionType, setTransactionType] = useState<TransactionType>('sale');
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [infoItems, setInfoItems] = useState<string[] | null>(null);
+  const [infoTitle, setInfoTitle] = useState('Information');
+  const [featuresOpen, setFeaturesOpen] = useState(false);
 
   const isResidential = propertyType === 'residential';
   const isCommercial = propertyType === 'commercial';
@@ -168,6 +205,11 @@ export default function PropertyListingForm() {
   const isRent = transactionType === 'rent';
 
   const subTypes = useMemo(() => (isResidential ? residentialSubTypes : commercialSubTypes), [isResidential]);
+  const openInfoModal = (items?: string[], title?: string) => {
+    setInfoItems(items ?? null);
+    setInfoTitle(title ?? 'Information');
+    setInfoOpen(true);
+  };
 
   const [formData, setFormData] = useState<FormData>({
     location: '',
@@ -200,7 +242,7 @@ export default function PropertyListingForm() {
     plotSize: '',
     parkingSpaces: '1',
     parkingType: 'any',
-    features: 'bathtub',
+    features: [],
     propertyCondition: 'all',
     furnishing: 'fully-furnished',
     chequePreference: '1-cheque',
@@ -304,8 +346,16 @@ export default function PropertyListingForm() {
     });
   };
 
+  const toggleFeature = (featureId: string) => {
+    setFormData((p) => {
+      const exists = p.features.includes(featureId);
+      return { ...p, features: exists ? p.features.filter((x) => x !== featureId) : [...p.features, featureId] };
+    });
+  };
+
   return (
-    <div className="bg-[#F8F9FA] py-10">
+    <div className=" py-10">
+      <InfoModal open={infoOpen} onOpenChange={setInfoOpen} items={infoItems ?? undefined} title={infoTitle} />
       {/* Top tabs */}
       <div className="pt-4 pb-14">
         <div className="container mx-auto flex flex-col items-center gap-3 px-4">
@@ -377,10 +427,12 @@ export default function PropertyListingForm() {
             <div className="md:col-span-7">
               
               <Label className={`${labelClass} flex gap-2 items-center`}>
-                <span><MapPin className='w-4 h-4' /></span>
+                <span>
+                  <MapPin className="h-4 w-4" />
+                </span>
                 {isRent ? 'Preferred Locations *' : 'Location *'}
                 <span>
-                      <BadgeInfo className='w-4 h-4' />
+                  <InfoBadgeButton onClick={() => openInfoModal(['You can select multiple locations.'], 'Location Info')} />
                 </span>
               </Label>
               <Select value={formData.location} onValueChange={(v) => setField('location', v)}>
@@ -402,7 +454,7 @@ export default function PropertyListingForm() {
                   <div className="flex items-center gap-2">
                     <span className="flex items-center gap-2 text-sm text-[#4B4B4B]">
                       Ideal for *
-                      <BadgeInfo className="h-4 w-4" />
+                      <InfoBadgeButton onClick={openInfoModal} />
                     </span>
                   </div>
                   <div className="mt-2 grid grid-cols-3 rounded-[8px]  bg-[#F1F5F9] p-1">
@@ -510,7 +562,11 @@ export default function PropertyListingForm() {
                   </div>
 
                   <div>
-                    <Label className={`labelClass !text-[#4B4B4B]`}>4% DLD calculated*</Label>
+                    <Label className={`${labelClass} flex items-center gap-2`}>
+                      4% DLD calculated*
+                      <InfoBadgeButton onClick={openInfoModal} />
+                    </Label>
+                    
                     <Input
                       className={controlClass}
                       placeholder="100,000"
@@ -744,7 +800,9 @@ export default function PropertyListingForm() {
                 <div>
                   <Label className={`${labelClass} flex items-center gap-2`}>
                     Bedrooms *
-                    <BadgeInfo className="h-4 w-4" />
+                    <InfoBadgeButton
+                      onClick={() => openInfoModal(["Bedrooms do not include maid's room or Studies"], 'Info/bedrooms')}
+                    />
                   </Label>
                   <Select value={formData.bedrooms} onValueChange={(v) => setField('bedrooms', v)}>
                     <SelectTrigger className={controlClass}>
@@ -767,7 +825,14 @@ export default function PropertyListingForm() {
                 <div>
                   <Label className={`${labelClass} flex items-center gap-2`}>
                     Bathrooms *
-                    <BadgeInfo className="h-4 w-4" />
+                    <InfoBadgeButton
+                      onClick={() =>
+                        openInfoModal(
+                          ['Total number of bathrooms, including powder room and cloakrooms.'],
+                          'Bathroom'
+                        )
+                      }
+                    />
                   </Label>
                   <Select value={formData.bathrooms} onValueChange={(v) => setField('bathrooms', v)}>
                     <SelectTrigger className={controlClass}>
@@ -831,7 +896,11 @@ export default function PropertyListingForm() {
               <div>
                 <Label className={`${labelClass} flex items-center gap-2`}>
                   Parking Spaces (Min)
-                  <BadgeInfo className="h-4 w-4" />
+                  <InfoBadgeButton
+                    onClick={() =>
+                      openInfoModal(['Number of allocated parking spaces included with the property.'], 'Parking space')
+                    }
+                  />
                 </Label>
                 <Select value={formData.parkingSpaces} onValueChange={(v) => setField('parkingSpaces', v)}>
                   <SelectTrigger className={controlClass}>
@@ -866,21 +935,46 @@ export default function PropertyListingForm() {
             <div className="grid gap-4 md:grid-cols-4">
               <div>
                 <Label className={labelClass}>Features</Label>
-                <Select value={formData.features} onValueChange={(v) => setField('features', v)}>
-                  <SelectTrigger className={controlClass}>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                    <SelectItem value="bathtub">Bathtub</SelectItem>
-                    <SelectItem value="balcony">Balcony</SelectItem>
-                    <SelectItem value="pet-allowed">Pet allowed</SelectItem>
-                    <SelectItem value="chiller-free">Chiller Free</SelectItem>
-                    <SelectItem value="maids-room">Maid&apos;s Room</SelectItem>
-                    <SelectItem value="study">Study</SelectItem>
-                    <SelectItem value="vastu-compliant">Vastu Compliant</SelectItem>
-                    <SelectItem value="type">Type</SelectItem>
-                  </SelectContent>
-                </Select>
+                <button
+                  type="button"
+                  onClick={() => setFeaturesOpen((v) => !v)}
+                  className={`${controlClass} flex items-center justify-between text-left`}
+                >
+                  <span className="text-[#3d4350]">
+                    {formData.features.length > 0 ? `Selected (${formData.features.length})` : 'Select features'}
+                  </span>
+                  <ChevronDown className="h-4 w-4 text-[#7b8492]" />
+                </button>
+                {featuresOpen && (
+                  <div className="mt-2 space-y-2">
+                    {FEATURE_OPTIONS.map((option) => {
+                      const optionId = `feature-${option.id}`;
+                      return (
+                        <div
+                          key={option.id}
+                          className="flex items-center justify-between rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-3 text-sm text-[#3d4350]"
+                        >
+                          <label htmlFor={optionId} className="flex items-center gap-3">
+                            <input
+                              id={optionId}
+                              type="checkbox"
+                              checked={formData.features.includes(option.id)}
+                              onChange={() => toggleFeature(option.id)}
+                              className="h-4 w-4 rounded border-[#CAD5E2] accent-[#7FFFD4]"
+                            />
+                            {option.label}
+                          </label>
+                          {option.info && (
+                            <InfoBadgeButton
+                              onClick={() => openInfoModal([option.info.text], option.info.title)}
+                              className="text-[#7b8492]"
+                            />
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
 
               <div>
@@ -974,8 +1068,11 @@ export default function PropertyListingForm() {
             </div>
             {isSale && (
               <>
-                <div>
+                <div className="relative">
                   <Label className={labelClass}>Preferred Finance Method *</Label>
+                  <div className="absolute right-3 top-[50%] translate-y-[50%]">
+                    <InfoBadgeButton onClick={openInfoModal} />
+                  </div>
                   <div className="grid gap-3 md:grid-cols-3">
                     {[
                       { k: 'cash', t: 'Cash Buyer' },
@@ -1048,7 +1145,19 @@ export default function PropertyListingForm() {
               {/* Commercial rent Key Money (image 4) */}
               {isCommercial && (
                 <div>
-                  <Label className={labelClass}>Key Money*</Label>
+                  <Label className={`${labelClass} flex items-center gap-2`}>
+                    Key Money*
+                    <InfoBadgeButton
+                      onClick={() =>
+                        openInfoModal(
+                          [
+                            'A one-time goodwill payment sometimes requested for commercial spaces that are fully or partially fitted and ready to operate, such as with existing fit-out, fixtures, or furniture.',
+                          ],
+                          'Key Money'
+                        )
+                      }
+                    />
+                  </Label>
                   <div className="grid grid-cols-3 gap-3 rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-2">
                     <label className="flex items-center gap-2 text-sm">
                       <input
@@ -1180,7 +1289,19 @@ export default function PropertyListingForm() {
               {/* Commercial sale Key Money (image 2) */}
               {isCommercial && (
                 <div>
-                  <Label className={labelClass}>Key Money*</Label>
+                  <Label className={`${labelClass} flex items-center gap-2`}>
+                    Key Money*
+                    <InfoBadgeButton
+                      onClick={() =>
+                        openInfoModal(
+                          [
+                            'A one-time goodwill payment sometimes requested for commercial spaces that are fully or partially fitted and ready to operate, such as with existing fit-out, fixtures, or furniture.',
+                          ],
+                          'Key Money'
+                        )
+                      }
+                    />
+                  </Label>
                   <div className="grid grid-cols-3 gap-3 rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-2">
                     <label className="flex items-center gap-2 text-sm">
                       <input

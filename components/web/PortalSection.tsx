@@ -45,7 +45,7 @@ export function PortalSection() {
         {/* Right Image */}
         <div className="order-2 lg:order-2 h-[260px] sm:h-[360px] lg:h-[516px] flex items-center justify-center mt-8 lg:mt-0">
           <Image
-            src="/newbb.png"
+            src="/red2x.png"
             alt="Portal Preview"
             width={1000}
             height={1000}
