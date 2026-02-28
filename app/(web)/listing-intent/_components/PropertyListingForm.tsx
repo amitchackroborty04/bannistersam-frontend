@@ -18,6 +18,7 @@ type TransactionType = 'rent' | 'sale';
 
 type DealSignal = 'distressed' | 'below-market' | 'quick-sale' | 'motivated-seller';
 type IdealFor = 'end-use' | 'investment' | 'both';
+type AmenityGroup = 'building-community' | 'unit-level' | 'private-amenities';
 
 type PropertyStatus = {
   occupancy?: 'all' | 'vacant' | 'tenanted';
@@ -68,6 +69,13 @@ type FormData = {
   furnishing: string;
   chequePreference: string; // rent only
   amenities: string;
+  amenitiesGroups: AmenityGroup[];
+  amenitiesBuilding: string[];
+  amenitiesUnit: string[];
+  amenitiesPrivate: string[];
+  amenitiesBuildingOther: string;
+  amenitiesUnitOther: string;
+  amenitiesPrivateOther: string;
   viewingOption: string;
 
   // Buyer profile (sale)
@@ -121,6 +129,40 @@ const commercialSubTypes = [
 ];
 
 const rowTypes = ['Single Row', 'Back-to-Back'];
+
+
+
+const BUILDING_COMMUNITY_AMENITIES = [
+  { id: 'central-ac', label: 'Central A/C' },
+  { id: 'shared-pool', label: 'Shared Pool' },
+  { id: 'shared-gym', label: 'Shared Gym' },
+  { id: 'shared-spa', label: 'Shared Spa' },
+  { id: 'concierge', label: 'Concierge' },
+  { id: 'serviced', label: 'Serviced' },
+  { id: 'childrens-play-area', label: "Children's Play Area" },
+  { id: 'childrens-pool', label: "Children's Pool" },
+  { id: 'bbq-area', label: 'BBQ Area' },
+  { id: 'co-working-space', label: 'Co-working space' },
+  { id: 'paddle-court', label: 'Paddle Court' },
+  { id: 'gated-community', label: 'Gated Community' },
+];
+
+const UNIT_LEVEL_AMENITIES = [
+  { id: 'balcony', label: 'Balcony' },
+  { id: 'pets-allowed', label: 'Pets Allowed' },
+  { id: 'built-in-wardrobes', label: 'Built-in Wardrobes' },
+  { id: 'walk-in-closet', label: 'Walk-in Closet' },
+  { id: 'built-in-kitchen-appliances', label: 'Built-in Kitchen Appliances' },
+];
+
+const PRIVATE_AMENITIES = [
+  { id: 'private-garden', label: 'Private Garden' },
+  { id: 'private-pool', label: 'Private Pool' },
+  { id: 'private-gym', label: 'Private Gym' },
+  { id: 'private-jacuzzi', label: 'Private Jacuzzi' },
+];
+
+
 
 const RES_POSITION_TYPES: Record<string, string[]> = {
   apartment: ['Standard Apartment', 'Penthouse', 'Duplex', 'Serviced Apartment'],
@@ -191,6 +233,8 @@ const getDefaultPositionType = (property: PropertyType, subType: string) => {
   return options[0] ?? '';
 };
 
+
+
 export default function PropertyListingForm() {
   const [propertyType, setPropertyType] = useState<PropertyType>('residential');
   const [transactionType, setTransactionType] = useState<TransactionType>('sale');
@@ -198,6 +242,9 @@ export default function PropertyListingForm() {
   const [infoItems, setInfoItems] = useState<string[] | null>(null);
   const [infoTitle, setInfoTitle] = useState('Information');
   const [featuresOpen, setFeaturesOpen] = useState(false);
+  const [amenitiesBuildingOpen, setAmenitiesBuildingOpen] = useState(false);
+  const [amenitiesUnitOpen, setAmenitiesUnitOpen] = useState(false);
+  const [amenitiesPrivateOpen, setAmenitiesPrivateOpen] = useState(false);
 
   const isResidential = propertyType === 'residential';
   const isCommercial = propertyType === 'commercial';
@@ -210,6 +257,10 @@ export default function PropertyListingForm() {
     setInfoTitle(title ?? 'Information');
     setInfoOpen(true);
   };
+
+
+
+
 
   const [formData, setFormData] = useState<FormData>({
     location: '',
@@ -247,6 +298,13 @@ export default function PropertyListingForm() {
     furnishing: 'fully-furnished',
     chequePreference: '1-cheque',
     amenities: 'multi-select',
+    amenitiesGroups: ['building-community', 'unit-level', 'private-amenities'],
+    amenitiesBuilding: [],
+    amenitiesUnit: [],
+    amenitiesPrivate: [],
+    amenitiesBuildingOther: '',
+    amenitiesUnitOther: '',
+    amenitiesPrivateOther: '',
     viewingOption: 'multi-select',
 
     financeMethod: ['cash'],
@@ -279,6 +337,14 @@ export default function PropertyListingForm() {
 
   const setField = <K extends keyof FormData>(key: K, value: FormData[K]) => {
     setFormData((p) => ({ ...p, [key]: value }));
+  };
+
+  const toggleAmenity = (field: 'amenitiesBuilding' | 'amenitiesUnit' | 'amenitiesPrivate', id: string) => {
+    setFormData((p) => {
+      const current = p[field];
+      const next = current.includes(id) ? current.filter((v) => v !== id) : [...current, id];
+      return { ...p, [field]: next };
+    });
   };
 
   const selectedSubTypeLabel = useMemo(() => {
@@ -329,6 +395,8 @@ export default function PropertyListingForm() {
     resetForTabs(propertyType, type);
   };
 
+  const [amenitiesMainOpen, setAmenitiesMainOpen] = useState(false);
+
   const onSelectSubType = (id: string) => {
     const nextPosition = getDefaultPositionType(propertyType, id);
     setFormData((p) => ({
@@ -363,18 +431,16 @@ export default function PropertyListingForm() {
             <button
               type="button"
               onClick={() => onPropertyTypeChange('residential')}
-              className={`h-10 rounded-[8px] text-[14px] font-medium transition ${
-                isResidential ? 'bg-[#f58d86] text-white' : 'text-[#30343a]'
-              }`}
+              className={`h-10 rounded-[8px] text-[14px] font-medium transition ${isResidential ? 'bg-[#f58d86] text-white' : 'text-[#30343a]'
+                }`}
             >
               Residential
             </button>
             <button
               type="button"
               onClick={() => onPropertyTypeChange('commercial')}
-              className={`h-10 rounded-[8px] text-[14px] font-medium transition ${
-                isCommercial ? 'bg-[#f58d86] text-white' : 'text-[#30343a]'
-              }`}
+              className={`h-10 rounded-[8px] text-[14px] font-medium transition ${isCommercial ? 'bg-[#f58d86] text-white' : 'text-[#30343a]'
+                }`}
             >
               Commercial
             </button>
@@ -384,18 +450,16 @@ export default function PropertyListingForm() {
             <button
               type="button"
               onClick={() => onTransactionTypeChange('sale')}
-              className={`h-9 rounded-[8px] text-[14px] font-medium transition ${
-                isSale ? 'bg-[#f58d86] text-white' : 'text-[#30343a]'
-              }`}
+              className={`h-9 rounded-[8px] text-[14px] font-medium transition ${isSale ? 'bg-[#f58d86] text-white' : 'text-[#30343a]'
+                }`}
             >
               Sale
             </button>
             <button
               type="button"
               onClick={() => onTransactionTypeChange('rent')}
-              className={`h-9 rounded-[8px] text-[14px] font-medium transition ${
-                isRent ? 'bg-[#f58d86] text-white' : 'text-[#30343a]'
-              }`}
+              className={`h-9 rounded-[8px] text-[14px] font-medium transition ${isRent ? 'bg-[#f58d86] text-white' : 'text-[#30343a]'
+                }`}
             >
               Rent
             </button>
@@ -425,7 +489,7 @@ export default function PropertyListingForm() {
           {/* Top fields (exact like images) */}
           <div className="grid gap-4 md:grid-cols-12">
             <div className="md:col-span-7">
-              
+
               <Label className={`${labelClass} flex gap-2 items-center`}>
                 <span>
                   <MapPin className="h-4 w-4" />
@@ -454,7 +518,16 @@ export default function PropertyListingForm() {
                   <div className="flex items-center gap-2">
                     <span className="flex items-center gap-2 text-sm text-[#4B4B4B]">
                       Ideal for *
-                      <InfoBadgeButton onClick={openInfoModal} />
+                      <InfoBadgeButton
+                        onClick={() =>
+                          openInfoModal(
+                            [
+                              'Ideal For indicates whether the property is best suited for personal use, investment purposes, or both.',
+                            ],
+                            'Ideal For'
+                          )
+                        }
+                      />
                     </span>
                   </div>
                   <div className="mt-2 grid grid-cols-3 rounded-[8px]  bg-[#F1F5F9] p-1">
@@ -467,9 +540,8 @@ export default function PropertyListingForm() {
                         key={x.k}
                         type="button"
                         onClick={() => setField('idealFor', x.k as IdealFor)}
-                        className={`rounded-[8px] px-3 py-2 text-xs font-medium ${
-                          formData.idealFor === x.k ? 'bg-white' : ''
-                        }`}
+                        className={`rounded-[8px] px-3 py-2 text-xs font-medium ${formData.idealFor === x.k ? 'bg-white' : ''
+                          }`}
                       >
                         {x.t}
                       </button>
@@ -480,33 +552,33 @@ export default function PropertyListingForm() {
             </div>
 
             <div className="md:col-span-5">
-             <div className=' relative '>
-               <Label className={labelClass}>{isSale ? 'Expected Price (AED) *' : 'Expected Price (AED) *'}</Label>
-              <Input
-                className={controlClass}
-                placeholder={isRent ? 'e.g. 70,000' : 'e.g. 2,500,000'}
-                value={formData.expectedPrice}
-                onChange={(e) => setField('expectedPrice', e.target.value)}
-              />
-              {/* Negotiable */}
-              <div className="mt-2 flex items-center justify-end gap-2 text-xs text-[#6f7783] absolute top-[50%] translate-y-[-30%] right-2">
-                <span>Negotiable</span>
-                <button
-                  type="button"
-                  onClick={() => setField('negotiable', true)}
-                  className={`px-3 py-1 text-xs font-semibold ${formData.negotiable ? selectedAccent : ghost}`}
-                >
-                  Yes
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setField('negotiable', false)}
-                  className={`px-3 py-1 text-xs font-semibold ${!formData.negotiable ? selectedAccent : ghost}`}
-                >
-                  No
-                </button>
+              <div className=' relative '>
+                <Label className={labelClass}>{isSale ? 'Expected Price (AED) *' : 'Expected Price (AED) *'}</Label>
+                <Input
+                  className={controlClass}
+                  placeholder={isRent ? 'e.g. 70,000' : 'e.g. 2,500,000'}
+                  value={formData.expectedPrice}
+                  onChange={(e) => setField('expectedPrice', e.target.value)}
+                />
+                {/* Negotiable */}
+                <div className="mt-2 flex items-center justify-end gap-2 text-xs text-[#6f7783] absolute top-[50%] translate-y-[-30%] right-2">
+                  <span>Negotiable</span>
+                  <button
+                    type="button"
+                    onClick={() => setField('negotiable', true)}
+                    className={`px-3 py-1 text-xs font-semibold ${formData.negotiable ? selectedAccent : ghost}`}
+                  >
+                    Yes
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setField('negotiable', false)}
+                    className={`px-3 py-1 text-xs font-semibold ${!formData.negotiable ? selectedAccent : ghost}`}
+                  >
+                    No
+                  </button>
+                </div>
               </div>
-             </div>
 
 
               {/* RENT: Monthly/Annually + Service charges (same row like image) */}
@@ -516,24 +588,22 @@ export default function PropertyListingForm() {
                     <button
                       type="button"
                       onClick={() => setField('priceType', 'monthly')}
-                      className={`px-4 py-1 text-sm font-medium ${
-                        formData.priceType === 'monthly' ? 'bg-[#f58d86] text-white' : 'bg-white text-[#3d4350]'
-                      }`}
+                      className={`px-4 py-1 text-sm font-medium ${formData.priceType === 'monthly' ? 'bg-[#f58d86] text-white' : 'bg-white text-[#3d4350]'
+                        }`}
                     >
                       Monthly
                     </button>
                     <button
                       type="button"
                       onClick={() => setField('priceType', 'annually')}
-                      className={`px-4 py-1 text-sm font-medium ${
-                        formData.priceType === 'annually' ? 'bg-[#f58d86] text-white' : 'bg-white text-[#3d4350]'
-                      }`}
+                      className={`px-4 py-1 text-sm font-medium ${formData.priceType === 'annually' ? 'bg-[#f58d86] text-white' : 'bg-white text-[#3d4350]'
+                        }`}
                     >
                       Annually
                     </button>
                   </div>
 
-                
+
                 </div>
               )}
 
@@ -564,9 +634,18 @@ export default function PropertyListingForm() {
                   <div>
                     <Label className={`${labelClass} flex items-center gap-2`}>
                       4% DLD calculated*
-                      <InfoBadgeButton onClick={openInfoModal} />
+                      <InfoBadgeButton
+                        onClick={() =>
+                          openInfoModal(
+                            [
+                              'DLD amount is typically calculated at 4% of the agreed sale price. This may vary depending on the project or transaction structure. (Auto = Sum calculated 4% of asking price can be corrected or removed)',
+                            ],
+                            'DLD Information'
+                          )
+                        }
+                      />
                     </Label>
-                    
+
                     <Input
                       className={controlClass}
                       placeholder="100,000"
@@ -615,9 +694,8 @@ export default function PropertyListingForm() {
                   key={type.id}
                   type="button"
                   onClick={() => onSelectSubType(type.id)}
-                  className={`rounded-[8px] border border-[#FFC1BC] px-4 py-2 text-center text-base text-[#4B4B4B] font-medium transition ${
-                    formData.selectedSubType === type.id ? 'bg-[#FFDEDB] text-[#3b3b3b]' : 'bg-white text-[#3b3b3b]'
-                  }`}
+                  className={`rounded-[8px] border border-[#FFC1BC] px-4 py-2 text-center text-base text-[#4B4B4B] font-medium transition ${formData.selectedSubType === type.id ? 'bg-[#FFDEDB] text-[#3b3b3b]' : 'bg-white text-[#3b3b3b]'
+                    }`}
                 >
                   {type.icon.startsWith('/') ? (
                     <Image src={type.icon} width={1000} height={1000} alt={type.label} className="mx-auto mb-1 h-6 w-6" />
@@ -639,9 +717,8 @@ export default function PropertyListingForm() {
                       key={item}
                       type="button"
                       onClick={() => setField('positionType', item)}
-                      className={`rounded-[8px] border border-[#FFC1BC] px-4 py-2 text-sm font-medium ${
-                        formData.positionType === item ? 'bg-[#FFDEDB]' : 'bg-white'
-                      }`}
+                      className={`rounded-[8px] border border-[#FFC1BC] px-4 py-2 text-sm font-medium ${formData.positionType === item ? 'bg-[#FFDEDB]' : 'bg-white'
+                        }`}
                     >
                       {item}
                     </button>
@@ -659,9 +736,8 @@ export default function PropertyListingForm() {
                       key={item}
                       type="button"
                       onClick={() => setField('rowType', item)}
-                      className={`rounded-[8px] border border-[#FFC1BC] px-4 py-2 text-sm font-medium ${
-                        formData.rowType === item ? 'bg-[#FFDEDB]' : 'bg-white'
-                      }`}
+                      className={`rounded-[8px] border border-[#FFC1BC] px-4 py-2 text-sm font-medium ${formData.rowType === item ? 'bg-[#FFDEDB]' : 'bg-white'
+                        }`}
                     >
                       {item}
                     </button>
@@ -674,17 +750,17 @@ export default function PropertyListingForm() {
               Select configuration : {configLine}
             </div>
 
-          
-              <div className=' space-y-2'>
-                <Label className="text-xl text-[#4B4B4B] font-medium">Configuration</Label>
-                <Input
-                  className={`${controlClass} placeholder:text-[#A5A5A5] `}
-                  placeholder="Type Configuration"
-                  value={formData.configuration}
-                  onChange={(e) => setField('configuration', e.target.value)}
-                />
-              </div>
-       
+
+            <div className=' space-y-2'>
+              <Label className="text-xl text-[#4B4B4B] font-medium">Configuration</Label>
+              <Input
+                className={`${controlClass} placeholder:text-[#A5A5A5] `}
+                placeholder="Type Configuration"
+                value={formData.configuration}
+                onChange={(e) => setField('configuration', e.target.value)}
+              />
+            </div>
+
           </section>
 
           {/* Property Status */}
@@ -700,18 +776,16 @@ export default function PropertyListingForm() {
                     <button
                       type="button"
                       onClick={() => setField('occupancyRent', 'vacant')}
-                      className={`rounded-[8px] px-4 py-2 text-sm font-medium ${
-                        formData.occupancyRent === 'vacant' ? 'bg-white' : ''
-                      }`}
+                      className={`rounded-[8px] px-4 py-2 text-sm font-medium ${formData.occupancyRent === 'vacant' ? 'bg-white' : ''
+                        }`}
                     >
                       Vacant
                     </button>
                     <button
                       type="button"
                       onClick={() => setField('occupancyRent', 'tenanted')}
-                      className={`rounded-[8px] px-4 py-2 text-sm font-medium ${
-                        formData.occupancyRent === 'tenanted' ? 'bg-white' : ''
-                      }`}
+                      className={`rounded-[8px] px-4 py-2 text-sm font-medium ${formData.occupancyRent === 'tenanted' ? 'bg-white' : ''
+                        }`}
                     >
                       Tenanted
                     </button>
@@ -783,7 +857,7 @@ export default function PropertyListingForm() {
                           className={`rounded-[8px] px-2 py-2 text-xs font-medium ${
                             //eslint-disable-next-line
                             (formData.propertyStatus as any)[group.key] === item.v ? 'bg-white' : ''
-                          }`}
+                            }`}
                         >
                           {item.t}
                         </button>
@@ -933,20 +1007,20 @@ export default function PropertyListingForm() {
             </div>
 
             <div className="grid gap-4 md:grid-cols-4">
-              <div>
+              <div className="relative">
                 <Label className={labelClass}>Features</Label>
                 <button
                   type="button"
                   onClick={() => setFeaturesOpen((v) => !v)}
-                  className={`${controlClass} flex items-center justify-between text-left`}
+                  className={`${controlClass} w-full flex items-center justify-between text-left pr-3`}
                 >
-                  <span className="text-[#3d4350]">
+                  <span className="text-[#3d4350] px-3">
                     {formData.features.length > 0 ? `Selected (${formData.features.length})` : 'Select features'}
                   </span>
                   <ChevronDown className="h-4 w-4 text-[#7b8492]" />
                 </button>
                 {featuresOpen && (
-                  <div className="mt-2 space-y-2">
+                  <div className="absolute left-0 right-0 top-full z-20 mt-2 max-h-[50vh] space-y-2 overflow-auto rounded-[8px] border border-[#CAD5E2] bg-white p-2 shadow-lg">
                     {FEATURE_OPTIONS.map((option) => {
                       const optionId = `feature-${option.id}`;
                       return (
@@ -1036,19 +1110,201 @@ export default function PropertyListingForm() {
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
-              <div>
+              <div className='relative'>
                 <Label className={labelClass}>Choose Amenities</Label>
-                <Select value={formData.amenities} onValueChange={(v) => setField('amenities', v)}>
-                  <SelectTrigger className={controlClass}>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                    <SelectItem value="building-community">Building/community</SelectItem>
-                    <SelectItem value="unit-level">Unit-level Amenities</SelectItem>
-                    <SelectItem value="private-amenities">Private Amenities</SelectItem>
-                    <SelectItem value="type-amenities">Type amenities</SelectItem>
-                  </SelectContent>
-                </Select>
+
+                {/* Main Amenities Dropdown Button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    // Toggle main dropdown - opens/closes the container with the three options
+                    if (amenitiesBuildingOpen || amenitiesUnitOpen || amenitiesPrivateOpen) {
+                      // If any sub-dropdown is open, close everything
+                      setAmenitiesBuildingOpen(false);
+                      setAmenitiesUnitOpen(false);
+                      setAmenitiesPrivateOpen(false);
+                    } else {
+                      // If nothing is open, open the main container (shows the three options)
+                      // We need to track main dropdown state - let's add a new state
+                      setAmenitiesMainOpen(!amenitiesMainOpen);
+                    }
+                  }}
+                  className={`${controlClass} w-full flex items-center justify-between text-left mb-2 pr-3`}
+                >
+                  <span className="text-[#3d4350] px-3">
+                    {formData.amenitiesBuilding.length > 0 ||
+                      formData.amenitiesUnit.length > 0 ||
+                      formData.amenitiesPrivate.length > 0
+                      ? `Amenities Selected (${formData.amenitiesBuilding.length + formData.amenitiesUnit.length + formData.amenitiesPrivate.length})`
+                      : 'Select Amenities'}
+                  </span>
+                  <ChevronDown className={`!h-4 !w-4 text-[#7b8492] transition-transform ${amenitiesMainOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {/* Three Dropdown Options - Shown only when main dropdown is open */}
+                {amenitiesMainOpen && (
+                  <div className="space-y-3 mt-2 absolute left-0 right-0 top-full z-20 bg-white rounded-[8px] border border-[#CAD5E2] p-3 shadow-lg">
+
+                    {/* Building/Community Dropdown */}
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          // Toggle only this dropdown
+                          setAmenitiesBuildingOpen(!amenitiesBuildingOpen);
+                          // Close other dropdowns
+                          setAmenitiesUnitOpen(false);
+                          setAmenitiesPrivateOpen(false);
+                        }}
+                        className={`${controlClass} w-full flex items-center justify-between text-left pr-2`}
+                      >
+                        <span className="text-[#3d4350] px-3">
+                          {formData.amenitiesBuilding.length > 0
+                            ? `Building/Community (${formData.amenitiesBuilding.length})`
+                            : 'Building/Community'}
+                        </span>
+                        <ChevronDown className={`h-4 w-4 text-[#7b8492] transition-transform ${amenitiesBuildingOpen ? 'rotate-180' : ''}`} />
+                      </button>
+
+                      {amenitiesBuildingOpen && (
+                        <div className="mt-2 space-y-2 rounded-[8px] border border-[#CAD5E2] bg-white p-2">
+                          {BUILDING_COMMUNITY_AMENITIES.map((item) => {
+                            const optionId = `amenities-building-${item.id}`;
+                            return (
+                              <div
+                                key={item.id}
+                                className="flex items-center justify-between rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-3 text-sm text-[#3d4350]"
+                              >
+                                <label htmlFor={optionId} className="flex items-center gap-3">
+                                  <input
+                                    id={optionId}
+                                    type="checkbox"
+                                    checked={formData.amenitiesBuilding.includes(item.id)}
+                                    onChange={() => toggleAmenity('amenitiesBuilding', item.id)}
+                                    className="h-4 w-4 rounded border-[#CAD5E2] accent-[#7FFFD4]"
+                                  />
+                                  {item.label}
+                                </label>
+                              </div>
+                            );
+                          })}
+                          <Input
+                            className="h-10 rounded-[8px] border border-[#CAD5E2] bg-white text-sm text-[#3d4350]"
+                            placeholder="Type amenities"
+                            value={formData.amenitiesBuildingOther}
+                            onChange={(e) => setField('amenitiesBuildingOther', e.target.value)}
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Unit-Level Amenities Dropdown */}
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          // Toggle only this dropdown
+                          setAmenitiesUnitOpen(!amenitiesUnitOpen);
+                          // Close other dropdowns
+                          setAmenitiesBuildingOpen(false);
+                          setAmenitiesPrivateOpen(false);
+                        }}
+                        className={`${controlClass} w-full flex items-center justify-between text-left pr-2`}
+                      >
+                        <span className="text-[#3d4350] px-3">
+                          {formData.amenitiesUnit.length > 0
+                            ? `Unit-Level (${formData.amenitiesUnit.length})`
+                            : 'Unit-Level Amenities'}
+                        </span>
+                        <ChevronDown className={`h-4 w-4 text-[#7b8492] transition-transform ${amenitiesUnitOpen ? 'rotate-180' : ''}`} />
+                      </button>
+
+                      {amenitiesUnitOpen && (
+                        <div className="mt-2 space-y-2 rounded-[8px] border border-[#CAD5E2] bg-white p-2">
+                          {UNIT_LEVEL_AMENITIES.map((item) => {
+                            const optionId = `amenities-unit-${item.id}`;
+                            return (
+                              <div
+                                key={item.id}
+                                className="flex items-center justify-between rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-3 text-sm text-[#3d4350]"
+                              >
+                                <label htmlFor={optionId} className="flex items-center gap-3">
+                                  <input
+                                    id={optionId}
+                                    type="checkbox"
+                                    checked={formData.amenitiesUnit.includes(item.id)}
+                                    onChange={() => toggleAmenity('amenitiesUnit', item.id)}
+                                    className="h-4 w-4 rounded border-[#CAD5E2] accent-[#7FFFD4]"
+                                  />
+                                  {item.label}
+                                </label>
+                              </div>
+                            );
+                          })}
+                          <Input
+                            className="h-10 rounded-[8px] border border-[#CAD5E2] bg-white text-sm text-[#3d4350]"
+                            placeholder="Type amenities"
+                            value={formData.amenitiesUnitOther}
+                            onChange={(e) => setField('amenitiesUnitOther', e.target.value)}
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Private Amenities Dropdown */}
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          // Toggle only this dropdown
+                          setAmenitiesPrivateOpen(!amenitiesPrivateOpen);
+                          // Close other dropdowns
+                          setAmenitiesBuildingOpen(false);
+                          setAmenitiesUnitOpen(false);
+                        }}
+                        className={`${controlClass} w-full flex items-center justify-between text-left pr-2`}
+                      >
+                        <span className="text-[#3d4350] px-3">
+                          {formData.amenitiesPrivate.length > 0
+                            ? `Private Amenities (${formData.amenitiesPrivate.length})`
+                            : 'Private Amenities'}
+                        </span>
+                        <ChevronDown className={`h-4 w-4 text-[#7b8492] transition-transform ${amenitiesPrivateOpen ? 'rotate-180' : ''}`} />
+                      </button>
+
+                      {amenitiesPrivateOpen && (
+                        <div className="mt-2 space-y-2 rounded-[8px] border border-[#CAD5E2] bg-white p-2">
+                          {PRIVATE_AMENITIES.map((item) => {
+                            const optionId = `amenities-private-${item.id}`;
+                            return (
+                              <div
+                                key={item.id}
+                                className="flex items-center justify-between rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-3 text-sm text-[#3d4350]"
+                              >
+                                <label htmlFor={optionId} className="flex items-center gap-3">
+                                  <input
+                                    id={optionId}
+                                    type="checkbox"
+                                    checked={formData.amenitiesPrivate.includes(item.id)}
+                                    onChange={() => toggleAmenity('amenitiesPrivate', item.id)}
+                                    className="h-4 w-4 rounded border-[#CAD5E2] accent-[#7FFFD4]"
+                                  />
+                                  {item.label}
+                                </label>
+                              </div>
+                            );
+                          })}
+                          <Input
+                            className="h-10 rounded-[8px] border border-[#CAD5E2] bg-white text-sm text-[#3d4350]"
+                            placeholder="Type amenities"
+                            value={formData.amenitiesPrivateOther}
+                            onChange={(e) => setField('amenitiesPrivateOther', e.target.value)}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div>
@@ -1070,8 +1326,17 @@ export default function PropertyListingForm() {
               <>
                 <div className="relative">
                   <Label className={labelClass}>Preferred Finance Method *</Label>
-                  <div className="absolute right-3 top-[50%] translate-y-[50%]">
-                    <InfoBadgeButton onClick={openInfoModal} />
+                  <div className="absolute right-3 top-[50%] translate-y-[20%]">
+                    <InfoBadgeButton
+                      onClick={() =>
+                        openInfoModal(
+                          [
+                            'Payment plan terms are set by the developer and may vary by project. Buyers should confirm all schedules and timelines with the agent and developer.',
+                          ],
+                          'Payment Plan'
+                        )
+                      }
+                    />
                   </div>
                   <div className="grid gap-3 md:grid-cols-3">
                     {[
@@ -1100,39 +1365,7 @@ export default function PropertyListingForm() {
                     ))}
                   </div>
                 </div>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div>
-                    <Label className={labelClass}>Target Closing Date*</Label>
-                    <Select value={formData.targetClosingDate} onValueChange={(v) => setField('targetClosingDate', v)}>
-                      <SelectTrigger className={controlClass}>
-                        <SelectValue />
-                      </SelectTrigger>
-                    <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                      <SelectItem value="q1-2026">Q1 2026</SelectItem>
-                      <SelectItem value="q2-2026">Q2 2026</SelectItem>
-                      <SelectItem value="q3-2026">Q3 2026</SelectItem>
-                      <SelectItem value="q4-2026">Q4 2026</SelectItem>
-                      <SelectItem value="jan-2026">January 2026</SelectItem>
-                      <SelectItem value="feb-2026">February 2026</SelectItem>
-                    </SelectContent>
-                    </Select>
-                  </div>
 
-                  <div>
-                    <Label className={labelClass}>Urgency Level*</Label>
-                    <Select value={formData.urgencyLevelSale} onValueChange={(v) => setField('urgencyLevelSale', v)}>
-                      <SelectTrigger className={controlClass}>
-                        <SelectValue />
-                      </SelectTrigger>
-                    <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                      <SelectItem value="actively-looking">Actively Looking</SelectItem>
-                      <SelectItem value="within-30-days">With in 30 Days</SelectItem>
-                      <SelectItem value="flexible-timeline">Flexible Time-line</SelectItem>
-                      <SelectItem value="exploring-option">Exploring option</SelectItem>
-                    </SelectContent>
-                    </Select>
-                  </div>
-                </div>
               </>
             )}
           </section>
@@ -1256,7 +1489,7 @@ export default function PropertyListingForm() {
             <section className="space-y-4">
               {isCommercial && <h3 className="text-[31px] font-semibold leading-none text-[#434853]">Buyer Profile*</h3>}
 
-              <div>
+              {/* <div>
                 <Label className={labelClass}>Finance Method *</Label>
                 <div className="grid gap-3 md:grid-cols-3">
                   {[
@@ -1284,7 +1517,7 @@ export default function PropertyListingForm() {
                     </label>
                   ))}
                 </div>
-              </div>
+              </div> */}
 
               {/* Commercial sale Key Money (image 2) */}
               {isCommercial && (
@@ -1404,13 +1637,13 @@ export default function PropertyListingForm() {
           <section className="space-y-4">
             <div className="rounded-[8px] border border-[#CAD5E2] bg-[#fff7df] p-4">
               <div className="mb-2 flex items-start gap-2 text-[#b7801f]">
-              
+
                 <div>
                   <h3 className="text-base text-[#A65F00] font-semibold">Listing Intent Notice</h3>
                   <p className="text-base text-[#A65F00] flex gap-2">
-                      <Info className="mt-0.5 h-4 w-4 flex-shrink-0" />
+                    <Info className="mt-0.5 h-4 w-4 flex-shrink-0" />
                     Listing Intent Notice
-A property can only be marketed under a limited number of valid DLD listing permits. You may appoint up to a maximum of three agents, each holding a valid permit. Appointing one agent (exclusive) is often preferred by agents, as it avoids duplicate listings, improves accountability, and allows stronger commitment to marketing and negotiations.
+                    A property can only be marketed under a limited number of valid DLD listing permits. You may appoint up to a maximum of three agents, each holding a valid permit. Appointing one agent (exclusive) is often preferred by agents, as it avoids duplicate listings, improves accountability, and allows stronger commitment to marketing and negotiations.
                   </p>
                 </div>
               </div>

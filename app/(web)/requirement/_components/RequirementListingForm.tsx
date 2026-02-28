@@ -62,7 +62,12 @@ type FormData = {
   propertyCondition: string;
   furnishing: string;
   chequePreference: string;
-  amenities: string;
+  amenitiesBuilding: string[];
+  amenitiesUnit: string[];
+  amenitiesPrivate: string[];
+  amenitiesBuildingOther: string;
+  amenitiesUnitOther: string;
+  amenitiesPrivateOther: string;
   viewingOption: string;
 
   financeMethod: string[];
@@ -108,6 +113,36 @@ const commercialSubTypes = [
 ];
 
 const rowTypes = ['Single Row', 'Back-to-Back'];
+
+const BUILDING_COMMUNITY_AMENITIES = [
+  { id: 'central-ac', label: 'Central A/C' },
+  { id: 'shared-pool', label: 'Shared Pool' },
+  { id: 'shared-gym', label: 'Shared Gym' },
+  { id: 'shared-spa', label: 'Shared Spa' },
+  { id: 'concierge', label: 'Concierge' },
+  { id: 'serviced', label: 'Serviced' },
+  { id: 'childrens-play-area', label: "Children's Play Area" },
+  { id: 'childrens-pool', label: "Children's Pool" },
+  { id: 'bbq-area', label: 'BBQ Area' },
+  { id: 'co-working-space', label: 'Co-working space' },
+  { id: 'paddle-court', label: 'Paddle Court' },
+  { id: 'gated-community', label: 'Gated Community' },
+];
+
+const UNIT_LEVEL_AMENITIES = [
+  { id: 'balcony', label: 'Balcony' },
+  { id: 'pets-allowed', label: 'Pets Allowed' },
+  { id: 'built-in-wardrobes', label: 'Built-in Wardrobes' },
+  { id: 'walk-in-closet', label: 'Walk-in Closet' },
+  { id: 'built-in-kitchen-appliances', label: 'Built-in Kitchen Appliances' },
+];
+
+const PRIVATE_AMENITIES = [
+  { id: 'private-garden', label: 'Private Garden' },
+  { id: 'private-pool', label: 'Private Pool' },
+  { id: 'private-gym', label: 'Private Gym' },
+  { id: 'private-jacuzzi', label: 'Private Jacuzzi' },
+];
 
 const RES_POSITION_TYPES: Record<string, string[]> = {
   apartment: ['Standard Apartment', 'Penthouse', 'Duplex', 'Serviced Apartment'],
@@ -185,6 +220,9 @@ export default function RequirementListingForm() {
   const [infoItems, setInfoItems] = useState<string[] | null>(null);
   const [infoTitle, setInfoTitle] = useState('Information');
   const [featuresOpen, setFeaturesOpen] = useState(false);
+  const [amenitiesBuildingOpen, setAmenitiesBuildingOpen] = useState(false);
+  const [amenitiesUnitOpen, setAmenitiesUnitOpen] = useState(false);
+  const [amenitiesPrivateOpen, setAmenitiesPrivateOpen] = useState(false);
 
   const isResidential = propertyType === 'residential';
   const isCommercial = propertyType === 'commercial';
@@ -201,6 +239,36 @@ export default function RequirementListingForm() {
     setFormData((p) => {
       const exists = p.features.includes(featureId);
       return { ...p, features: exists ? p.features.filter((x) => x !== featureId) : [...p.features, featureId] };
+    });
+  };
+  const [amenitiesMainOpen, setAmenitiesMainOpen] = useState(false);
+  const toggleBuildingAmenity = (amenityId: string) => {
+    setFormData((p) => {
+      const exists = p.amenitiesBuilding.includes(amenityId);
+      return {
+        ...p,
+        amenitiesBuilding: exists ? p.amenitiesBuilding.filter((x) => x !== amenityId) : [...p.amenitiesBuilding, amenityId],
+      };
+    });
+  };
+
+  const toggleUnitAmenity = (amenityId: string) => {
+    setFormData((p) => {
+      const exists = p.amenitiesUnit.includes(amenityId);
+      return {
+        ...p,
+        amenitiesUnit: exists ? p.amenitiesUnit.filter((x) => x !== amenityId) : [...p.amenitiesUnit, amenityId],
+      };
+    });
+  };
+
+  const togglePrivateAmenity = (amenityId: string) => {
+    setFormData((p) => {
+      const exists = p.amenitiesPrivate.includes(amenityId);
+      return {
+        ...p,
+        amenitiesPrivate: exists ? p.amenitiesPrivate.filter((x) => x !== amenityId) : [...p.amenitiesPrivate, amenityId],
+      };
     });
   };
 
@@ -241,7 +309,12 @@ export default function RequirementListingForm() {
     propertyCondition: 'all',
     furnishing: 'fully-furnished',
     chequePreference: '1-cheque',
-    amenities: 'building-community',
+    amenitiesBuilding: [],
+    amenitiesUnit: [],
+    amenitiesPrivate: [],
+    amenitiesBuildingOther: '',
+    amenitiesUnitOther: '',
+    amenitiesPrivateOther: '',
     viewingOption: 'floor-plans',
 
     financeMethod: ['cash'],
@@ -369,274 +442,284 @@ export default function RequirementListingForm() {
         {/* Top tabs */}
         <div className="pt-4 pb-10">
           <div className="flex flex-col items-center gap-3">
-          <div className={tabWrap}>
-            <button
-              type="button"
-              onClick={() => onPropertyTypeChange('residential')}
-              className={`${isResidential ? tabOn : tabOff}`}
-              style={{ background: isResidential ? PRIMARY : 'transparent' }}
-            >
-              Residential
-            </button>
-            <button
-              type="button"
-              onClick={() => onPropertyTypeChange('commercial')}
-              className={`${isCommercial ? tabOn : tabOff}`}
-              style={{ background: isCommercial ? PRIMARY : 'transparent' }}
-            >
-              Commercial
-            </button>
-          </div>
+            <div className={tabWrap}>
+              <button
+                type="button"
+                onClick={() => onPropertyTypeChange('residential')}
+                className={`${isResidential ? tabOn : tabOff}`}
+                style={{ background: isResidential ? PRIMARY : 'transparent' }}
+              >
+                Residential
+              </button>
+              <button
+                type="button"
+                onClick={() => onPropertyTypeChange('commercial')}
+                className={`${isCommercial ? tabOn : tabOff}`}
+                style={{ background: isCommercial ? PRIMARY : 'transparent' }}
+              >
+                Commercial
+              </button>
+            </div>
 
-          <div className="grid w-full max-w-[260px] grid-cols-2 gap-1 rounded-[8px] border border-[#CAD5E2] bg-white p-1 shadow-sm">
-            <button
-              type="button"
-              onClick={() => onTransactionTypeChange('sale')}
-              className="h-8 rounded-[8px] text-[13px] font-semibold text-[#1f2a37]"
-              style={{ background: isSale ? PRIMARY : 'transparent' }}
-            >
-              Buy
-            </button>
-            <button
-              type="button"
-              onClick={() => onTransactionTypeChange('rent')}
-              className="h-8 rounded-[8px] text-[13px] font-semibold text-[#1f2a37]"
-              style={{ background: isRent ? PRIMARY : 'transparent' }}
-            >
-              Rent
-            </button>
-          </div>
+            <div className="grid w-full max-w-[260px] grid-cols-2 gap-1 rounded-[8px] border border-[#CAD5E2] bg-white p-1 shadow-sm">
+              <button
+                type="button"
+                onClick={() => onTransactionTypeChange('sale')}
+                className="h-8 rounded-[8px] text-[13px] font-semibold text-[#1f2a37]"
+                style={{ background: isSale ? PRIMARY : 'transparent' }}
+              >
+                Buy
+              </button>
+              <button
+                type="button"
+                onClick={() => onTransactionTypeChange('rent')}
+                className="h-8 rounded-[8px] text-[13px] font-semibold text-[#1f2a37]"
+                style={{ background: isRent ? PRIMARY : 'transparent' }}
+              >
+                Rent
+              </button>
+            </div>
           </div>
         </div>
 
         <div className="overflow-hidden rounded-[12px] border border-[#E6EBF2] bg-white shadow-sm">
           {/* Header (match images: mint bar) */}
           <div className="px-5 py-6" style={{ background: PRIMARY }}>
-          <button type="button" className="mb-3 inline-flex items-center gap-2 text-[12px] font-medium text-[#2e3239]">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full border border-[#2e3239]">
-              <ChevronLeft className="h-3 w-3" />
-            </span>
-            Go Back
-          </button>
+            <button type="button" className="mb-3 inline-flex items-center gap-2 text-[12px] font-medium text-[#2e3239]">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full border border-[#2e3239]">
+                <ChevronLeft className="h-3 w-3" />
+              </span>
+              Go Back
+            </button>
 
-          <h1 className="text-[22px] font-semibold text-[#2e3239]">{pageTitle}</h1>
-          <p className="mt-1 text-[12px] text-[#2e3239]/80">{pageSub}</p>
-        </div>
-
-          <form className="space-y-7 px-5 py-6 text-[#2e3239]">
-          {/* Required Information */}
-          <div className={`flex items-center gap-2 ${sectionTitleClass}`}>
-            <span className="inline-block h-2 w-2 rounded-full" style={{ background: PRIMARY }} />
-            Required Information
+            <h1 className="text-[22px] font-semibold text-[#2e3239]">{pageTitle}</h1>
+            <p className="mt-1 text-[12px] text-[#2e3239]/80">{pageSub}</p>
           </div>
 
-          {/* Top fields */}
-          <div className="grid gap-4 md:grid-cols-12">
-            <div className="md:col-span-7">
-              <Label className={labelClass}>
-                <MapPin className="h-4 w-4" />
-                Preferred Locations *
-                <InfoBadgeButton
-                  onClick={() => openInfoModal(['You can select multiple locations.'], 'Location Info')}
-                  className="text-[#7b8492]"
-                />
-              </Label>
+          <form className="space-y-7 px-5 py-6 text-[#2e3239]">
+            {/* Required Information */}
+            <div className={`flex items-center gap-2 ${sectionTitleClass}`}>
+              <span className="inline-block h-2 w-2 rounded-full" style={{ background: PRIMARY }} />
+              Required Information
+            </div>
 
-              <Select value={formData.location} onValueChange={(v) => setField('location', v)}>
-                <SelectTrigger className={controlClass}>
-                  <SelectValue placeholder="Area, community, cluster or building" />
-                </SelectTrigger>
-                <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                  <SelectItem value="downtown">Downtown</SelectItem>
-                  <SelectItem value="suburbs">Suburbs</SelectItem>
-                  <SelectItem value="marina">Marina</SelectItem>
-                </SelectContent>
-              </Select>
+            {/* Top fields */}
+            <div className="grid gap-4 md:grid-cols-12">
+              <div className="md:col-span-7">
+                <Label className={labelClass}>
+                  <MapPin className="h-4 w-4" />
+                  Preferred Locations *
+                  <InfoBadgeButton
+                    onClick={() => openInfoModal(['You can select multiple locations.'], 'Location Info')}
+                    className="text-[#7b8492]"
+                  />
+                </Label>
 
-              {isRent && <p className="mt-2 text-xs text-[#6f7783]">You can select multiple locations</p>}
+                <Select value={formData.location} onValueChange={(v) => setField('location', v)}>
+                  <SelectTrigger className={controlClass}>
+                    <SelectValue placeholder="Area, community, cluster or building" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                    <SelectItem value="downtown">Downtown</SelectItem>
+                    <SelectItem value="suburbs">Suburbs</SelectItem>
+                    <SelectItem value="marina">Marina</SelectItem>
+                  </SelectContent>
+                </Select>
 
-              {/* SALE: Ideal for row (images show this only on Buyer) */}
-              {isSale && (
-                <div className="mt-3 space-y-2">
+                {isRent && <p className="mt-2 text-xs text-[#6f7783]">You can select multiple locations</p>}
+
+                {/* SALE: Ideal for row (images show this only on Buyer) */}
+                {isSale && (
+                  <div className="mt-3 space-y-2">
                   <div className="flex items-center gap-2 text-[12px] font-medium text-[#4B4B4B]">
-                    Use Type *
-                    <InfoBadgeButton onClick={openInfoModal} className="text-[#7b8492]" />
-                  </div>
+  Use Type *
+  <InfoBadgeButton
+    onClick={() =>
+      openInfoModal(
+        [
+          'Use Type defines how the property is legally or functionally designated (e.g., residential, commercial, mixed-use).',
+        ],
+        'Use Type'
+      )
+    }
+    className="text-[#7b8492]"
+  />
+</div>
 
-                  <div className="mt- w-[400px] grid grid-cols-3 rounded-[8px] bg-[#F1F5F9] p-1">
-                    {[
-                      { k: 'end-use', t: 'End-Use' },
-                      { k: 'investment', t: 'Investment' },
-                      { k: 'both', t: 'Both' },
-                    ].map((x) => (
+                    <div className="mt- w-[400px] grid grid-cols-3 rounded-[8px] bg-[#F1F5F9] p-1">
+                      {[
+                        { k: 'end-use', t: 'End-Use' },
+                        { k: 'investment', t: 'Investment' },
+                        { k: 'both', t: 'Both' },
+                      ].map((x) => (
+                        <button
+                          key={x.k}
+                          type="button"
+                          onClick={() => setField('idealFor', x.k as IdealFor)}
+                          className="rounded-[8px] px-3 py-2 text-xs font-semibold"
+                          style={{ background: formData.idealFor === x.k ? 'white' : 'transparent' }}
+                        >
+                          {x.t}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="md:col-span-5">
+                <Label className={labelClass}>Budget (AED) *</Label>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <Select value={formData.budgetMin} onValueChange={(v) => setField('budgetMin', v)}>
+                    <SelectTrigger className={controlClass}>
+                      <SelectValue placeholder="Min" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                      <SelectItem value="200000">200000</SelectItem>
+                      <SelectItem value="300000">300000</SelectItem>
+                      <SelectItem value="400000">400000</SelectItem>
+                      <SelectItem value="500000">500000</SelectItem>
+                      <SelectItem value="600000">600000</SelectItem>
+                      <SelectItem value="700000">700000</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Select value={formData.budgetMax} onValueChange={(v) => setField('budgetMax', v)}>
+                    <SelectTrigger className={controlClass}>
+                      <SelectValue placeholder="Max" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                      <SelectItem value="200000">200000</SelectItem>
+                      <SelectItem value="300000">300000</SelectItem>
+                      <SelectItem value="400000">400000</SelectItem>
+                      <SelectItem value="500000">500000</SelectItem>
+                      <SelectItem value="600000">600000</SelectItem>
+                      <SelectItem value="700000">700000</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Rent: Monthly/Annually toggle (same as images) */}
+                {isRent && (
+                  <div className="mt-3 inline-flex overflow-hidden rounded-[8px] border border-[#CAD5E2] bg-white">
+                    <button
+                      type="button"
+                      onClick={() => setField('priceType', 'monthly')}
+                      className="px-4 py-2 text-xs font-semibold"
+                      style={{ background: formData.priceType === 'monthly' ? PRIMARY : 'transparent' }}
+                    >
+                      Monthly
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setField('priceType', 'annually')}
+                      className="px-4 py-2 text-xs font-semibold"
+                      style={{ background: formData.priceType === 'annually' ? PRIMARY : 'transparent' }}
+                    >
+                      Annually
+                    </button>
+                  </div>
+                )}
+
+                {/* Buyer signals (sale) */}
+                {isSale && (
+                  <div className="mt-3">
+                    <div className="text-[12px] font-medium text-[#4B4B4B]">Buyer signals</div>
+                    <div className="mt-2 flex flex-wrap gap-3 text-[11px] text-[#4B4B4B]">
+                      {['Ready to Proceed', 'Actively looking', 'Investor Buyer', 'Serious buyer'].map((t) => (
+                        <label key={t} className="inline-flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            className="h-3.5 w-3.5 rounded border-[#D7DFEA] accent-[#7FFFD4]"
+                            defaultChecked
+                          />
+                          {t}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Property Type */}
+            <section className="space-y-4">
+              <div className={`flex items-center gap-2 ${sectionTitleClass}`}>
+                <span className="inline-block h-2 w-2 rounded-full" style={{ background: PRIMARY }} />
+                Property Type* ( {isResidential ? 'Residential' : 'Commercial'} )
+              </div>
+
+              <div className={`grid gap-3 ${isResidential ? 'grid-cols-2 md:grid-cols-4' : 'grid-cols-2 md:grid-cols-5'}`}>
+                {subTypes.map((type) => (
+                  <button
+                    key={type.id}
+                    type="button"
+                    onClick={() => onSelectSubType(type.id)}
+                    className={formData.selectedSubType === type.id ? subCardOn : subCardOff}
+                  >
+                    <Image src={type.icon} alt={type.label} width={1000} height={1000} className="mx-auto mb-1 h-6 w-6" />
+                    <div className="text-[13px] font-semibold">{type.label}</div>
+                  </button>
+                ))}
+              </div>
+
+              {/* Position type (conditional by subtype) */}
+              {positionTypeOptions.length > 0 && (
+                <div className="space-y-2">
+                  <Label className="text-[13px] font-semibold text-[#2e3239]">Position type</Label>
+                  <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
+                    {positionTypeOptions.map((item) => (
                       <button
-                        key={x.k}
+                        key={item}
                         type="button"
-                        onClick={() => setField('idealFor', x.k as IdealFor)}
-                        className="rounded-[8px] px-3 py-2 text-xs font-semibold"
-                        style={{ background: formData.idealFor === x.k ? 'white' : 'transparent' }}
+                        onClick={() => setField('positionType', item)}
+                        className={
+                          formData.positionType === item
+                            ? 'rounded-[8px] border border-[#D7DFEA] px-4 py-2 text-[12px] font-semibold text-[#2e3239]'
+                            : 'rounded-[8px] border border-[#D7DFEA] bg-white px-4 py-2 text-[12px] font-semibold text-[#2e3239] hover:bg-[#F7FAFC]'
+                        }
+                        style={{ background: formData.positionType === item ? SOFT : 'white' }}
                       >
-                        {x.t}
+                        {item}
                       </button>
                     ))}
                   </div>
                 </div>
               )}
-            </div>
 
-            <div className="md:col-span-5">
-              <Label className={labelClass}>Budget (AED) *</Label>
-
-              <div className="grid grid-cols-2 gap-3">
-                <Select value={formData.budgetMin} onValueChange={(v) => setField('budgetMin', v)}>
-                  <SelectTrigger className={controlClass}>
-                    <SelectValue placeholder="Min" />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                    <SelectItem value="200000">200000</SelectItem>
-                    <SelectItem value="300000">300000</SelectItem>
-                    <SelectItem value="400000">400000</SelectItem>
-                    <SelectItem value="500000">500000</SelectItem>
-                    <SelectItem value="600000">600000</SelectItem>
-                    <SelectItem value="700000">700000</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Select value={formData.budgetMax} onValueChange={(v) => setField('budgetMax', v)}>
-                  <SelectTrigger className={controlClass}>
-                    <SelectValue placeholder="Max" />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                    <SelectItem value="200000">200000</SelectItem>
-                    <SelectItem value="300000">300000</SelectItem>
-                    <SelectItem value="400000">400000</SelectItem>
-                    <SelectItem value="500000">500000</SelectItem>
-                    <SelectItem value="600000">600000</SelectItem>
-                    <SelectItem value="700000">700000</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Rent: Monthly/Annually toggle (same as images) */}
-              {isRent && (
-                <div className="mt-3 inline-flex overflow-hidden rounded-[8px] border border-[#CAD5E2] bg-white">
-                  <button
-                    type="button"
-                    onClick={() => setField('priceType', 'monthly')}
-                    className="px-4 py-2 text-xs font-semibold"
-                    style={{ background: formData.priceType === 'monthly' ? PRIMARY : 'transparent' }}
-                  >
-                    Monthly
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setField('priceType', 'annually')}
-                    className="px-4 py-2 text-xs font-semibold"
-                    style={{ background: formData.priceType === 'annually' ? PRIMARY : 'transparent' }}
-                  >
-                    Annually
-                  </button>
-                </div>
-              )}
-
-              {/* Buyer signals (sale) */}
-              {isSale && (
-                <div className="mt-3">
-                  <div className="text-[12px] font-medium text-[#4B4B4B]">Buyer signals</div>
-                  <div className="mt-2 flex flex-wrap gap-3 text-[11px] text-[#4B4B4B]">
-                    {['Ready to Proceed', 'Actively looking', 'Investor Buyer', 'Serious buyer'].map((t) => (
-                      <label key={t} className="inline-flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          className="h-3.5 w-3.5 rounded border-[#D7DFEA] accent-[#7FFFD4]"
-                          defaultChecked
-                        />
-                        {t}
-                      </label>
+              {showRowType && (
+                <div className="space-y-2">
+                  <Label className="text-[13px] font-semibold text-[#2e3239]">Row type</Label>
+                  <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
+                    {rowTypes.map((item) => (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => setField('rowType', item)}
+                        className={
+                          formData.rowType === item
+                            ? 'rounded-[8px] border border-[#D7DFEA] px-4 py-2 text-[12px] font-semibold text-[#2e3239]'
+                            : 'rounded-[8px] border border-[#D7DFEA] bg-white px-4 py-2 text-[12px] font-semibold text-[#2e3239] hover:bg-[#F7FAFC]'
+                        }
+                        style={{ background: formData.rowType === item ? SOFT : 'white' }}
+                      >
+                        {item}
+                      </button>
                     ))}
                   </div>
                 </div>
               )}
-            </div>
-          </div>
 
-          {/* Property Type */}
-          <section className="space-y-4">
-            <div className={`flex items-center gap-2 ${sectionTitleClass}`}>
-              <span className="inline-block h-2 w-2 rounded-full" style={{ background: PRIMARY }} />
-              Property Type* ( {isResidential ? 'Residential' : 'Commercial'} )
-            </div>
-
-            <div className={`grid gap-3 ${isResidential ? 'grid-cols-2 md:grid-cols-4' : 'grid-cols-2 md:grid-cols-5'}`}>
-              {subTypes.map((type) => (
-                <button
-                  key={type.id}
-                  type="button"
-                  onClick={() => onSelectSubType(type.id)}
-                  className={formData.selectedSubType === type.id ? subCardOn : subCardOff}
-                >
-                  <Image src={type.icon} alt={type.label} width={1000} height={1000} className="mx-auto mb-1 h-6 w-6" />
-                  <div className="text-[13px] font-semibold">{type.label}</div>
-                </button>
-              ))}
-            </div>
-
-            {/* Position type (conditional by subtype) */}
-            {positionTypeOptions.length > 0 && (
-              <div className="space-y-2">
-                <Label className="text-[13px] font-semibold text-[#2e3239]">Position type</Label>
-                <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
-                  {positionTypeOptions.map((item) => (
-                    <button
-                      key={item}
-                      type="button"
-                      onClick={() => setField('positionType', item)}
-                      className={
-                        formData.positionType === item
-                          ? 'rounded-[8px] border border-[#D7DFEA] px-4 py-2 text-[12px] font-semibold text-[#2e3239]'
-                          : 'rounded-[8px] border border-[#D7DFEA] bg-white px-4 py-2 text-[12px] font-semibold text-[#2e3239] hover:bg-[#F7FAFC]'
-                      }
-                      style={{ background: formData.positionType === item ? SOFT : 'white' }}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
+              <div
+                className="rounded-[8px] border border-[rgba(178,255,229,1)] px-3 py-3 text-xs font-medium text-[#2e3239]"
+                style={{ background: SOFT }}
+              >
+                Select configuration : {configLine}
               </div>
-            )}
 
-            {showRowType && (
-              <div className="space-y-2">
-                <Label className="text-[13px] font-semibold text-[#2e3239]">Row type</Label>
-                <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
-                  {rowTypes.map((item) => (
-                    <button
-                      key={item}
-                      type="button"
-                      onClick={() => setField('rowType', item)}
-                      className={
-                        formData.rowType === item
-                          ? 'rounded-[8px] border border-[#D7DFEA] px-4 py-2 text-[12px] font-semibold text-[#2e3239]'
-                          : 'rounded-[8px] border border-[#D7DFEA] bg-white px-4 py-2 text-[12px] font-semibold text-[#2e3239] hover:bg-[#F7FAFC]'
-                      }
-                      style={{ background: formData.rowType === item ? SOFT : 'white' }}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+              {/* Configuration input (only where shown in images) */}
 
-            <div
-              className="rounded-[8px] border border-[rgba(178,255,229,1)] px-3 py-3 text-xs font-medium text-[#2e3239]"
-              style={{ background: SOFT }}
-            >
-              Select configuration : {configLine}
-            </div>
-
-            {/* Configuration input (only where shown in images) */}
-         
               <div className="space-y-2">
                 <Label className="text-[13px] font-semibold text-[#2e3239]">Configuration</Label>
                 <Input
@@ -646,120 +729,189 @@ export default function RequirementListingForm() {
                   onChange={(e) => setField('configuration', e.target.value)}
                 />
               </div>
-           
-          </section>
 
-          {/* Strong Preferences (match images section title) */}
-          <section className="space-y-4">
-            <div className={`flex items-center gap-2 ${sectionTitleClass}`}>
-              <span className="inline-block h-2 w-2 rounded-full" style={{ background: PRIMARY }} />
-              Strong Preferences*
-            </div>
+            </section>
 
-            {/* Sale: 3 status groups (like buyer images) */}
-            {isSale && (
-              <div className="grid gap-4 md:grid-cols-3">
-                {[
-                  {
-                    title: 'Occupancy Status',
-                    key: 'occupancy',
-                    values: [
-                      { v: 'all', t: 'All' },
-                      { v: 'vacant', t: 'Vacant' },
-                      { v: 'tenanted', t: 'Tenanted' },
-                    ],
-                  },
-                  {
-                    title: 'Completion Status',
-                    key: 'completion',
-                    values: [
-                      { v: 'all', t: 'All' },
-                      { v: 'ready', t: 'Ready' },
-                      { v: 'off-plan', t: 'Off- plan' },
-                    ],
-                  },
-                  {
-                    title: 'Ownership Tenure',
-                    key: 'ownership',
-                    values: [
-                      { v: 'all', t: 'All' },
-                      { v: 'freehold', t: 'Freehold' },
-                      { v: 'leasehold', t: 'Leasehold' },
-                    ],
-                  },
-                ].map((group) => (
-                  <div key={group.title}>
-                    <Label className="mb-2 text-xs font-semibold text-[#5b6472]">{group.title}</Label>
-                    <div className="grid grid-cols-3 rounded-[8px] border border-[#CAD5E2] bg-[#F1F5F9] p-1">
-                      {group.values.map((item) => {
-                        //eslint-disable-next-line
-                        const active = (formData.propertyStatus as any)[group.key] === item.v;
-                        return (
-                          <button
-                            key={item.v}
-                            type="button"
-                            onClick={() =>
-                              setField('propertyStatus', {
-                                ...formData.propertyStatus,
-                                [group.key]: item.v,
-                              } as PropertyStatus)
-                            }
-                            className="rounded-[8px] px-2 py-2 text-xs font-semibold"
-                            style={{ background: active ? 'white' : 'transparent' }}
-                          >
-                            {item.t}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
+            {/* Strong Preferences (match images section title) */}
+            <section className="space-y-4">
+              <div className={`flex items-center gap-2 ${sectionTitleClass}`}>
+                <span className="inline-block h-2 w-2 rounded-full" style={{ background: PRIMARY }} />
+                Strong Preferences*
               </div>
-            )}
 
-            {/* Beds/Baths (residential) */}
-            {isResidential && (
-              <div className="grid gap-4 md:grid-cols-2">
+              {/* Sale: 3 status groups (like buyer images) */}
+              {isSale && (
+                <div className="grid gap-4 md:grid-cols-3">
+                  {[
+                    {
+                      title: 'Occupancy Status',
+                      key: 'occupancy',
+                      values: [
+                        { v: 'all', t: 'All' },
+                        { v: 'vacant', t: 'Vacant' },
+                        { v: 'tenanted', t: 'Tenanted' },
+                      ],
+                    },
+                    {
+                      title: 'Completion Status',
+                      key: 'completion',
+                      values: [
+                        { v: 'all', t: 'All' },
+                        { v: 'ready', t: 'Ready' },
+                        { v: 'off-plan', t: 'Off- plan' },
+                      ],
+                    },
+                    {
+                      title: 'Ownership Tenure',
+                      key: 'ownership',
+                      values: [
+                        { v: 'all', t: 'All' },
+                        { v: 'freehold', t: 'Freehold' },
+                        { v: 'leasehold', t: 'Leasehold' },
+                      ],
+                    },
+                  ].map((group) => (
+                    <div key={group.title}>
+                      <Label className="mb-2 text-xs font-semibold text-[#5b6472]">{group.title}</Label>
+                      <div className="grid grid-cols-3 rounded-[8px] border border-[#CAD5E2] bg-[#F1F5F9] p-1">
+                        {group.values.map((item) => {
+                          //eslint-disable-next-line
+                          const active = (formData.propertyStatus as any)[group.key] === item.v;
+                          return (
+                            <button
+                              key={item.v}
+                              type="button"
+                              onClick={() =>
+                                setField('propertyStatus', {
+                                  ...formData.propertyStatus,
+                                  [group.key]: item.v,
+                                } as PropertyStatus)
+                              }
+                              className="rounded-[8px] px-2 py-2 text-xs font-semibold"
+                              style={{ background: active ? 'white' : 'transparent' }}
+                            >
+                              {item.t}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Beds/Baths (residential) */}
+              {isResidential && (
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <Label className={labelClass}>
+                      Bedrooms (Min) *
+                      <InfoBadgeButton
+                        onClick={() => openInfoModal(["Bedrooms do not include maid's room or Studies"], 'Info/bedrooms')}
+                        className="text-[#7b8492]"
+                      />
+                    </Label>
+                    <Select value={formData.bedrooms} onValueChange={(v) => setField('bedrooms', v)}>
+                      <SelectTrigger className={controlClass}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                        <SelectItem value="studio">Studio</SelectItem>
+                        <SelectItem value="1">1</SelectItem>
+                        <SelectItem value="2">2</SelectItem>
+                        <SelectItem value="3">3</SelectItem>
+                        <SelectItem value="4">4</SelectItem>
+                        <SelectItem value="5">5</SelectItem>
+                        <SelectItem value="6">6</SelectItem>
+                        <SelectItem value="7">7</SelectItem>
+                        <SelectItem value="8-plus">8+</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label className={labelClass}>
+                      Bathrooms (Min) *
+                      <InfoBadgeButton
+                        onClick={() =>
+                          openInfoModal(
+                            ['Total number of bathrooms, including powder room and cloakrooms.'],
+                            'Bathroom'
+                          )
+                        }
+                        className="text-[#7b8492]"
+                      />
+                    </Label>
+                    <Select value={formData.bathrooms} onValueChange={(v) => setField('bathrooms', v)}>
+                      <SelectTrigger className={controlClass}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                        <SelectItem value="1">1</SelectItem>
+                        <SelectItem value="2">2</SelectItem>
+                        <SelectItem value="3">3</SelectItem>
+                        <SelectItem value="4">4</SelectItem>
+                        <SelectItem value="5">5</SelectItem>
+                        <SelectItem value="6-plus">6+</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              )}
+            </section>
+
+            {/* Additional Details */}
+            <section className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-4">
                 <div>
-                  <Label className={labelClass}>
-                    Bedrooms (Min) *
-                    <InfoBadgeButton
-                      onClick={() => openInfoModal(["Bedrooms do not include maid's room or Studies"], 'Info/bedrooms')}
-                      className="text-[#7b8492]"
-                    />
-                  </Label>
-                  <Select value={formData.bedrooms} onValueChange={(v) => setField('bedrooms', v)}>
-                    <SelectTrigger className={controlClass}>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                      <SelectItem value="studio">Studio</SelectItem>
-                      <SelectItem value="1">1</SelectItem>
-                      <SelectItem value="2">2</SelectItem>
-                      <SelectItem value="3">3</SelectItem>
-                      <SelectItem value="4">4</SelectItem>
-                      <SelectItem value="5">5</SelectItem>
-                      <SelectItem value="6">6</SelectItem>
-                      <SelectItem value="7">7</SelectItem>
-                      <SelectItem value="8-plus">8+</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label className={labelClass}>Built-Up Area(BUA)</Label>
+                  <Input
+                    className={controlClass}
+                    placeholder="Enter area"
+                    value={formData.bua}
+                    onChange={(e) => setField('bua', e.target.value)}
+                  />
+                  <div className="mt-2 inline-flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setField('buaUnit', 'sqft')}
+                      className={formData.buaUnit === 'sqft' ? chipOn : chipOff}
+                      style={{ background: formData.buaUnit === 'sqft' ? PRIMARY : undefined }}
+                    >
+                      Sq. Ft
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setField('buaUnit', 'sqm')}
+                      className={formData.buaUnit === 'sqm' ? chipOn : chipOff}
+                      style={{ background: formData.buaUnit === 'sqm' ? PRIMARY : undefined }}
+                    >
+                      Sq. M
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <Label className={labelClass}>Plot Size</Label>
+                  <Input
+                    className={controlClass}
+                    placeholder="Enter size"
+                    value={formData.plotSize}
+                    onChange={(e) => setField('plotSize', e.target.value)}
+                  />
                 </div>
 
                 <div>
                   <Label className={labelClass}>
-                    Bathrooms (Min) *
+                    Parking Spaces (Min)
                     <InfoBadgeButton
                       onClick={() =>
-                        openInfoModal(
-                          ['Total number of bathrooms, including powder room and cloakrooms.'],
-                          'Bathroom'
-                        )
+                        openInfoModal(['Number of allocated parking spaces included with the property.'], 'Parking space')
                       }
                       className="text-[#7b8492]"
                     />
                   </Label>
-                  <Select value={formData.bathrooms} onValueChange={(v) => setField('bathrooms', v)}>
+                  <Select value={formData.parkingSpaces} onValueChange={(v) => setField('parkingSpaces', v)}>
                     <SelectTrigger className={controlClass}>
                       <SelectValue />
                     </SelectTrigger>
@@ -773,540 +925,650 @@ export default function RequirementListingForm() {
                     </SelectContent>
                   </Select>
                 </div>
-              </div>
-            )}
-          </section>
 
-          {/* Additional Details */}
-          <section className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-4">
-              <div>
-                <Label className={labelClass}>Built-Up Area(BUA)</Label>
-                <Input
-                  className={controlClass}
-                  placeholder="Enter area"
-                  value={formData.bua}
-                  onChange={(e) => setField('bua', e.target.value)}
-                />
-                <div className="mt-2 inline-flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setField('buaUnit', 'sqft')}
-                    className={formData.buaUnit === 'sqft' ? chipOn : chipOff}
-                    style={{ background: formData.buaUnit === 'sqft' ? PRIMARY : undefined }}
-                  >
-                    Sq. Ft
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setField('buaUnit', 'sqm')}
-                    className={formData.buaUnit === 'sqm' ? chipOn : chipOff}
-                    style={{ background: formData.buaUnit === 'sqm' ? PRIMARY : undefined }}
-                  >
-                    Sq. M
-                  </button>
+                <div>
+                  <Label className={labelClass}>Parking Type*</Label>
+                  <Select value={formData.parkingType} onValueChange={(v) => setField('parkingType', v)}>
+                    <SelectTrigger className={controlClass}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                      <SelectItem value="any">Any</SelectItem>
+                      <SelectItem value="covered">Covered</SelectItem>
+                      <SelectItem value="uncovered">Uncovered</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
-              <div>
-                <Label className={labelClass}>Plot Size</Label>
-                <Input
-                  className={controlClass}
-                  placeholder="Enter size"
-                  value={formData.plotSize}
-                  onChange={(e) => setField('plotSize', e.target.value)}
-                />
-              </div>
+              <div className={`grid gap-4 ${isRent ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
+                <div>
+                  <Label className={labelClass}>Must-Have Features</Label>
+                  <button
+                    type="button"
+                    onClick={() => setFeaturesOpen((v) => !v)}
+                    className={`${controlClass} flex items-center justify-between text-left px-3`}
+                  >
+                    <span className="text-[#2e3239]">
+                      {formData.features.length > 0 ? `Selected (${formData.features.length})` : 'Select features'}
+                    </span>
+                    <ChevronDown className="h-4 w-4 text-[#7b8492]" />
+                  </button>
+                  {featuresOpen && (
+                    <div className="mt-2 space-y-2">
+                      {FEATURE_OPTIONS.map((option) => {
+                        const optionId = `feature-${option.id}`;
+                        return (
+                          <div
+                            key={option.id}
+                            className="flex items-center justify-between rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-3 text-[12px] font-medium text-[#2e3239]"
+                          >
+                            <label htmlFor={optionId} className="flex items-center gap-3">
+                              <input
+                                id={optionId}
+                                type="checkbox"
+                                checked={formData.features.includes(option.id)}
+                                onChange={() => toggleFeature(option.id)}
+                                className="h-4 w-4 rounded border-[#CAD5E2] accent-[#7FFFD4]"
+                              />
+                              {option.label}
+                            </label>
+                            {option.info && (
+                              <InfoBadgeButton
+                                onClick={() => openInfoModal([option.info.text], option.info.title)}
+                                className="text-[#7b8492]"
+                              />
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
 
-              <div>
-                <Label className={labelClass}>
-                  Parking Spaces (Min)
-                  <InfoBadgeButton
-                    onClick={() =>
-                      openInfoModal(['Number of allocated parking spaces included with the property.'], 'Parking space')
-                    }
-                    className="text-[#7b8492]"
-                  />
-                </Label>
-                <Select value={formData.parkingSpaces} onValueChange={(v) => setField('parkingSpaces', v)}>
-                  <SelectTrigger className={controlClass}>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                    <SelectItem value="1">1</SelectItem>
-                    <SelectItem value="2">2</SelectItem>
-                    <SelectItem value="3">3</SelectItem>
-                    <SelectItem value="4">4</SelectItem>
-                    <SelectItem value="5">5</SelectItem>
-                    <SelectItem value="6-plus">6+</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                {isRent ? (
+                  <>
+                    <div>
+                      <Label className={labelClass}>Furnishing</Label>
+                      <Select value={formData.furnishing} onValueChange={(v) => setField('furnishing', v)}>
+                        <SelectTrigger className={controlClass}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                          <SelectItem value="fully-furnished">Fully Furnished</SelectItem>
+                          <SelectItem value="semi-furnished">Semi-Furnished</SelectItem>
+                          <SelectItem value="unfurnished">Unfurnished</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-              <div>
-                <Label className={labelClass}>Parking Type*</Label>
-                <Select value={formData.parkingType} onValueChange={(v) => setField('parkingType', v)}>
-                  <SelectTrigger className={controlClass}>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                    <SelectItem value="any">Any</SelectItem>
-                    <SelectItem value="covered">Covered</SelectItem>
-                    <SelectItem value="uncovered">Uncovered</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
+                    <div>
+                      <Label className={labelClass}>Property condition</Label>
+                      <Select value={formData.propertyCondition} onValueChange={(v) => setField('propertyCondition', v)}>
+                        <SelectTrigger className={controlClass}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                          <SelectItem value="all">All</SelectItem>
+                          <SelectItem value="brand-new">Brand new</SelectItem>
+                          <SelectItem value="nearly-new">Nearly new</SelectItem>
+                          <SelectItem value="fully-renovated">Fully Renovated</SelectItem>
+                          <SelectItem value="upgraded">Upgraded</SelectItem>
+                          <SelectItem value="excellent">Excellent</SelectItem>
+                          <SelectItem value="fair">Fair</SelectItem>
+                          <SelectItem value="needs-updating">Needs Updating</SelectItem>
+                          <SelectItem value="original">Original</SelectItem>
+                          <SelectItem value="type-property-age">Type property age</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-            <div className={`grid gap-4 ${isRent ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
-              <div>
-                <Label className={labelClass}>Must-Have Features</Label>
-                <button
-                  type="button"
-                  onClick={() => setFeaturesOpen((v) => !v)}
-                  className={`${controlClass} flex items-center justify-between text-left`}
-                >
-                  <span className="text-[#2e3239]">
-                    {formData.features.length > 0 ? `Selected (${formData.features.length})` : 'Select features'}
-                  </span>
-                  <ChevronDown className="h-4 w-4 text-[#7b8492]" />
-                </button>
-                {featuresOpen && (
-                  <div className="mt-2 space-y-2">
-                    {FEATURE_OPTIONS.map((option) => {
-                      const optionId = `feature-${option.id}`;
-                      return (
-                        <div
-                          key={option.id}
-                          className="flex items-center justify-between rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-3 text-[12px] font-medium text-[#2e3239]"
-                        >
-                          <label htmlFor={optionId} className="flex items-center gap-3">
-                            <input
-                              id={optionId}
-                              type="checkbox"
-                              checked={formData.features.includes(option.id)}
-                              onChange={() => toggleFeature(option.id)}
-                              className="h-4 w-4 rounded border-[#CAD5E2] accent-[#7FFFD4]"
-                            />
-                            {option.label}
-                          </label>
-                          {option.info && (
-                            <InfoBadgeButton
-                              onClick={() => openInfoModal([option.info.text], option.info.title)}
-                              className="text-[#7b8492]"
-                            />
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
+                    <div>
+                      <Label className={labelClass}>Cheque Preference (Max Acceptable)*</Label>
+                      <Select value={formData.chequePreference} onValueChange={(v) => setField('chequePreference', v)}>
+                        <SelectTrigger className={controlClass}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                          <SelectItem value="1-cheque">1 Cheque</SelectItem>
+                          <SelectItem value="2-cheques">2 Cheques</SelectItem>
+                          <SelectItem value="3-cheques">3 Cheques</SelectItem>
+                          <SelectItem value="4-cheques">4 Cheques</SelectItem>
+                          <SelectItem value="6-cheques">6 Cheques</SelectItem>
+                          <SelectItem value="12-cheques">12 Cheques</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      <Label className={labelClass}>Property condition</Label>
+                      <Select value={formData.propertyCondition} onValueChange={(v) => setField('propertyCondition', v)}>
+                        <SelectTrigger className={controlClass}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                          <SelectItem value="all">All</SelectItem>
+                          <SelectItem value="brand-new">Brand new</SelectItem>
+                          <SelectItem value="nearly-new">Nearly new</SelectItem>
+                          <SelectItem value="fully-renovated">Fully Renovated</SelectItem>
+                          <SelectItem value="upgraded">Upgraded</SelectItem>
+                          <SelectItem value="excellent">Excellent</SelectItem>
+                          <SelectItem value="fair">Fair</SelectItem>
+                          <SelectItem value="needs-updating">Needs Updating</SelectItem>
+                          <SelectItem value="original">Original</SelectItem>
+                          <SelectItem value="type-property-age">Type property age</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <Label className={labelClass}>Furnishing</Label>
+                      <Select value={formData.furnishing} onValueChange={(v) => setField('furnishing', v)}>
+                        <SelectTrigger className={controlClass}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                          <SelectItem value="fully-furnished">Fully Furnished</SelectItem>
+                          <SelectItem value="semi-furnished">Semi-Furnished</SelectItem>
+                          <SelectItem value="unfurnished">Unfurnished</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </>
                 )}
               </div>
 
-              {isRent ? (
-                <>
-                  <div>
-                    <Label className={labelClass}>Furnishing</Label>
-                    <Select value={formData.furnishing} onValueChange={(v) => setField('furnishing', v)}>
-                      <SelectTrigger className={controlClass}>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                        <SelectItem value="fully-furnished">Fully Furnished</SelectItem>
-                        <SelectItem value="semi-furnished">Semi-Furnished</SelectItem>
-                        <SelectItem value="unfurnished">Unfurnished</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+              {/* Add this state with your other useState hooks */}
 
-                  <div>
-                    <Label className={labelClass}>Property condition</Label>
-                    <Select value={formData.propertyCondition} onValueChange={(v) => setField('propertyCondition', v)}>
-                      <SelectTrigger className={controlClass}>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                        <SelectItem value="all">All</SelectItem>
-                        <SelectItem value="brand-new">Brand new</SelectItem>
-                        <SelectItem value="nearly-new">Nearly new</SelectItem>
-                        <SelectItem value="fully-renovated">Fully Renovated</SelectItem>
-                      <SelectItem value="upgraded">Upgraded</SelectItem>
-                      <SelectItem value="excellent">Excellent</SelectItem>
-                      <SelectItem value="fair">Fair</SelectItem>
-                      <SelectItem value="needs-updating">Needs Updating</SelectItem>
-                      <SelectItem value="original">Original</SelectItem>
-                      <SelectItem value="type-property-age">Type property age</SelectItem>
+              {/* Update the Choose Amenities section */}
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className='relative'>
+                  <Label className={labelClass}>Choose Amenities</Label>
+
+                  {/* Main Amenities Dropdown Button */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // Toggle main dropdown
+                      setAmenitiesMainOpen(!amenitiesMainOpen);
+                      // Close all sub-dropdowns when closing main
+                      if (amenitiesMainOpen) {
+                        setAmenitiesBuildingOpen(false);
+                        setAmenitiesUnitOpen(false);
+                        setAmenitiesPrivateOpen(false);
+                      }
+                    }}
+                    className={`${controlClass} w-full flex items-center justify-between text-left mb-2 pr-3`}
+                  >
+                    <span className="text-[#3d4350] px-3">
+                      {formData.amenitiesBuilding.length > 0 ||
+                        formData.amenitiesUnit.length > 0 ||
+                        formData.amenitiesPrivate.length > 0
+                        ? `Amenities Selected (${formData.amenitiesBuilding.length + formData.amenitiesUnit.length + formData.amenitiesPrivate.length})`
+                        : 'Select Amenities'}
+                    </span>
+                    <ChevronDown className={`!h-4 !w-4 text-[#7b8492] transition-transform ${amenitiesMainOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {/* Three Dropdown Options - Shown only when main dropdown is open */}
+                  {amenitiesMainOpen && (
+                    <div className="space-y-3 mt-2 absolute left-0 right-0 top-full z-20 bg-white rounded-[8px] border border-[#CAD5E2] p-3 shadow-lg">
+
+                      {/* Building/Community Dropdown */}
+                      <div className="relative">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            // Toggle only this dropdown, close others
+                            setAmenitiesBuildingOpen(!amenitiesBuildingOpen);
+                            setAmenitiesUnitOpen(false);
+                            setAmenitiesPrivateOpen(false);
+                          }}
+                          className={`${controlClass} w-full flex items-center justify-between text-left pr-2`}
+                        >
+                          <span className="text-[#3d4350] px-3">
+                            {formData.amenitiesBuilding.length > 0
+                              ? `Building/Community (${formData.amenitiesBuilding.length})`
+                              : 'Building/Community'}
+                          </span>
+                          <ChevronDown className={`h-4 w-4 text-[#7b8492] transition-transform ${amenitiesBuildingOpen ? 'rotate-180' : ''}`} />
+                        </button>
+
+                        {amenitiesBuildingOpen && (
+                          <div className="mt-2 space-y-2 rounded-[8px] border border-[#CAD5E2] bg-white p-2">
+                            {BUILDING_COMMUNITY_AMENITIES.map((item) => {
+                              const optionId = `amenities-building-${item.id}`;
+                              return (
+                                <div
+                                  key={item.id}
+                                  className="flex items-center justify-between rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-3 text-sm text-[#3d4350]"
+                                >
+                                  <label htmlFor={optionId} className="flex items-center gap-3">
+                                    <input
+                                      id={optionId}
+                                      type="checkbox"
+                                      checked={formData.amenitiesBuilding.includes(item.id)}
+                                      onChange={() => toggleBuildingAmenity(item.id)}
+                                      className="h-4 w-4 rounded border-[#CAD5E2] accent-[#7FFFD4]"
+                                    />
+                                    {item.label}
+                                  </label>
+                                </div>
+                              );
+                            })}
+                            <Input
+                              className="h-10 rounded-[8px] border border-[#CAD5E2] bg-white text-sm text-[#3d4350]"
+                              placeholder="Type amenities"
+                              value={formData.amenitiesBuildingOther}
+                              onChange={(e) => setField('amenitiesBuildingOther', e.target.value)}
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Unit-Level Amenities Dropdown */}
+                      <div className="relative">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            // Toggle only this dropdown, close others
+                            setAmenitiesUnitOpen(!amenitiesUnitOpen);
+                            setAmenitiesBuildingOpen(false);
+                            setAmenitiesPrivateOpen(false);
+                          }}
+                          className={`${controlClass} w-full flex items-center justify-between text-left pr-2`}
+                        >
+                          <span className="text-[#3d4350] px-3">
+                            {formData.amenitiesUnit.length > 0
+                              ? `Unit-Level (${formData.amenitiesUnit.length})`
+                              : 'Unit-Level Amenities'}
+                          </span>
+                          <ChevronDown className={`h-4 w-4 text-[#7b8492] transition-transform ${amenitiesUnitOpen ? 'rotate-180' : ''}`} />
+                        </button>
+
+                        {amenitiesUnitOpen && (
+                          <div className="mt-2 space-y-2 rounded-[8px] border border-[#CAD5E2] bg-white p-2">
+                            {UNIT_LEVEL_AMENITIES.map((item) => {
+                              const optionId = `amenities-unit-${item.id}`;
+                              return (
+                                <div
+                                  key={item.id}
+                                  className="flex items-center justify-between rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-3 text-sm text-[#3d4350]"
+                                >
+                                  <label htmlFor={optionId} className="flex items-center gap-3">
+                                    <input
+                                      id={optionId}
+                                      type="checkbox"
+                                      checked={formData.amenitiesUnit.includes(item.id)}
+                                      onChange={() => toggleUnitAmenity(item.id)}
+                                      className="h-4 w-4 rounded border-[#CAD5E2] accent-[#7FFFD4]"
+                                    />
+                                    {item.label}
+                                  </label>
+                                </div>
+                              );
+                            })}
+                            <Input
+                              className="h-10 rounded-[8px] border border-[#CAD5E2] bg-white text-sm text-[#3d4350]"
+                              placeholder="Type amenities"
+                              value={formData.amenitiesUnitOther}
+                              onChange={(e) => setField('amenitiesUnitOther', e.target.value)}
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Private Amenities Dropdown */}
+                      <div className="relative">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            // Toggle only this dropdown, close others
+                            setAmenitiesPrivateOpen(!amenitiesPrivateOpen);
+                            setAmenitiesBuildingOpen(false);
+                            setAmenitiesUnitOpen(false);
+                          }}
+                          className={`${controlClass} w-full flex items-center justify-between text-left pr-2`}
+                        >
+                          <span className="text-[#3d4350] px-3">
+                            {formData.amenitiesPrivate.length > 0
+                              ? `Private Amenities (${formData.amenitiesPrivate.length})`
+                              : 'Private Amenities'}
+                          </span>
+                          <ChevronDown className={`h-4 w-4 text-[#7b8492] transition-transform ${amenitiesPrivateOpen ? 'rotate-180' : ''}`} />
+                        </button>
+
+                        {amenitiesPrivateOpen && (
+                          <div className="mt-2 space-y-2 rounded-[8px] border border-[#CAD5E2] bg-white p-2">
+                            {PRIVATE_AMENITIES.map((item) => {
+                              const optionId = `amenities-private-${item.id}`;
+                              return (
+                                <div
+                                  key={item.id}
+                                  className="flex items-center justify-between rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-3 text-sm text-[#3d4350]"
+                                >
+                                  <label htmlFor={optionId} className="flex items-center gap-3">
+                                    <input
+                                      id={optionId}
+                                      type="checkbox"
+                                      checked={formData.amenitiesPrivate.includes(item.id)}
+                                      onChange={() => togglePrivateAmenity(item.id)}
+                                      className="h-4 w-4 rounded border-[#CAD5E2] accent-[#7FFFD4]"
+                                    />
+                                    {item.label}
+                                  </label>
+                                </div>
+                              );
+                            })}
+                            <Input
+                              className="h-10 rounded-[8px] border border-[#CAD5E2] bg-white text-sm text-[#3d4350]"
+                              placeholder="Type amenities"
+                              value={formData.amenitiesPrivateOther}
+                              onChange={(e) => setField('amenitiesPrivateOther', e.target.value)}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <Label className={labelClass}>Viewing option</Label>
+                  <Select value={formData.viewingOption} onValueChange={(v) => setField('viewingOption', v)}>
+                    <SelectTrigger className={controlClass}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                      <SelectItem value="floor-plans">Floor Plans</SelectItem>
+                      <SelectItem value="360-tour">360 Tour</SelectItem>
+                      <SelectItem value="property-tour">Property Tour</SelectItem>
+                      <SelectItem value="live-viewing">Live Viewing</SelectItem>
                     </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <Label className={labelClass}>Cheque Preference (Max Acceptable)*</Label>
-                    <Select value={formData.chequePreference} onValueChange={(v) => setField('chequePreference', v)}>
-                      <SelectTrigger className={controlClass}>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                        <SelectItem value="1-cheque">1 Cheque</SelectItem>
-                        <SelectItem value="2-cheques">2 Cheques</SelectItem>
-                        <SelectItem value="3-cheques">3 Cheques</SelectItem>
-                        <SelectItem value="4-cheques">4 Cheques</SelectItem>
-                        <SelectItem value="6-cheques">6 Cheques</SelectItem>
-                        <SelectItem value="12-cheques">12 Cheques</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div>
-                    <Label className={labelClass}>Property condition</Label>
-                    <Select value={formData.propertyCondition} onValueChange={(v) => setField('propertyCondition', v)}>
-                      <SelectTrigger className={controlClass}>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                        <SelectItem value="all">All</SelectItem>
-                        <SelectItem value="brand-new">Brand new</SelectItem>
-                        <SelectItem value="nearly-new">Nearly new</SelectItem>
-                        <SelectItem value="fully-renovated">Fully Renovated</SelectItem>
-                      <SelectItem value="upgraded">Upgraded</SelectItem>
-                      <SelectItem value="excellent">Excellent</SelectItem>
-                      <SelectItem value="fair">Fair</SelectItem>
-                      <SelectItem value="needs-updating">Needs Updating</SelectItem>
-                      <SelectItem value="original">Original</SelectItem>
-                      <SelectItem value="type-property-age">Type property age</SelectItem>
-                    </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <Label className={labelClass}>Furnishing</Label>
-                    <Select value={formData.furnishing} onValueChange={(v) => setField('furnishing', v)}>
-                      <SelectTrigger className={controlClass}>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                        <SelectItem value="fully-furnished">Fully Furnished</SelectItem>
-                        <SelectItem value="semi-furnished">Semi-Furnished</SelectItem>
-                        <SelectItem value="unfurnished">Unfurnished</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </>
-              )}
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-2">
-              <div>
-                <Label className={labelClass}>Choose Amenities</Label>
-                <Select value={formData.amenities} onValueChange={(v) => setField('amenities', v)}>
-                  <SelectTrigger className={controlClass}>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                    <SelectItem value="building-community">Building/community</SelectItem>
-                    <SelectItem value="unit-level">Unit-level Amenities</SelectItem>
-                    <SelectItem value="private-amenities">Private Amenities</SelectItem>
-                    <SelectItem value="type-amenities">Type amenities</SelectItem>
-                  </SelectContent>
-                </Select>
+                  </Select>
+                </div>
               </div>
+            </section>
 
-              <div>
-                <Label className={labelClass}>Viewing option</Label>
-                <Select value={formData.viewingOption} onValueChange={(v) => setField('viewingOption', v)}>
-                  <SelectTrigger className={controlClass}>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                    <SelectItem value="floor-plans">Floor Plans</SelectItem>
-                    <SelectItem value="360-tour">360 Tour</SelectItem>
-                    <SelectItem value="property-tour">Property Tour</SelectItem>
-                    <SelectItem value="live-viewing">Live Viewing</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </section>
+            {/* Buyer Profile (Sale) */}
+            {isSale && (
+              <section className="space-y-4">
+                <div className={`flex items-center gap-2 ${sectionTitleClass}`}>
+                  <span className="inline-block h-2 w-2 rounded-full" style={{ background: PRIMARY }} />
+                  Buyer Profile*
+                </div>
 
-          {/* Buyer Profile (Sale) */}
-          {isSale && (
-            <section className="space-y-4">
-              <div className={`flex items-center gap-2 ${sectionTitleClass}`}>
-                <span className="inline-block h-2 w-2 rounded-full" style={{ background: PRIMARY }} />
-                Buyer Profile*
-              </div>
+                <div>
+                  <Label className={labelClass}>Finance Method *</Label>
+                  <div className="grid gap-3 md:grid-cols-3">
+                    {[
+                      { k: 'cash', t: 'Cash Buyer' },
+                      { k: 'mortgage', t: 'Mortgage Buyer' },
+                      { k: 'payment-plan', t: 'Payment Plan ( Off-plan )' },
+                    ].map((x) => (
+                      <label
+                        key={x.k}
+                        className="flex items-center gap-2 rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-3 text-[12px] font-medium text-[#2e3239]"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={formData.financeMethod.includes(x.k)}
+                          onChange={() =>
+                            setField(
+                              'financeMethod',
+                              formData.financeMethod.includes(x.k)
+                                ? formData.financeMethod.filter((v) => v !== x.k)
+                                : [...formData.financeMethod, x.k]
+                            )
+                          }
+                          className="h-4 w-4 rounded border-[#CAD5E2] accent-[#7FFFD4]"
+                        />
+                        {x.t}
+                      </label>
+                    ))}
+                  </div>
+                </div>
 
-              <div>
-                <Label className={labelClass}>Finance Method *</Label>
-                <div className="grid gap-3 md:grid-cols-3">
-                  {[
-                    { k: 'cash', t: 'Cash Buyer' },
-                    { k: 'mortgage', t: 'Mortgage Buyer' },
-                    { k: 'payment-plan', t: 'Payment Plan ( Off-plan )' },
-                  ].map((x) => (
-                    <label
-                      key={x.k}
-                      className="flex items-center gap-2 rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-3 text-[12px] font-medium text-[#2e3239]"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.financeMethod.includes(x.k)}
-                        onChange={() =>
-                          setField(
-                            'financeMethod',
-                            formData.financeMethod.includes(x.k)
-                              ? formData.financeMethod.filter((v) => v !== x.k)
-                              : [...formData.financeMethod, x.k]
+                {isCommercial && (
+                  <div>
+                    <Label className={labelClass}>
+                      Key Money*
+                      <InfoBadgeButton
+                        onClick={() =>
+                          openInfoModal(
+                            [
+                              'A one-time goodwill payment sometimes requested for commercial spaces that are fully or partially fitted and ready to operate, such as with existing fit-out, fixtures, or furniture.',
+                            ],
+                            'Key Money'
                           )
                         }
-                        className="h-4 w-4 rounded border-[#CAD5E2] accent-[#7FFFD4]"
                       />
-                      {x.t}
-                    </label>
-                  ))}
-                </div>
-              </div>
+                    </Label>
+                    <div className="grid grid-cols-3 gap-3 rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-2">
+                      {[
+                        { v: 'any', t: 'Any' },
+                        { v: 'no', t: 'No key money' },
+                        { v: 'yes', t: 'Key money acceptable' },
+                      ].map((x) => (
+                        <label key={x.v} className="flex items-center gap-2 text-[12px] font-medium text-[#2e3239]">
+                          <input
+                            type="radio"
+                            name="key-money-sale"
+                            checked={formData.keyMoney === x.v}
+                            onChange={() => setField('keyMoney', x.v as FormData['keyMoney'])}
+                            className="h-4 w-4 accent-[#7FFFD4]"
+                          />
+                          {x.t}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
-              {isCommercial && (
-                <div>
-                  <Label className={labelClass}>
-                    Key Money*
-                    <InfoBadgeButton
-                      onClick={() =>
-                        openInfoModal(
-                          [
-                            'A one-time goodwill payment sometimes requested for commercial spaces that are fully or partially fitted and ready to operate, such as with existing fit-out, fixtures, or furniture.',
-                          ],
-                          'Key Money'
-                        )
-                      }
-                    />
-                  </Label>
-                  <div className="grid grid-cols-3 gap-3 rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-2">
-                    {[
-                      { v: 'any', t: 'Any' },
-                      { v: 'no', t: 'No key money' },
-                      { v: 'yes', t: 'Key money acceptable' },
-                    ].map((x) => (
-                      <label key={x.v} className="flex items-center gap-2 text-[12px] font-medium text-[#2e3239]">
-                        <input
-                          type="radio"
-                          name="key-money-sale"
-                          checked={formData.keyMoney === x.v}
-                          onChange={() => setField('keyMoney', x.v as FormData['keyMoney'])}
-                          className="h-4 w-4 accent-[#7FFFD4]"
-                        />
-                        {x.t}
-                      </label>
-                    ))}
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <Label className={labelClass}>Target Closing Date*</Label>
+                    <Select value={formData.targetClosingDate} onValueChange={(v) => setField('targetClosingDate', v)}>
+                      <SelectTrigger className={controlClass}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                        <SelectItem value="q1-2026">Q1 2026</SelectItem>
+                        <SelectItem value="q2-2026">Q2 2026</SelectItem>
+                        <SelectItem value="q3-2026">Q3 2026</SelectItem>
+                        <SelectItem value="q4-2026">Q4 2026</SelectItem>
+                        <SelectItem value="jan-2026">January 2026</SelectItem>
+                        <SelectItem value="feb-2026">February 2026</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label className={labelClass}>Urgency Level*</Label>
+                    <Select value={formData.urgencyLevelSale} onValueChange={(v) => setField('urgencyLevelSale', v)}>
+                      <SelectTrigger className={controlClass}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                        <SelectItem value="actively-looking">Actively Looking</SelectItem>
+                        <SelectItem value="within-30-days">With in 30 Days</SelectItem>
+                        <SelectItem value="flexible-timeline">Flexible Time-line</SelectItem>
+                        <SelectItem value="exploring-option">Exploring option</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
-              )}
+              </section>
+            )}
 
-              <div className="grid gap-4 md:grid-cols-2">
-                <div>
-                  <Label className={labelClass}>Target Closing Date*</Label>
-                  <Select value={formData.targetClosingDate} onValueChange={(v) => setField('targetClosingDate', v)}>
-                    <SelectTrigger className={controlClass}>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                      <SelectItem value="q1-2026">Q1 2026</SelectItem>
-                      <SelectItem value="q2-2026">Q2 2026</SelectItem>
-                      <SelectItem value="q3-2026">Q3 2026</SelectItem>
-                      <SelectItem value="q4-2026">Q4 2026</SelectItem>
-                      <SelectItem value="jan-2026">January 2026</SelectItem>
-                      <SelectItem value="feb-2026">February 2026</SelectItem>
-                    </SelectContent>
-                  </Select>
+            {/* Optional Profile Information (Rent) */}
+            {isRent && (
+              <section className="space-y-4">
+                <div className={`flex items-center gap-2 ${sectionTitleClass}`}>
+                  <span className="inline-block h-2 w-2 rounded-full" style={{ background: PRIMARY }} />
+                  Optional Profile Information*
                 </div>
 
-                <div>
-                  <Label className={labelClass}>Urgency Level*</Label>
-                  <Select value={formData.urgencyLevelSale} onValueChange={(v) => setField('urgencyLevelSale', v)}>
-                    <SelectTrigger className={controlClass}>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                      <SelectItem value="actively-looking">Actively Looking</SelectItem>
-                      <SelectItem value="within-30-days">With in 30 Days</SelectItem>
-                      <SelectItem value="flexible-timeline">Flexible Time-line</SelectItem>
-                      <SelectItem value="exploring-option">Exploring option</SelectItem>
-                    </SelectContent>
-                  </Select>
+                {isCommercial && (
+                  <div>
+                    <Label className={labelClass}>
+                      Key Money*
+                      <InfoBadgeButton
+                        onClick={() =>
+                          openInfoModal(
+                            [
+                              'A one-time goodwill payment sometimes requested for commercial spaces that are fully or partially fitted and ready to operate, such as with existing fit-out, fixtures, or furniture.',
+                            ],
+                            'Key Money'
+                          )
+                        }
+                      />
+                    </Label>
+                    <div className="grid grid-cols-3 gap-3 rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-2">
+                      {[
+                        { v: 'any', t: 'Any' },
+                        { v: 'no', t: 'No key money' },
+                        { v: 'yes', t: 'Key money acceptable' },
+                      ].map((x) => (
+                        <label key={x.v} className="flex items-center gap-2 text-[12px] font-medium text-[#2e3239]">
+                          <input
+                            type="radio"
+                            name="key-money-rent"
+                            checked={formData.keyMoney === x.v}
+                            onChange={() => setField('keyMoney', x.v as FormData['keyMoney'])}
+                            className="h-4 w-4 accent-[#7FFFD4]"
+                          />
+                          {x.t}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <Label className={labelClass}>Tenant Description*</Label>
+                    <Input
+                      className={controlClass}
+                      placeholder="e.g. British couple, family of 4"
+                      value={formData.tenantPreference}
+                      onChange={(e) => setField('tenantPreference', e.target.value)}
+                    />
+                  </div>
+
+                  <div>
+                    <Label className={labelClass}>Preferred Lease Length*</Label>
+                    <Select value={formData.preferredLeaseLength} onValueChange={(v) => setField('preferredLeaseLength', v)}>
+                      <SelectTrigger className={controlClass}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                        <SelectItem value="less-than-1-year">less then 1 year ( short term )</SelectItem>
+                        <SelectItem value="1-year">1 Year ( standard )</SelectItem>
+                        <SelectItem value="2-years">2 Years</SelectItem>
+                        <SelectItem value="3-years">3 Years</SelectItem>
+                        <SelectItem value="4-years-plus">4 Years +</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
-              </div>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <Label className={labelClass}>Move in Date*</Label>
+                    <Select value={formData.moveInDate} onValueChange={(v) => setField('moveInDate', v)}>
+                      <SelectTrigger className={controlClass}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                        <SelectItem value="q1-2026">Q1 2026</SelectItem>
+                        <SelectItem value="q2-2026">Q2 2026</SelectItem>
+                        <SelectItem value="q3-2026">Q3 2026</SelectItem>
+                        <SelectItem value="q4-2026">Q4 2026</SelectItem>
+                        <SelectItem value="jan-2026">January 2026</SelectItem>
+                        <SelectItem value="feb-2026">February 2026</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label className={labelClass}>Urgency Level*</Label>
+                    <Select value={formData.urgencyLevelRent} onValueChange={(v) => setField('urgencyLevelRent', v)}>
+                      <SelectTrigger className={controlClass}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
+                        <SelectItem value="actively-looking">Actively Looking</SelectItem>
+                        <SelectItem value="within-30-days">With in 30 Days</SelectItem>
+                        <SelectItem value="flexible-timeline">Flexible Time-line</SelectItem>
+                        <SelectItem value="exploring-option">Exploring option</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* Additional Keywords */}
+            <section className="space-y-2">
+              <Label className={labelClass}>Additional Keywords or Requirements*</Label>
+              <Input
+                className={controlClass}
+                placeholder={isSale ? 'e.g. High floor apartment, sea view, near metro' : 'e.g. near metro'}
+                value={formData.keywords}
+                onChange={(e) => setField('keywords', e.target.value)}
+              />
             </section>
-          )}
 
-          {/* Optional Profile Information (Rent) */}
-          {isRent && (
-            <section className="space-y-4">
+            {/* Contact Details */}
+            <section className="space-y-3">
               <div className={`flex items-center gap-2 ${sectionTitleClass}`}>
                 <span className="inline-block h-2 w-2 rounded-full" style={{ background: PRIMARY }} />
-                Optional Profile Information*
+                Contact Details
               </div>
 
-              {isCommercial && (
-                <div>
-                  <Label className={labelClass}>
-                    Key Money*
-                    <InfoBadgeButton
-                      onClick={() =>
-                        openInfoModal(
-                          [
-                            'A one-time goodwill payment sometimes requested for commercial spaces that are fully or partially fitted and ready to operate, such as with existing fit-out, fixtures, or furniture.',
-                          ],
-                          'Key Money'
-                        )
-                      }
-                    />
-                  </Label>
-                  <div className="grid grid-cols-3 gap-3 rounded-[8px] border border-[#CAD5E2] bg-white px-3 py-2">
-                    {[
-                      { v: 'any', t: 'Any' },
-                      { v: 'no', t: 'No key money' },
-                      { v: 'yes', t: 'Key money acceptable' },
-                    ].map((x) => (
-                      <label key={x.v} className="flex items-center gap-2 text-[12px] font-medium text-[#2e3239]">
-                        <input
-                          type="radio"
-                          name="key-money-rent"
-                          checked={formData.keyMoney === x.v}
-                          onChange={() => setField('keyMoney', x.v as FormData['keyMoney'])}
-                          className="h-4 w-4 accent-[#7FFFD4]"
-                        />
-                        {x.t}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <Input className={controlClass} placeholder="Your Full Name" value={formData.name} onChange={(e) => setField('name', e.target.value)} />
+              <Input className={controlClass} placeholder="Your Email" type="email" value={formData.email} onChange={(e) => setField('email', e.target.value)} />
+              <Input className={controlClass} placeholder="Your Number" value={formData.phone} onChange={(e) => setField('phone', e.target.value)} />
 
-              <div className="grid gap-4 md:grid-cols-2">
-                <div>
-                  <Label className={labelClass}>Tenant Description*</Label>
-                  <Input
-                    className={controlClass}
-                    placeholder="e.g. British couple, family of 4"
-                    value={formData.tenantPreference}
-                    onChange={(e) => setField('tenantPreference', e.target.value)}
-                  />
-                </div>
+              <Textarea
+                placeholder="Enter your notes here"
+                value={formData.notes}
+                onChange={(e) => setField('notes', e.target.value)}
+                className="min-h-28 rounded-[8px] border border-[#CAD5E2] bg-white shadow-sm placeholder:text-[#A0A7B2] focus-visible:ring-2 focus-visible:ring-[rgba(178,255,229,0.85)]"
+              />
+            </section>
 
-                <div>
-                  <Label className={labelClass}>Preferred Lease Length*</Label>
-                  <Select value={formData.preferredLeaseLength} onValueChange={(v) => setField('preferredLeaseLength', v)}>
-                    <SelectTrigger className={controlClass}>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                      <SelectItem value="less-than-1-year">less then 1 year ( short term )</SelectItem>
-                      <SelectItem value="1-year">1 Year ( standard )</SelectItem>
-                      <SelectItem value="2-years">2 Years</SelectItem>
-                      <SelectItem value="3-years">3 Years</SelectItem>
-                      <SelectItem value="4-years-plus">4 Years +</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-2">
-                <div>
-                  <Label className={labelClass}>Move in Date*</Label>
-                  <Select value={formData.moveInDate} onValueChange={(v) => setField('moveInDate', v)}>
-                    <SelectTrigger className={controlClass}>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                      <SelectItem value="q1-2026">Q1 2026</SelectItem>
-                      <SelectItem value="q2-2026">Q2 2026</SelectItem>
-                      <SelectItem value="q3-2026">Q3 2026</SelectItem>
-                      <SelectItem value="q4-2026">Q4 2026</SelectItem>
-                      <SelectItem value="jan-2026">January 2026</SelectItem>
-                      <SelectItem value="feb-2026">February 2026</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label className={labelClass}>Urgency Level*</Label>
-                  <Select value={formData.urgencyLevelRent} onValueChange={(v) => setField('urgencyLevelRent', v)}>
-                    <SelectTrigger className={controlClass}>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-[8px] border border-[#CAD5E2] bg-white">
-                      <SelectItem value="actively-looking">Actively Looking</SelectItem>
-                      <SelectItem value="within-30-days">With in 30 Days</SelectItem>
-                      <SelectItem value="flexible-timeline">Flexible Time-line</SelectItem>
-                      <SelectItem value="exploring-option">Exploring option</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+            {/* Commission Notice (same look as images) */}
+            <section className="rounded-[8px] border border-[#f1d291] bg-[#fff7df] p-4">
+              <div className="flex items-start gap-2 text-[#A65F00]">
+                <Info className="mt-0.5 h-4 w-4 flex-shrink-0" />
+                <p className="text-[12px]">
+                  <span className="font-semibold">Commission Notice:</span> {commissionNote}
+                </p>
               </div>
             </section>
-          )}
 
-          {/* Additional Keywords */}
-          <section className="space-y-2">
-            <Label className={labelClass}>Additional Keywords or Requirements*</Label>
-            <Input
-              className={controlClass}
-              placeholder={isSale ? 'e.g. High floor apartment, sea view, near metro' : 'e.g. near metro'}
-              value={formData.keywords}
-              onChange={(e) => setField('keywords', e.target.value)}
-            />
-          </section>
+            {/* Bottom buttons */}
+            <div className="grid gap-4 pb-2 md:grid-cols-2">
+              <button
+                type="button"
+                className="h-10 rounded-[8px] border border-[#CAD5E2] bg-[#D7D7D7] text-[13px] font-semibold text-[#2e3239]"
+              >
+                Cancel
+              </button>
 
-          {/* Contact Details */}
-          <section className="space-y-3">
-            <div className={`flex items-center gap-2 ${sectionTitleClass}`}>
-              <span className="inline-block h-2 w-2 rounded-full" style={{ background: PRIMARY }} />
-              Contact Details
+              <button
+                type="submit"
+                className="flex h-10 items-center justify-center gap-3 rounded-[8px] text-[13px] font-semibold text-[#1f2a37] shadow-sm"
+                style={{ background: PRIMARY }}
+              >
+                <Send className="h-4 w-4" />
+                Post Requirements
+              </button>
             </div>
-
-            <Input className={controlClass} placeholder="Your Full Name" value={formData.name} onChange={(e) => setField('name', e.target.value)} />
-            <Input className={controlClass} placeholder="Your Email" type="email" value={formData.email} onChange={(e) => setField('email', e.target.value)} />
-            <Input className={controlClass} placeholder="Your Number" value={formData.phone} onChange={(e) => setField('phone', e.target.value)} />
-
-            <Textarea
-              placeholder="Enter your notes here"
-              value={formData.notes}
-              onChange={(e) => setField('notes', e.target.value)}
-              className="min-h-28 rounded-[8px] border border-[#CAD5E2] bg-white shadow-sm placeholder:text-[#A0A7B2] focus-visible:ring-2 focus-visible:ring-[rgba(178,255,229,0.85)]"
-            />
-          </section>
-
-          {/* Commission Notice (same look as images) */}
-          <section className="rounded-[8px] border border-[#f1d291] bg-[#fff7df] p-4">
-            <div className="flex items-start gap-2 text-[#A65F00]">
-              <Info className="mt-0.5 h-4 w-4 flex-shrink-0" />
-              <p className="text-[12px]">
-                <span className="font-semibold">Commission Notice:</span> {commissionNote}
-              </p>
-            </div>
-          </section>
-
-          {/* Bottom buttons */}
-          <div className="grid gap-4 pb-2 md:grid-cols-2">
-            <button
-              type="button"
-              className="h-10 rounded-[8px] border border-[#CAD5E2] bg-[#D7D7D7] text-[13px] font-semibold text-[#2e3239]"
-            >
-              Cancel
-            </button>
-
-            <button
-              type="submit"
-              className="flex h-10 items-center justify-center gap-3 rounded-[8px] text-[13px] font-semibold text-[#1f2a37] shadow-sm"
-              style={{ background: PRIMARY }}
-            >
-              <Send className="h-4 w-4" />
-              Post Requirements
-            </button>
-          </div>
 
           </form>
         </div>

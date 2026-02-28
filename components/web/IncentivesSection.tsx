@@ -127,7 +127,7 @@ export function IncentivesSection() {
                     'linear-gradient(90deg, #FFEFEE 0%, #FFFFFF 50%, #EBFFF8 100%)',
                 }}
               >
-                <Image src="/icon13.png" alt="referral" width={1000} height={1000} className="h-10 w-10" />
+                <Image src="/icon2x.png" alt="referral" width={1000} height={1000} className="h-10 w-10" />
                 1 month free referral program
               </div>
             </div>
