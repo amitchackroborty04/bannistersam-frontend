@@ -4,12 +4,14 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Check } from 'lucide-react'
 import Image from 'next/image'
 import { RegistrationModal } from '../registration-forms/RegistrationModal'
 
 export function HeroSection() {
+  const router = useRouter()
   const [registrationOpen, setRegistrationOpen] = useState(false)
   const [registrationTab, setRegistrationTab] = useState<
     'professional' | 'user' | 'company'
@@ -80,6 +82,7 @@ export function HeroSection() {
                   }}
                 >
                   <Button
+                    onClick={() => router.push('/requirement')}
                     className="w-full sm:w-auto justify-center rounded-[8px] px-6 md:px-8 h-[48px] text-sm md:text-base text-[#4B4B4B]"
                     style={{
                       background:
@@ -100,6 +103,7 @@ export function HeroSection() {
                   }}
                 >
                   <Button
+                    onClick={() => router.push('/listing-intent')}
                     className="w-full sm:w-auto justify-center rounded-[8px] px-6 md:px-8 h-[48px] text-sm md:text-base text-[#4B4B4B]"
                     style={{
                       background:

@@ -1,15 +1,20 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Check, CheckCircle, Clock, Shield } from 'lucide-react'
 import { Button } from '../ui/button'
 import { RegistrationModal } from '../registration-forms/RegistrationModal'
 
 type RegistrationTab = 'professional' | 'user' | 'company'
 
-const registrationTypes: Array<{ label: string; tab?: RegistrationTab }> = [
-  { label: 'Submit Requirement' },
-  { label: 'Submit Listing Intent' },
+const registrationTypes: Array<{
+  label: string
+  tab?: RegistrationTab
+  href?: string
+}> = [
+  { label: 'Submit Requirement', href: '/requirement' },
+  { label: 'Submit Listing Intent', href: '/listing-intent' },
   { label: 'Professional Registration', tab: 'professional' },
   { label: 'User Registration', tab: 'user' },
   { label: 'Partner Registration', tab: 'company' },
@@ -40,6 +45,7 @@ const topHighlights = [
 ]
 
 const Joindeal = () => {
+  const router = useRouter()
   const [registrationOpen, setRegistrationOpen] = useState(false)
   const [registrationTab, setRegistrationTab] =
     useState<RegistrationTab>('professional')
@@ -47,6 +53,15 @@ const Joindeal = () => {
   const openRegistration = (tab: RegistrationTab) => {
     setRegistrationTab(tab)
     setRegistrationOpen(true)
+  }
+  const handleRegistrationClick = (type: (typeof registrationTypes)[number]) => {
+    if (type.href) {
+      router.push(type.href)
+      return
+    }
+    if (type.tab) {
+      openRegistration(type.tab)
+    }
   }
 
   return (
@@ -97,11 +112,7 @@ const Joindeal = () => {
                 }}
               >
                 <Button
-                  onClick={
-                    typeof type.tab === 'string'
-                      ? () => openRegistration(type.tab as RegistrationTab)
-                      : undefined
-                  }
+                  onClick={() => handleRegistrationClick(type)}
                   className="h-[38px] rounded-[8px] px-4 text-xs sm:text-sm text-[#4B4B4B]"
                   style={{
                     background:
