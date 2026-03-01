@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { Button } from '../ui/button'
-import { Check, X } from 'lucide-react'
+import { Check} from 'lucide-react'
 
 const earlyHowItWorks = [
   'Complete your full public profile',
@@ -83,10 +83,10 @@ export function IncentivesSection() {
             <p className="mt-4 text-base sm:text-lg font-medium text-[#4B4B4B] dark:text-white">
               How It Works?
             </p>
-            <ul className="mt-2 space-y-2">
+            <ul className="mt-2 space-y-4">
               {earlyHowItWorks.map((item) => (
                 <li key={item} className="flex items-start gap-2 text-sm sm:text-base text-[#4B4B4B] dark:text-white/80">
-                  <X className="h-4 w-4 mt-1 text-[#F88379] shrink-0" />
+                  <Check className="h-4 w-4 mt-1 text-[#F88379] shrink-0" />
                   {item}
                 </li>
               ))}
@@ -100,7 +100,7 @@ export function IncentivesSection() {
               Rewards
             </p>
               </div>
-            <ul className="mt-2 space-y-2">
+            <ul className="mt-2 space-y-4">
               {earlyRewards.map((item) => (
                 <li key={item} className="flex items-start gap-2 text-sm sm:text-base text-[#4B4B4B] dark:text-white/80">
                   <Check className="h-4 w-4 mt-1 text-[#45D3A7] shrink-0" />
@@ -109,11 +109,12 @@ export function IncentivesSection() {
               ))}
             </ul>
 
-            <p className="mt-3 text-xs sm:text-sm text-[#8A8A8A] dark:text-white/55 pb-[40px]">
+            <p className="mt-3 text-xs sm:text-sm text-[#4B4B4B] dark:text-white/55 pb-[40px]">
               This ensures our launch inventory is verified and ready for real demand from day one.
             </p>
 
-              <div
+            <div className='pt-[130px]'>
+                <div
               className="mt-6 rounded-full p-[4px] "
               style={{
                 background:
@@ -130,6 +131,7 @@ export function IncentivesSection() {
                 <Image src="/icon2x.png" alt="referral" width={1000} height={1000} className="h-10 w-10" />
                 1 month free referral program
               </div>
+            </div>
             </div>
           </div>
 
@@ -150,6 +152,7 @@ export function IncentivesSection() {
             <p className="mt-4 text-base sm:text-lg font-medium text-[#4B4B4B] dark:text-white">
               How It Works — a referral is successful when:
             </p>
+            <p className='mt-3 text-base sm:text-lg font-medium text-[#4B4B4B] dark:text-white'>A referral is successful when:</p>
             <ul className="mt-2 space-y-2">
               {referralRequirements.map((item) => (
                 <li key={item} className="flex items-start gap-2 text-sm sm:text-base text-[#4B4B4B] dark:text-white/80">
@@ -158,6 +161,10 @@ export function IncentivesSection() {
                 </li>
               ))}
             </ul>
+            <p className='text-xs text-[#4B5563] mt-4'>
+              Free, inactive, duplicate, refunded, or unverified accounts do not qualify.
+
+            </p>
               <div className='flex items-center gap-2'>
              <div >
               <Image src="/icon12.png" alt="referral" width={1000} height={1000} className="mt-4 h-6 w-6" />
@@ -178,9 +185,14 @@ export function IncentivesSection() {
             <p className="mt-4 text-base sm:text-lg font-medium text-[#4B4B4B] dark:text-white">
               Terms & Conditions — Referral Rewards
             </p>
-            <p className="mt-1 text-xs sm:text-sm text-[#8A8A8A] dark:text-white/55">
-              Referral rewards apply to the referrer&apos;s active paid plan only. Discounts are not stackable beyond one billing cycle. Self-referrals are not allowed.
+            <div className='bg-[#FAFAFA] p-2 rounded-[7px]'>
+            
+            <p className="mt-1 text-xs  leading-[150%] text-[#939393] dark:text-white/55">
+             Referral rewards apply to the referrer&apos;s active paid plan only. A maximum of one 100% discounted billing cycle may be applied per cycle, and discounts cannot be stacked beyond one full month. Self-referrals or referrals between related accounts are not permitted. Rewards are non-transferable, not redeemable for cash, and may be withheld in cases of misuse or abuse of the referral program. These early adopter rewards are available for a limited period as part of our launch phase.
+
             </p>
+              
+            </div>
 
             <div
               className="mt-6 rounded-full p-[4px]"
