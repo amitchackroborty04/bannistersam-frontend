@@ -129,7 +129,7 @@ export function IncentivesSection() {
                 }}
               >
                 <Image src="/icon2x.png" alt="referral" width={1000} height={1000} className="h-10 w-10" />
-               1 credit free for verified listingsal 
+               1 credit free for verified listings 
               </div>
             </div>
             </div>
