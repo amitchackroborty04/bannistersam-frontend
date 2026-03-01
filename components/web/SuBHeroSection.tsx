@@ -1,31 +1,52 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import Image from 'next/image'
+import { RegistrationModal } from '../registration-forms/RegistrationModal'
 
 export default function SubHeroSection() {
-  const labels = [
-    "Submit Requirement",
-    "Submit Listing Intent",
-    "User Registration",
-    "Professional Registration",
-    "Partner Registration",
-  ];
+  const router = useRouter()
+  const [registrationOpen, setRegistrationOpen] = useState(false)
+  const [registrationTab, setRegistrationTab] = useState<
+    'professional' | 'user' | 'company'
+  >('professional')
+
+  const openRegistration = (tab: 'professional' | 'user' | 'company') => {
+    setRegistrationTab(tab)
+    setRegistrationOpen(true)
+  }
+
+  const actions: Array<{
+    label: string
+    href?: string
+    tab?: 'professional' | 'user' | 'company'
+  }> = [
+    { label: 'Submit Requirement', href: '/requirement' },
+    { label: 'Submit Listing Intent', href: '/listing-intent' },
+    { label: 'User Registration', tab: 'user' },
+    { label: 'Professional Registration', tab: 'professional' },
+    { label: 'Partner Registration', tab: 'company' },
+  ]
 
   return (
-    <section className="relative overflow-hidden py-14 lg:py-0">
-      <div className="relative container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-8 items-center">
-        <div className="flex flex-col gap-2 sm:gap-4 text-center lg:text-left">
+    <>
+      <section className="relative overflow-hidden py-14 lg:py-0">
+        <div className="relative container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-8 items-center">
+          <div className="flex flex-col gap-2 sm:gap-4 text-center lg:text-left">
           <div>
             <div
               className="inline-block rounded-full p-[4px]"
               style={{
-                background: "linear-gradient(180deg, #79FFD2 0%, #017850 100%)",
+                background: 'linear-gradient(180deg, #79FFD2 0%, #017850 100%)',
               }}
             >
               <Button
                 className="rounded-full h-[48px] px-6 md:px-8 text-sm md:text-base text-[#4B4B4B]"
                 style={{
                   background:
-                    "linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)",
+                    'linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)',
                 }}
               >
                 <span className="w-2 h-2 rounded-full bg-[#00C274]"></span>
@@ -47,43 +68,59 @@ export default function SubHeroSection() {
           </p>
 
           <div className="flex flex-wrap gap-4 w-full max-w-[743px] mt-6 justify-center lg:justify-start">
-            {labels.map((label) => (
-              <div key={label} className="w-full sm:w-auto">
+            {actions.map((action) => (
+              <div key={action.label} className="w-full sm:w-auto">
                 <div
                   className="inline-block w-full sm:w-auto rounded-[8px] p-[4px]"
                   style={{
                     background:
-                      "linear-gradient(180deg, #79FFD2 0%, #017850 100%)",
+                      'linear-gradient(180deg, #79FFD2 0%, #017850 100%)',
                   }}
                 >
                   <Button
+                    onClick={() => {
+                      if (action.href) {
+                        router.push(action.href)
+                        return
+                      }
+                      if (action.tab) {
+                        openRegistration(action.tab)
+                      }
+                    }}
                     className="w-full sm:w-auto justify-center rounded-[8px] px-6 md:px-8 h-[48px] text-sm md:text-base text-[#4B4B4B]"
                     style={{
                       background:
-                        "linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)",
+                        'linear-gradient(90deg, #E8FFF7 0%, #FFF3F2 50%, #D5FFF1 100%)',
                     }}
                   >
-                    {label}
+                    {action.label}
                   </Button>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+          </div>
 
-        <div className="relative flex h-[320px] sm:h-[420px] md:h-[520px] lg:h-full lg:min-h-[940px] items-center justify-center">
-          <div className="relative w-full h-full">
-            <Image
-              src="/hero44.png"
-              alt="App screen"
-              width={1000}
-              height={1000}
-              className="w-full h-full object-cover drop-shadow-[0_0_85px_#B9FFE8] dark:drop-shadow-none"
-              priority
-            />
+          <div className="relative flex h-[320px] sm:h-[420px] md:h-[520px] lg:h-full lg:min-h-[940px] items-center justify-center">
+            <div className="relative w-full h-full">
+              <Image
+                src="/hero44.png"
+                alt="App screen"
+                width={1000}
+                height={1000}
+                className="w-full h-full object-cover drop-shadow-[0_0_85px_#B9FFE8] dark:drop-shadow-none"
+                priority
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-  );
+      </section>
+
+      <RegistrationModal
+        open={registrationOpen}
+        onOpenChange={setRegistrationOpen}
+        initialTab={registrationTab}
+      />
+    </>
+  )
 }
