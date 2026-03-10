@@ -128,7 +128,7 @@ export function Navigation() {
             className="flex items-center gap-2"
           >
             <Image
-              src="/logo.png"
+              src="/newlogo2.png"
               alt="Logo"
               width={1000}
               height={100}
